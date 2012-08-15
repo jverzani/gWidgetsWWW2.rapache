@@ -1,0 +1,5 @@
+The file ui.html provides a basic template to load css; load
+JavaScript, and define some javascript callbacks to populate a
+page. to embed a gWidgets script within a different web page could be
+done in theory (i.e, it is untested) if this info was added to that
+page and the `renderTo` argument of `gwindow` specifies a DOM id.
