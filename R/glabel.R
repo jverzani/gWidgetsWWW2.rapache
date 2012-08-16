@@ -19,7 +19,7 @@ glabel <- function(text, container,
   constructor <- "Ext.form.Label"
   args <- list(html=as.character(text))
   
-  args <- merge_list(args, ext.args, add_dots(...))
+  args <- merge_list(args, ext.args, add_dots(obj, ...))
   push_queue(write_ext_constructor(obj, constructor, args))
 
   ## add

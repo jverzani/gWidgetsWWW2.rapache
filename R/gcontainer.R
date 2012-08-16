@@ -10,14 +10,15 @@ add.default <- function(parent, child, ...) {
 }
 
 ## return list with extra arguments for adding
-add_dots <- function( ...) {
+add_dots <- function(obj, expand=NULL, fill=NULL, anchor=NULL, ...) UseMethod("add_dots")
+add_dots.default <- function(obj, expand=NULL, fill=NULL, anchor=NULL,  ...) {
   args <- list(...)
   l <- list()
 
-  if(!is.null(args$expand))
-    l$flex <- as.numeric(args$expand)
+  if(!is.null(expand))
+    l$flex <- as.numeric(expand)
 
-  if(!is.null(args$fill) && args$fill)
+  if(!is.null(fill) && fill)
     l$align <- "stretch"
 
   if(!is.null(args$label))
@@ -25,7 +26,9 @@ add_dots <- function( ...) {
   
   l
 }
-
+add_dots.GContainer <- function(obj, expand=NULL, fill=NULL, anchor=NULL, ...) {
+  add_dots.default(obj, expand=expand, fill=fill, anchor=anchor)
+}
 
 delete <- function(parent, child, ...) UseMethod("delete")
 delete.default <- function(parent, child, ...) {

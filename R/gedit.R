@@ -1,6 +1,8 @@
 ##' @include gcomponent.R
 NULL
 
+## TODO: width is wrong
+
 ##' gedit
 ##'
 ##' @export
@@ -27,7 +29,7 @@ gedit <- function(text, width=25, coerce.with=NULL, placeholder=NULL,
                  )
 
   
-  args <- merge_list(args, ext.args, add_dots(...))
+  args <- merge_list(args, ext.args, add_dots(obj, ...))
   push_queue(write_ext_constructor(obj, constructor, args))
 
   ## add

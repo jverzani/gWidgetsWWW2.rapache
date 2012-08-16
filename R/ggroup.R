@@ -1,15 +1,25 @@
-##' @include gcomponent.R
+##' @include gcontainer.R
 ##' 
 NULL
 
-##' ggroup
+## Box containers: ggroup, gvbox, gframe, gexpandgroup
+
+
+##' The basic box container
+##'
+##'
+##' Packing is from left to right
+##' (horizontal) or top to bottom (gvbox)
 ##'
 ##' @export
-
-ggroup <- function(horizontal=FALSE, spacing=3,
+ggroup <- function(horizontal=TRUE,
+                   spacing=2,           # between widget
+                   body.padding=2,       # external
                    use.scrollwindow=FALSE,
                    container=NULL, ...,
-                   width=NULL, height=NULL, ext.args=list()
+                   width=NULL, height=NULL, ext.args=list(),
+                   align="stretch",   # do "stretch", fill orthogonally
+                   text=NULL, collapsible=FALSE #
                    ) {
   obj <- new_item()
   class(obj) <- c("GGroup", "GContainer", "GComponent", class(obj))
@@ -33,14 +43,26 @@ ggroup <- function(horizontal=FALSE, spacing=3,
   
   args <- list(border=TRUE,
                hideBorders=TRUE,
+               bodyPadding=body.padding,
                defaults=list(
                  margins=sprintf("%s %s %s %s", margins[1], margins[2], margins[3], margins[4])
                  ),
-               autoScroll=use.scrollwindow
+               autoScroll=use.scrollwindow,
+               title=text,
+               collapsible=collapsible
                )
-  args$layout <- if(horizontal) list(type="hbox", align="stretch") else list(type="vbox", align="stretch")
+  layout_args <- list(type=ifelse(horizontal, "hbox", "vbox"))
+
+  ## align: stretch gives RGtk2 like behaviour: widgets fill in direction
+  ## orthogonal to packing
+  ## From HBox.js:
+  ## * - **stretch** : child items are stretched vertically to fill the height of the container
+  ## * - **stretchmax** : child items are stretched vertically to the height of the largest item. 
+  if(!is.null(align))
+    layout_args$align <- align
+  args$layout <- layout_args
   
-  args <- merge_list(args, ext.args, add_dots(...))
+  args <- merge_list(args, ext.args, add_dots(obj, ...))
   push_queue(write_ext_constructor(obj, constructor, args))
   
 
@@ -54,3 +76,101 @@ gvbox <- function(container=NULL, ...,
                   width=NULL, height=NULL, ext.args=list())
   ggroup(horizontal=FALSE, container=container, ...,
          width=width, height=height, ext.args=ext.args)
+
+
+addSpring <- function(obj) {
+  glabel("&nbsp;", container=obj, expand=100)
+}
+
+##' Framed box container
+##'
+##' Use \code{svalue<-} to adjust title
+##' @export
+gframe <- function(text = "", horizontal=FALSE,
+                   spacing=2, body.padding=2,
+                   use.scrollwindow=FALSE,
+                   container=NULL, ...,
+                   width=NULL, height=NULL, ext.args=list()) {
+
+  obj <- ggroup(horizontal=horizontal,
+                spacing=spacing,
+                body.padding=body.padding,
+                use.scrollwindow=use.scrollwindow,
+                container=container,
+                ...,
+                width=width,
+                height=height,
+                ext.args=ext.args,
+                text=text)
+  class(obj) <- c("GFrame", class(obj))
+
+  set_properties(obj, list(text=text))
+
+  obj
+}
+
+svalue.GFrame <- function(obj, ...) get_properties(obj)$text
+
+"svalue<-.GFrame" <- function(obj, ..., value) {
+  value <-  as.character(value)
+  props <- get_properties(obj)
+  props$text <- value
+  set_properties(obj, props)
+  
+  call_ext(obj, "setTitle", value)
+  obj
+}
+
+##' expandable box container
+##'
+##' Use \code{visible<-} to toggle collapsed or expanded
+##' programatically. Opens in a visible mode.  Use
+##' \code{addHandlerChanged} to add a callback for when the widget
+##' expands or collapses
+##' @export
+gexpandgroup <- function(text = "", horizontal = TRUE,
+                         spacing=2, body.padding=2,
+                         use.scrollwindow=FALSE,
+                         container=NULL,
+                         handler = NULL, action=NULL,
+                         ...,
+                         width=NULL,
+                         height=NULL,
+                         ext.args=NULL
+                         ) {
+
+  obj <- ggroup(horizontal=horizontal,
+                spacing=spacing, body.padding=body.padding,
+                use.scrollwindow=use.scrollwindow,
+                container=container,
+                ...,
+                width=width,
+                height=height,
+                ext.args=ext.args,
+                text=text,
+                collapsible=TRUE)
+  
+  class(obj) <- c("GExpandGroup", "GFrame", class(obj))
+
+  set_properties(obj, list(text=text, visible=TRUE))
+
+  obj
+}
+
+
+## is group expanded?
+visible.GExpandGroup <- function(obj) {
+  get_properties(obj)$visible
+}
+
+"visible<-.GExpandGroup" <- function(obj, value) {
+  update_property(obj, "visible", value)
+  call_ext(obj, ifelse(value, "expand", "collapse"))
+
+  obj
+}
+
+
+addHandlerChanged.GExpandGroup <- function(obj, handler, action, ...) {
+  lapply(c("expand", "collapse"), addHandler, obj=obj, handler=handler, action=action)
+}

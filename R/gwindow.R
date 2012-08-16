@@ -61,6 +61,17 @@ var {{{oid}}} = gWidget_toplevel.child(0);
   obj
 }
 
+## add for window captures "bars"
+add.GWindow <- function(parent, child, ...) {
+  if(is(child, "GStatusBar") || is(child, "GMenubar") || is(child, "GToolBar")) {
+    message("add a bar")
+    oid <- o_id(parent)
+    cid <- o_id(child)
+    push_queue(whisker.render("{{oid}}.addDocked({{cid}});"))
+  } else {
+    NextMethod()
+  }
+}
 
 
 "visible<-.GWindow" <- function(obj, value) {

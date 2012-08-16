@@ -78,7 +78,6 @@ set_vals <- function(id, value, items, properties) {
 }
 
 
-
 get_vals <- function(id, key=c("value", "items", "properties")) {
   db <- ..con..
   
@@ -98,3 +97,17 @@ get_vals <- function(id, key=c("value", "items", "properties")) {
   return(out)
 }
 
+## accessors
+get_value <- function(obj) get_vals(obj, "value")
+get_items <- function(obj) get_vals(obj, "items")
+get_properties <- function(obj) get_vals(obj, "properties")
+
+set_value <- function(obj, value) set_vals(obj, value=value)
+set_items <- function(obj, value) set_vals(obj, items=value)
+set_properties <- function(obj, value) set_vals(obj, properties=as.list(value))
+
+update_property <- function(obj, key, value) {
+  props <- get_properties(obj)
+  props[[key]] <- value
+  set_properties(obj, props)
+}

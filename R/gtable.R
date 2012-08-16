@@ -1,7 +1,7 @@
 ##' @include gcomponent.R
 NULL
 
-## TODO: icons, dates, transport, handler, paging, infinite scrolling, ...
+## TODO: icons, dates, visible!, transport, handler, paging, infinite scrolling, ...
 
 ##' gtable
 ##'
@@ -53,7 +53,7 @@ var {{{oid}}}_store = Ext.create({{{store_constructor}}},{{{store_args}}});'
                columns=make_columns(items, col.width=1),
                frame=FALSE,
                stripeRows=TRUE)
-  args <- merge_list(args, ext.args, add_dots(...))
+  args <- merge_list(args, ext.args, add_dots(obj, ...))
   push_queue(write_ext_constructor(obj, constructor, args))
                
   ## add

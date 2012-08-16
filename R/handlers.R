@@ -31,6 +31,9 @@ call_handler <- function(obj, signal, params=list(), ...) {
   key <- as.character(obj)
   handlers <- ..handlers.. #get("..handlers..", envir=topenv())
   blocked <- handlers$blocked
+  if(obj %in% handlers$all_blocked)
+    return()                            # all blocked
+    
   if(is.null(handlers[[key]]))
     stop("No handlers for this object")
 
@@ -54,17 +57,30 @@ before_handler <- function(obj, signal, params, ...) UseMethod("before_handler")
 before_handler.default <- function(obj, signal, params, ...) {}
 
 
-## block a handler
+## block a handler. Handler_id may be a list (eg, expandgroup)
 block_handler <- function(obj, handler_id) {
   handlers <- ..e..$..handlers..
-  handlers$blocked <- unique(c(handlers$blocked, handler_id))
-  assign("..handlers..", handlers,  envir=topenv())
+  handlers$blocked <- unique(c(handlers$blocked, unlist(handler_id)))
+  ..e..$..handlers.. <- handlers
 }
 
 unblock_handler <- function(obj, handler_id) {
   handlers <- ..e..$..handlers..
-  handlers$blocked <- Filter( function(x) x!= handler_id, handlers$blocked)
-  assign("..handlers..", handlers,  envir=topenv())
+  handlers$blocked <- Filter( function(x) ! x %in% unlist(handler_id), handlers$blocked)
+  ..e..$..handlers.. <- handlers
+}
+
+## block handlers
+block_handlers <- function(obj) {
+  handlers <- ..e..$..handlers..
+  handlers$all_blocked <- unique(c(obj, handlers$all_blocked))
+  ..e..$..handlers.. <- handlers
+}
+
+unblock_handlers <- function(obj) {
+  handlers <- ..e..$..handlers..
+  handlers$all_blocked <- Filter(function(x) !identical(x,obj), handlers$all_blocked)
+  ..e..$..handlers.. <- handlers
 }
 
 callback_args <- function(signal) {
@@ -188,4 +204,22 @@ addHandlerBlur <- function(obj, handler, action=NULL, ...) UseMethod("addHandler
 
 addHandlerBlur.default <- function(obj, handler, action=NULL, ...) {
   addHandler(obj, "blur", handler, action, ...)
+}
+
+
+
+## select handler
+addHandlerSelect <- function(obj, handler, action=NULL, ...) UseMethod("addHandlerSelect")
+
+addHandlerSelect.default <- function(obj, handler, action=NULL, ...) {
+  addHandler(obj, "select", handler, action, ...)
+}
+
+
+
+## Change handler
+addHandlerChange <- function(obj, handler, action=NULL, ...) UseMethod("addHandlerChange")
+
+addHandlerChange.default <- function(obj, handler, action=NULL, ...) {
+  addHandler(obj, "Change", handler, action, ...)
 }

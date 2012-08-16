@@ -33,7 +33,7 @@ ghtml <- function(x, markdown=FALSE, container, ...,
                   )
                 )
 
- args <- merge_list(args, ext.args, add_dots(...))
+ args <- merge_list(args, ext.args, add_dots(obj, ...))
  push_queue(write_ext_constructor(obj, constructor, args))
 
  ## add

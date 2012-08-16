@@ -20,6 +20,7 @@ gformlayout <- function(
 
   constructor <- "Ext.form.Panel"
   args <- list(bodyPadding=as.integer(spacing),
+               border=FALSE,
                labelSeparator="",
                labelAlign=c(
                  "default"="left",
@@ -32,7 +33,7 @@ gformlayout <- function(
                  )
                )
   
-  args <- merge_list(args, ext.args, add_dots(...))
+  args <- merge_list(args, ext.args, add_dots(obj, ...))
   push_queue(write_ext_constructor(obj, constructor, args))
 #  size(obj) <- list(width=width, height=height)
   

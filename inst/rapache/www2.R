@@ -58,9 +58,23 @@ if(grepl("get_id", pi)) {
   out <- gWidgetsWWW2.rapache:::clean_up(params$ID)
 } else {
   ## main page
+  find_script <- function(pi) {
+    x <- gsub("/gw/", "", pi)
+    dirs <- getOption('gWidgetsWWW2.rapache::script_base') %||%
+      c(system.file('examples', package='gWidgetsWWW2.rapache'))
+    out <- Filter(function(x) file.exists(x) && !file.info(x)$isdir,
+           paste(dirs, x, sep=.Platform$file.sep))
+    if(length(out))
+      return(out[1])
+    else
+      stop(sprintf("No such file found for %s", pi))
+  }
+        
+
+  
   tpl <- system.file("templates", "ui.html", package="gWidgetsWWW2.rapache")
   tpl <- paste(readLines(tpl, warn=FALSE), collapse="\n")
-  out <- whisker.render(tpl, list(the_script=gsub("/gw", "", pi )))
+  out <- whisker.render(tpl, list(the_script=find_script(pi)))
 }
 sink()
 

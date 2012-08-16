@@ -77,14 +77,14 @@ var ogWidget_{{obj}} = Ext.create({{{constructor}}} {{#params}},{{{params}}}{{/p
 
 ##' call an ext method
 ##'
-##' @obj object
-##' @meth method name
-##' @params optional parameters. You must format as string
+##' @param obj object
+##' @param meth method name
+##' @param params optional parameters. You must format as string
 ##' @return pushes value to queue, nothing for you to do
 ##' @export
 call_ext <- function(obj, meth, params="") {
   if(is.list(params))
-    params <- asJSON(params)
+    params <- list_to_object(params)    # was toJSON?
   cmd <- whisker.render("ogWidget_{{{obj}}}.{{meth}}({{{params}}});")
   push_queue(cmd)
 }

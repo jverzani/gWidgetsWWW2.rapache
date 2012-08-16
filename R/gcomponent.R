@@ -27,9 +27,12 @@ svalue <- function(obj, index=NULL, drop=NULL, ...) UseMethod("svalue")
 svalue.default <- function(obj, index=NULL, drop=NULL, ...) {
   index <- index %||% FALSE
   value <- get_vals(obj, "value")
+  
   if(index) {
     items <- get_vals(obj, "items")
     value <- match(value, items)
+  } else if(!is.null(coerce_with <- get_properties(obj)$coerce.with)) {
+    value <- match.fun(coerce_with)(value)
   }
   value
 }
