@@ -1,17 +1,25 @@
 Containers
 -----------
-* gnotebook
-DONE * gstackwidget
-* gborderlayout
+* test gborderlayout
 * for now, no glayout or gpanedgroup
+* border in vbox?
+DONE * gnotebook
+DONE * gstackwidget
 
 
 Widgets
 -------
+* gcheckboxgroup with gcheckbox as a specialization
 * gtable + visible<-; infinite scrolling, multiple selection, icon+tooltip column
 * form stuff labels, ... no resizing of radio, checkboxgroup, .., but we should implement names<-, length
 * icons in gtable, gcomobobx, ..
 * editing a data frame? Not as critical as uploading data
+DONE * test gradio
+Graphics
+--------
+* canvas
+* svg (d3?)
+* images
 
 Plumbing
 --------

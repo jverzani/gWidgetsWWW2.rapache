@@ -160,10 +160,7 @@ ogWidget_{{obj}}.on("{{signal}}", function({{{fn_args}}}) {
   Ext.Ajax.request({
     url:"{{{url}}}",
     params:{ID:ID,obj:"{{obj}}", signal:"{{signal}}" {{#params}},params:JSON.stringify(params){{/params}} },
-    success:function(response) {
-              eval(response.responseText);
-              console.log("ajax call done");
-            }
+    success:eval_response
   });
 });
 '

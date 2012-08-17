@@ -1,0 +1,29 @@
+w <- gwindow("gradio")
+sb <- gstatusbar("Powered by gWidgetsWWW2 and rapache", cont=w)
+
+
+g <- gvbox(cont=w)
+bg <- ggroup(cont=g)
+
+gbutton("svalue", cont=bg, handler=function(h,...) {
+  push_queue(sprintf("alert('%s');", svalue(rb1)))
+})
+gbutton("svalue<-, 3", cont=bg, handler=function(h,...) {
+  svalue(rb1) <- state.name[3]
+})
+
+gbutton("svalue<-, index, 2", cont=bg, handler=function(h,...) {
+  svalue(rb1, index=TRUE) <- 2
+})
+gbutton("enabled", cont=bg, handler=function(h,...) {
+  enabled(rb1) <- TRUE
+})
+gbutton("disabled", cont=bg, handler=function(h,...) {
+  enabled(rb1) <- FALSE
+})
+
+
+fl <- gformlayout(cont=g)
+rb1 <- gradio(state.name[1:4], horizontal=TRUE, cont=fl, label="horizontal")
+rb2 <- gradio(state.name[1:4], horizontal=FALSE, cont=fl, label="vertical")
+rb2 <- gradio(state.name[1:4], horizontal=TRUE, cont=fl, flex=NULL, label="flex=NULL")

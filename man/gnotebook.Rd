@@ -10,7 +10,9 @@
   bottom, else the top.}
 
   \item{close.buttons}{Logical. Are there close buttons on
-  the tabs}
+  the tabs? If \code{TRUE}, then the underlying methods
+  (\code{length}, \code{svalue}, ...) will get all messed
+  up!}
 }
 \description{
   Notebook container

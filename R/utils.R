@@ -33,14 +33,15 @@ list_to_object.logical <- function(x, ...) {
   if(length(x) == 1) tolower(as.character(x)) else NextMethod()
 }
 
-list_to_object.list <- function(x) {
+## use wrap="array" to get [{..},{...}, ...] output
+list_to_object.list <- function(x, wrap="object") {
   x <- Filter(function(y) !is.null(y), x)
   
   f <- function(nm, value) {
     sprintf("%s: %s", nm, list_to_object(value))
   }
-  out <- mapply(f, names(x), x)
-  sprintf("{%s}", paste(out, collapse=",\n"))
+  out <- mapply(f, names(x), x, SIMPLIFY=FALSE)
+  sprintf(ifelse(wrap=="object", "{%s}", "[%s]"), paste(out, collapse=",\n"))
 }
 
 

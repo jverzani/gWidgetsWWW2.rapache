@@ -3,25 +3,6 @@ NULL
 
 
 ## methods
-"svalue<-" <- function(obj, index=FALSE,  ..., value) UseMethod("svalue<-")
-"svalue<-.default" <- function(obj, index=FALSE, value) {
-  index <- index %||% FALSE
-
-  if(index) {
-    items <- get_vals(obj, "items")
-    value <- items[value]
-  }
-  set_vals(obj, value=value)  
-  set_value_js(obj, value)
-  obj
-}
-
-## set JS. Here so tat we can override
-set_value_js <- function(obj, value) UseMethod("set_value_js")
-set_value_js.default <- function(obj, value)   {
-  call_ext(obj, "set", value)
-}
-  
 
 svalue <- function(obj, index=NULL, drop=NULL, ...) UseMethod("svalue")
 svalue.default <- function(obj, index=NULL, drop=NULL, ...) {
@@ -37,6 +18,26 @@ svalue.default <- function(obj, index=NULL, drop=NULL, ...) {
   value
 }
 
+
+## we store value -- not index Use matching to get index
+"svalue<-" <- function(obj, index=FALSE,  ..., value) UseMethod("svalue<-")
+"svalue<-.default" <- function(obj, index=FALSE, ..., value) {
+
+  index <- index %||% FALSE
+  if(index) 
+    value <- get_items(obj)[value]
+
+  set_value(obj, value)  
+  set_value_js(obj, value)
+  obj
+}
+
+## set JS. Here so that we can override
+set_value_js <- function(obj, value) UseMethod("set_value_js")
+set_value_js.default <- function(obj, value)   {
+  call_ext(obj, "set", value)
+}
+  
 
 "[.GComponent" <- function(x, i, j, ... , drop = FALSE) {
   items <- get_vals(x, "items")
@@ -128,3 +129,7 @@ set_height.default <- function(obj, px)
 
   obj
 }
+
+
+## Number of items
+length.GComponent <- function(x) length(get_items(x))

@@ -43,3 +43,6 @@ Collate:
     'gnotebook.R'
     'gstackwidget.R'
     'gstatusbar.R'
+    'gborderlayout.R'
+    'gradio.R'
+    'gcheckbox.R'

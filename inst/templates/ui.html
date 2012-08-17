@@ -15,7 +15,7 @@
 
 <script>
 var ID = null; // page id, filled in via get_id
-var jQuery_globalEval = function (data) {
+var jQuery_globalEval = function (data) { // from jQuery code
     if (data) {
         // We use execScript on Internet Explorer
         // We use an anonymous function so that context is window
@@ -25,6 +25,7 @@ var jQuery_globalEval = function (data) {
         })(data);
     }
 };
+var eval_response = function(response) {jQuery_globalEval(response.responseText)};
 </script>
 
 <script>
@@ -38,16 +39,12 @@ Ext.onReady(function() {
      Ext.Ajax.request({
           url:"/custom/gw/create_ui",
           params:{ID:ID,the_script:"{{{the_script}}}"},
-          success:function(response) {
-            jQuery_globalEval(response.responseText);
-            console.log("made gui");
-          }
+          success:eval_response
           });
      }
    });
 
 Ext.EventManager.on(window, 'beforeunload', function(e) {
-  alert("Clean up");
   Ext.Ajax.request({
         url:"/custom/gw/clean_up",
         params:{ID:ID}

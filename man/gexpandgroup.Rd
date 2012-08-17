@@ -3,9 +3,9 @@
 \title{expandable box container}
 \usage{
   gexpandgroup(text = "", horizontal = TRUE, spacing = 2,
-    use.scrollwindow = FALSE, container = NULL,
-    handler = NULL, action = NULL, ..., width = NULL,
-    height = NULL, ext.args = NULL)
+    body.padding = 2, use.scrollwindow = FALSE,
+    container = NULL, handler = NULL, action = NULL, ...,
+    width = NULL, height = NULL, ext.args = NULL)
 }
 \description{
   Use \code{visible<-} to toggle collapsed or expanded
