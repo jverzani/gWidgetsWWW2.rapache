@@ -1,6 +1,7 @@
 ##' @include gradio.R
 NA
 
+## TODO names<- metdho
 
 ##' A group of checkboxes
 ##' 
@@ -30,7 +31,7 @@ gcheckboxgroup = function (items, checked = FALSE, horizontal = FALSE,
   class(obj) <- c("GCheckboxGroup", "GRadio", "GWidget", "GComponent", class(obj))
 
   ## vals: value is item, not index
-  set_vals(obj, value=items[rep(checked, length=length(items))], items=items)
+  set_vals(obj, value=.to_string(items[rep(checked, length=length(items))]), items=items)
   
   ## js
   constructor <- "Ext.form.CheckboxGroup"
@@ -46,20 +47,81 @@ gcheckboxgroup = function (items, checked = FALSE, horizontal = FALSE,
   args <- merge_list(args, ext.args, add_dots(obj, ...))
   push_queue(write_ext_constructor(obj, constructor, args))
 
-  ## set checked...  
+  ## set checked...
+  checked <- rep(checked, length(items))
+  set_value_js(obj, which(checked))
+  
   ## add
   add(container, obj, ...)
 
   
   ## handlers
-#  addHandlerChanged(obj, handler=function(h, ...) {})
+  addHandlerChanged(obj, handler=function(h, ...) {})
   if(!missing(handler)) 
     addHandlerChanged(obj, handler, action)
 
   obj
 }
 
+.to_string <- function(x) paste(x, collapse=":::")
+.from_string <- function(x) strsplit(x, ":::")[[1]]
+
+before_handler.GCheckboxGroup <- function(obj, signal, params,...) {
+  ## we get indices posibbly empty we store values
+  items <- get_items(obj)
+  idx <- params$value
+  if(length(idx) == 0)
+    idx <- integer(0)
+  set_value(obj, .to_string(items[idx]))
+}
+
+addHandlerChange.GCheckboxGroup <- function(obj, handler, action=NULL, ...) {
+
+  oid <- o_id(obj)
+  tpl <- "var params = {value: {{oid}}.getValue().{{oid}}_radio}"
   
+  addHandler(obj, "change", handler, action, ...,
+             params=whisker.render(tpl)
+             )
+}
+
+svalue.GCheckboxGroup <- function(obj, index=NULL, drop=NULL, ...) {
+  items <- get_items(obj)
+  vals <- .from_string(get_value(obj))
+  index <- index %||% FALSE
+  if(index) {
+    idx <- match(vals, items)
+    if(is.na(idx)) idx <- integer(0)
+    return(idx)
+  }
+  return(vals)
+}
+
+"svalue<-.GCheckboxGroup" <- function(obj, index=NULL, ..., value) {
+  if(is.logical(value)) {
+    value <- which(value)
+    index <- TRUE
+  }
+  items <- get_items(obj)
+  
+  index <- index %||% FALSE
+  if(index) 
+    set_value(obj, .to_string(items[index]))
+  else
+    set_value(obj, .to_string(value))
+
+  if(!index)
+    value <- match(value, items)
+
+  set_value_js(obj, value)
+
+}
+
+## set, value are indices
+set_value_js.GCheckboxGroup <- function(obj, value) {
+  id <- sprintf("%s_radio", o_id(obj))
+  call_ext(obj, "setValue", I(sprintf("{%s:%s}", id, toJSON(value))))
+}
 
 
 ##' checkbox widget
@@ -78,44 +140,19 @@ gcheckbox = function(text="", checked = FALSE, use.togglebutton=FALSE,
   handler = NULL, action = NULL,  container = NULL,...,
   width=NULL, height=NULL, ext.args=NULL) {
 
-
-  obj <- new_item()
-  ## inherit handlers from GRadio
-  class(obj) <- c("GCheckbox", "GRadio", "GWidget", "GComponent", class(obj))
-
-  ## vals
-  set_vals(obj, value=checked)
-
-  
-  ## js
-  constructor <- "Ext.form.CheckboxGroup"
-  args <- list(items=.items_as_array(text),
-               width=width, height=height
-               )
-  
-  args <- merge_list(args, ext.args, add_dots(obj, ...))
-  push_queue(write_ext_constructor(obj, constructor, args))
-
-  ## add
-  add(container, obj, ...)
-
-  
-  ## handlers
-  if(!missing(handler)) 
-    addHandlerChanged(obj, handler, action)
+  obj <- gcheckboxgroup(text, checked=checked, handler=handler, action=action,
+                        container=container, ...,
+                        width=width, height=height, ext.args=ext.args)
+  class(obj) <- c("GCheckbox", class(obj))
 
   obj
 
 }
 
-set_value_js.GCheckbox <- function(obj, value) {
-  ## get obj, setValue(true)
-  tpl <- "
-  {{{oid}}}.items.get(0).setValue({{{value}}});
-"
-  oid <- o_id(obj)
-  value <- toJSON(value)
-
-  push_queue(whisker.render(tpl))
+## difference is we use logicals here
+svalue.GCheckbox <- function(obj, value) {
+  val <- NextMethod()
+  ## return logical
+  length(val) > 0
 }
-
+  

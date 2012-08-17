@@ -65,6 +65,17 @@ set_value_js.GRadio <- function(obj, value) {
   push_queue(whisker.render(tpl))
 }
 
+## hacke figure this out.
+"names<-.GRadio" <- function(x, value) {
+  tpl <- "{{{oid}}}.getComponent({{idx}}).boxLabelEl.setHTML({{{label}}});"
+  oid <- o_id(x)
+  mapply(function(idx, label, oid) push_queue(whisker.render(tpl)),
+         seq_along(value) - 1, shQuote(value), oid)
+
+  x
+}
+
+
 ## helper make array of item object
 .items_as_array <- function(obj, items) {
   "Return items as array"

@@ -9,7 +9,8 @@ DONE * gstackwidget
 
 Widgets
 -------
-* gcheckboxgroup with gcheckbox as a specialization
+* gradio, gcheckboxgroup setting names
+DONE * gcheckboxgroup with gcheckbox as a specialization
 * gtable + visible<-; infinite scrolling, multiple selection, icon+tooltip column
 * form stuff labels, ... no resizing of radio, checkboxgroup, .., but we should implement names<-, length
 * icons in gtable, gcomobobx, ..
