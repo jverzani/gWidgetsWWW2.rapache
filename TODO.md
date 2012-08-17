@@ -9,13 +9,23 @@ DONE * gstackwidget
 
 Widgets
 -------
-* gradio, gcheckboxgroup setting names
-DONE * gcheckboxgroup with gcheckbox as a specialization
+* gtext
+* gaction
+* gtoolbar
 * gtable + visible<-; infinite scrolling, multiple selection, icon+tooltip column
+* checkbox table
 * form stuff labels, ... no resizing of radio, checkboxgroup, .., but we should implement names<-, length
 * icons in gtable, gcomobobx, ..
 * editing a data frame? Not as critical as uploading data
 DONE * test gradio
+DONE* slider, spinbox (Numeric)
+DONE * gradio, gcheckboxgroup setting names
+DONE * gcheckboxgroup with gcheckbox as a specialization
+
+Dialogs
+-------
+
+
 Graphics
 --------
 * canvas

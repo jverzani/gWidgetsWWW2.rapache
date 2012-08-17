@@ -46,3 +46,5 @@ Collate:
     'gborderlayout.R'
     'gradio.R'
     'gcheckbox.R'
+    'gspinbutton.R'
+    'gslider.R'

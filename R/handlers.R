@@ -94,6 +94,7 @@ callback_args <- function(signal) {
          cellclick = "w, td, cellIndex, rec, tr, rowIndex, e, opts", # grid
          celldblclick = "w, td, cellIndex, rec, tr, rowIndex, e, opts", # grid
          change="w, newValue, oldValue, eOpts",
+         changecomplete="w, newValue, thumb, eOpts",
          beforechange = "w, newValue, oldValue",
          check = "w, checked",
          click = "w, e", # gtree?
