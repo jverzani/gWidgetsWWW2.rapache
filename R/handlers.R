@@ -10,25 +10,26 @@ add_handler <- function(obj, signal, handler, action=NULL, ...) {
     handlers[[key]] <- list()
   
   id <- handlers$id <- handlers$id + 1L
-     
-  l <- handlers[[key]][[signal]]
-  ## get an ID
-  tmp <- list(handler=handler, action=action, obj=obj, id=id)
-  if(is.null(l))
-    l <- list(tmp)
-  else
-    l <- c(l, tmp)
+
+  ## get/update/store
+  l <- handlers[[key]][[signal]] %||% list()
+  l[[length(l) + 1]] <- list(handler=handler, action=action, obj=obj, id=id)
   handlers[[key]][[signal]] <- l
 
   ..e..$..handlers.. <- handlers
 
+  ## we return length of l. If more than 1 we might not want to add js to call handler
+  length(l)
+  
 }
 
 ## how to call the handler
+## XXX Sometimes this calls handlers twice
 call_handler <- function(obj, signal, params=list(), ...) {
   message("call handler")
   
   key <- as.character(obj)
+  message("key:", key)
   handlers <- ..handlers.. #get("..handlers..", envir=topenv())
   blocked <- handlers$blocked
   if(obj %in% handlers$all_blocked)
@@ -42,11 +43,11 @@ call_handler <- function(obj, signal, params=list(), ...) {
   
   l <- handlers[[key]][[signal]]
 
-  sapply(l, function(obj) {
-    h <- merge_list(list(obj = obj$obj, action=obj$action), params)
-    if(!obj$id %in% blocked) {
-      before_handler(obj$obj, signal, params)
-      obj$handler(h, ...)
+  lapply(l, function(comp) {
+    h <- merge_list(list(obj = comp$obj, action=comp$action), params)
+    if(!comp$id %in% blocked) {
+      before_handler(comp$obj, signal, params)
+      comp$handler(h, ...)
     }
   })
   
@@ -54,7 +55,10 @@ call_handler <- function(obj, signal, params=list(), ...) {
 
 ## S3 method call prior to handler call
 before_handler <- function(obj, signal, params, ...) UseMethod("before_handler")
-before_handler.default <- function(obj, signal, params, ...) {}
+before_handler.default <- function(obj, signal, params, ...) {
+  if(!missing(params) && !is.null(params$value))
+    set_value(obj, params$value)
+}
 
 
 ## block a handler. Handler_id may be a list (eg, expandgroup)
@@ -150,12 +154,13 @@ addHandler.default <- function(obj, signal, handler, action=NULL,
                                params=NULL ## "var params=...;"
                                ) {
   message("addHandler")
-  add_handler(obj, signal, handler, action) # stores handler
+  n <- add_handler(obj, signal, handler, action) # stores handler
+  if(n > 1) return()
 
-  
+  ## add JS code
   url <- "/custom/gw/ajax_call"
   
-  tpl <- '
+    tpl <- '
 ogWidget_{{obj}}.on("{{signal}}", function({{{fn_args}}}) {
   {{#params}}{{{params}}};{{/params}}
   Ext.Ajax.request({
@@ -165,10 +170,7 @@ ogWidget_{{obj}}.on("{{signal}}", function({{{fn_args}}}) {
   });
 });
 '
-
-
   push_queue(whisker.render(tpl))
-
 }
 
 ## our handler interface

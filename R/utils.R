@@ -93,3 +93,32 @@ call_ext <- function(obj, meth, params="") {
 
 ## return object id
 o_id <- function(id) whisker.render("ogWidget_{{id}}")
+
+##' escape slash n
+escape_slashn <- function(x) {
+  ## from DTL's RJSONIO
+  tmp <- gsub('(\\\\)', '\\1\\1', x)
+  gsub("\\n", "\\\\n", tmp)
+}  
+
+##' escape single quote
+##'
+##' Useful as we often single quote arguments to the Ext functions
+##' @param x string to escape
+##' @return string with "'" replaced by "\'"
+escape_single_quote <- function(x) {
+  gsub("'", "\\\\'", x)
+}
+
+escape_double_quote <- function(x) {
+  gsub('"', '\\\\"', x)
+}
+
+## esacpe " || ' and \n
+our_escape <- function(x, type="double") {
+  if(type == "single")
+    x <- escape_single_quote(x)
+  else
+    x <- escape_double_quote(x)
+  escape_slashn(x)
+}

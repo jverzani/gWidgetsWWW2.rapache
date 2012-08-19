@@ -26,4 +26,10 @@ gbutton("disabled", cont=bg, handler=function(h,...) {
 fl <- gformlayout(cont=g)
 rb1 <- gradio(state.name[1:4], horizontal=TRUE, cont=fl, label="horizontal")
 rb2 <- gradio(state.name[1:4], horizontal=FALSE, cont=fl, label="vertical")
-rb2 <- gradio(state.name[1:4], horizontal=TRUE, cont=fl, flex=NULL, label="flex=NULL")
+rb3 <- gradio(state.name[1:4], horizontal=TRUE, cont=fl, flex=NULL, label="flex=NULL")
+
+
+addHandlerChanged(rb3, function(h, ...) {
+  val <- svalue(h$obj)
+  push_queue(sprintf("alert('%s');",val))
+})

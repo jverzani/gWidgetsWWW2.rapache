@@ -54,12 +54,12 @@ gbutton_action <- function(action, container, ...) {
   obj <- new_item()
   class(obj) <- c("GButtonAction", "GWidget", "GComponent", class(obj))
 
-  constructor <- "Ext.Button"
-  args <- list()
-  
-  args <- merge_list(args, ext.args, add_dots(obj, ...))
-  push_queue(write_ext_constructor(obj, constructor, args))
-  
+  tpl <- '
+var ogWidget_{{obj}} = Ext.create("Ext.Button", {{{aid}}});
+'
+  aid <- o_id(action)
+
+  push_queue(whisker.render(tpl))
 
   add(container, obj)
 

@@ -92,15 +92,21 @@ before_handler.GRadio <- function(obj, signal, params, ...) {
   ## we pass back index, we store value
   items <- get_items(obj)
   idx <- as.integer(params$value)
+  value <- items[idx]
   set_value(obj, items[idx])
+  message("before handler done")
 }
 
-addHandlerClicked.GRadio <-addHandlerChanged.GRadio <- function(obj, handler, action=NULL, ...)
+addHandlerChanged.GRadio <- function(obj, handler, action=NULL, ...) {
   addHandlerChange(obj, handler, action, ...)
+}
 
 
 addHandlerChange.GRadio <- function(obj, handler, action=NULL, ...) {
   addHandler(obj, "change", handler, action, ...,
-             params="var params={value:newValue.valueOf()};" ## pass back index in value
+             params=sprintf("var params={value:newValue.valueOf().%s_radio};", o_id(obj)) ## pass back index in value
              )
 }
+
+## alias
+addHandlerClicked.GRadio <- addHandlerChanged.GRadio

@@ -1,6 +1,8 @@
+TEST gaction, gmenu, gbutton + gaction
+gtext TRANSPORT, insert (can do)
 Containers
 -----------
-* test gborderlayout
+DONE * test gborderlayout
 * for now, no glayout or gpanedgroup
 * border in vbox?
 DONE * gnotebook
@@ -9,7 +11,7 @@ DONE * gstackwidget
 
 Widgets
 -------
-* gtext
+* gtext: issue with escaping quotes
 * gaction
 * gtoolbar
 * gtable + visible<-; infinite scrolling, multiple selection, icon+tooltip column
@@ -22,7 +24,7 @@ DONE* slider, spinbox (Numeric)
 DONE * gradio, gcheckboxgroup setting names
 DONE * gcheckboxgroup with gcheckbox as a specialization
 
-Dialogs
+DialogsXbgcan
 -------
 
 

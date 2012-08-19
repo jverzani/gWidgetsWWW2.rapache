@@ -22,6 +22,7 @@ isIcon <- function(x) is(x,"Icon")
 
 ##' return CSS class of icon
 get_stock_icon_by_name <- function(value) {
+  if(is.null(value)) return(NULL)
   if(!is.null(..icon_list..[[value]]))
     whisker.render("x-gw-icon-{{{value}}}")
   else

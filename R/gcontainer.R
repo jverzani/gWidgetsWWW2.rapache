@@ -4,9 +4,10 @@ NULL
 ## methods for containers
 add <- function(parent, child, ...) UseMethod("add")
 add.default <- function(parent, child, ...) {
-
-  ## XXX process ...
-  call_ext(parent, "add", o_id(child))
+  ## allow for empty parent containers by no adding object if no parent
+  if(missing(parent) || is.null(parent))
+    return()
+    call_ext(parent, "add", o_id(child))
 }
 
 ## return list with extra arguments for adding

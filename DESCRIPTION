@@ -48,3 +48,8 @@ Collate:
     'gcheckbox.R'
     'gspinbutton.R'
     'gslider.R'
+    'gaction.R'
+    'gmenu.R'
+    'gtext.R'
+    'gseparator.R'
+    'gcanvas.R'

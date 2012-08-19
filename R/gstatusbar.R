@@ -48,9 +48,9 @@ set_value_js.GStatusBar <- function(obj, value) {
 }
 
 ## show/hide loading image
-statusbar_loading <- function(obj, show=TRUE) {
+statusbar_loading <- function(obj, show=TRUE, msg="'loading... (replace with spinner)'") {
   txt <- ifelse(show,
-                "'loading... (replace with spinner)'",
+                msg ,
                 "''")
   oid <- o_id(obj)
   tpl <- '

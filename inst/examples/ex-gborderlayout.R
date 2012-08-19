@@ -8,9 +8,8 @@ bl <- gborderlayout(cont=w,
                     )
 ## when adding to border layout, one specifies the "where" argument with
 ## one of "center","north", "south", "east", "west"
-tbl <- gtable(data.frame(states=rownames(state.x77), xzy=rownames(state.x77),stringsAsFactors=FALSE),
-              multiple=FALSE,
-              cont=bl, where="west")
+fr <- gvbox(use.scrollwindow=TRUE, cont=bl, where="west")
+tbl <- gradio(state.name, horizontal=FALSE, cont=fr)
 
 ## to sepecify the panel size we use this call:
 set_panel_size(bl, "west", 200)
@@ -28,7 +27,9 @@ labs <- lapply(seq_along(nms), function(i) {
 })
 ## some stuff
 update_state_info=function(h,...) {
-  nm <- svalue(h$obj)
+#  nm <- svalue(h$obj)
+#  nm <- svalue(tbl)
+  nm <- 3
   nm <- sample(rownames(state.x77),1)
   facts <- state.x77[nm,]
   sapply(seq_along(facts), function(i) {
@@ -36,3 +37,4 @@ update_state_info=function(h,...) {
     svalue(lab) <- facts[i]
   })
 }
+addHandlerChanged(tbl, handler=update_state_info)
