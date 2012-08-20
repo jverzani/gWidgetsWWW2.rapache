@@ -5,14 +5,17 @@ require(whisker)
 require(RJSONIO)
 require(RSQLite)
 
-pi <- SERVER$path_info
+url_base <- getOption('gWidgetsWWW2.rapache::url_base') %||% "/custom/gw"
 
 ## we route based on path info
+pi <- SERVER$path_info
 content_type <- "text/html"
 
 sink(tempfile())
 
 params <- POST %||% GET %||% list()
+
+out <- NULL
 
 if(grepl("get_id", pi)) {
   ## get ID for the page
@@ -48,6 +51,15 @@ if(grepl("get_id", pi)) {
   content_type <- "application/json"
   out <- gWidgetsWWW2.rapache:::proxy_call(params$ID, params)
   
+} else if(grepl("static_file", pi)) {
+  ## this returns a file, which we display
+  x <- gsub("/gw/", "", pi)             # GENERALIZE XXX
+  f <- gWidgetsWWW2.rapache:::static_file(x)
+  
+} else if(grepl("temp_file", pi)) {
+  
+  f <- gWidgetsWWW2.rapache:::temp_file(params$ID, params)
+  
 } else if(grepl("file_upload", pi)) {
   ## file upload
   XXX()
@@ -58,27 +70,27 @@ if(grepl("get_id", pi)) {
   out <- gWidgetsWWW2.rapache:::clean_up(params$ID)
 } else {
   ## main page
-  find_script <- function(pi) {
-    x <- gsub("/gw/", "", pi)
-    dirs <- getOption('gWidgetsWWW2.rapache::script_base') %||%
-      c(system.file('examples', package='gWidgetsWWW2.rapache'))
-    out <- Filter(function(x) file.exists(x) && !file.info(x)$isdir,
-           paste(dirs, x, sep=.Platform$file.sep))
-    if(length(out))
-      return(out[1])
-    else
-      stop(sprintf("No such file found for %s", pi))
-  }
-        
 
+  x <- gsub("/gw/", "", pi)             # GENERALIZE XXX
   
   tpl <- system.file("templates", "ui.html", package="gWidgetsWWW2.rapache")
   tpl <- paste(readLines(tpl, warn=FALSE), collapse="\n")
-  out <- whisker.render(tpl, list(the_script=find_script(pi)))
+  out <- whisker.render(tpl, list(the_script=x,
+                                  url_base=url_base
+                                  ))
 }
 sink()
 
-## finish up
-setContentType(content_type)
-cat(out)
-DONE
+## finish up.
+## We have out or f
+if(is.null(out)) {
+  ## f is a file name
+  setContentType(gWidgetsWWW2.rapache:::get_content_type(f))
+  size <- file.info(f)$size
+  sendBin(readBin(f, 'raw', n=size))
+  DONE
+} else  {
+  setContentType(content_type)
+  cat(out)
+  DONE
+}

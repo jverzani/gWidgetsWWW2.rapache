@@ -26,6 +26,12 @@ var jQuery_globalEval = function (data) { // from jQuery code
     }
 };
 var eval_response = function(response) {jQuery_globalEval(response.responseText)};
+var call_r_handler=function(id, signal) {
+   Ext.Ajax.request({url:"{{{url_base}}}/ajax_call",
+                     params:{ID:ID, obj:id,signal:signal},
+                     success:eval_response
+                     });
+};
 </script>
 
 <script>
@@ -33,11 +39,11 @@ Ext.onReady(function() {
   Ext.get("loading").remove();
 
   Ext.Ajax.request({
-    url:"/custom/gw/get_id",
+    url:"{{{url_base}}}/get_id",
     success:function(response) {
      ID = response.responseText; 
      Ext.Ajax.request({
-          url:"/custom/gw/create_ui",
+          url:"{{{url_base}}}/create_ui",
           params:{ID:ID,the_script:"{{{the_script}}}"},
           success:eval_response
           });
@@ -46,7 +52,7 @@ Ext.onReady(function() {
 
 Ext.EventManager.on(window, 'beforeunload', function(e) {
   Ext.Ajax.request({
-        url:"/custom/gw/clean_up",
+        url:"{{{url_base}}}/clean_up",
         params:{ID:ID}
        });
 });

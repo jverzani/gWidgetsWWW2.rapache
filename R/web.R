@@ -30,9 +30,12 @@ get_e <- function(ID) {
 ..e.. <- new.env()
 ..e..$..queue.. <- character()
 ..e..$..handlers.. <- list(id=1L, blocked=character())
+..e..$..ID.. <- NULL
+
 init_globals <- function() {
   ..e..$..queue.. <- character()
   ..e..$..handlers.. <- list(id=1L, blocked=character())
+  ..e..$..ID.. <- NULL
 }
 
 ## push cmd to javascript queue
@@ -42,11 +45,28 @@ push_queue <- function(cmd) {
   invisible(..e..$..queue..)
 }
 
+## look for script in script_base
+find_script <- function(x, dirs) {
+
+  out <- Filter(function(x) file.exists(x) && !file.info(x)$isdir,
+                paste(dirs, x, sep=.Platform$file.sep))
+  if(length(out))
+      return(out[1])
+  else
+    NULL
+}
 
 create_ui <- function(ID, params) {
   init_globals()
-  the_script <- params$the_script # "/tmp/w.R"
+  ..e..$..ID.. <- ID
+  
+  dirs <- getOption('gWidgetsWWW2.rapache::script_base') %||%
+               c(system.file('examples', package='gWidgetsWWW2.rapache'))
+  
+  the_script <- find_script(params$the_script, dirs) # "/tmp/w.R"
 
+  if(is.null(the_script))
+    return(sprintf("alert('could not find file %s')", params$the_script))
   
   con <- open_connection(ID)
   on.exit()
@@ -60,7 +80,7 @@ create_ui <- function(ID, params) {
   e <- new.env()
 
   e$..con.. <- con
-
+  e$ID <- ID
   
   attach(e)
   out <- try(sys.source(the_script, envir=e, keep.source=FALSE), silent=FALSE)
@@ -77,6 +97,7 @@ create_ui <- function(ID, params) {
 ajax_call <- function(ID, params) {
   message("ajax call")
   init_globals()
+  ..e..$..ID.. <- ID  
 
   con <- open_connection(ID)
   create_table(con)
@@ -95,7 +116,8 @@ ajax_call <- function(ID, params) {
   obj <- params$obj
   signal <- params$signal
   params <- as.list(fromJSON(params$params %||% "{}"))
-  
+
+  e$ID <- ID  
   attach(e)
   out <- try(call_handler(obj, signal, params), silent=FALSE)
   detach(e)
@@ -163,9 +185,9 @@ proxy_call <- function(ID, params) {
   return(sprintf("[%s]", out))
 }
 
-## return text (for ghtml)
-proxy_call_text <- function(ID, params) {
-  ## items is a filename with the text
+## return the filename
+temp_file <- function(ID, params) {
+  ## items is a filename with the item
   con <- open_connection(ID)
   create_table(con)
 
@@ -183,12 +205,30 @@ proxy_call_text <- function(ID, params) {
   attach(e)
   f <- get_vals(params$obj, "items")
   
+  return(f)
+}
+
+
+## return text (for ghtml)
+proxy_call_text <- function(ID, params) {
+  f <- temp_file(ID, params)
+  
   out <- paste(readLines(f, warn=FALSE), collapse="\n")
 
   return(out)
 
 }
 
+## return the filename
+static_file <- function(x) {
+  ##
+  x <- gsub("static_file/", "", x)
+  dirs <- system.file("extra", package="gWidgetsWWW2.rapache")
+  f <- find_script(x, dirs)
+  if(is.null(f))
+    stop(sprintf("Can't find file %s", x))
+  f
+}
 
 
 clean_up <- function(ID) {
