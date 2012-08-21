@@ -37,11 +37,6 @@ gwindow <- function(title="", parent=NULL, ...,
                  )
                )
 
-  ## add some stock icons
-  icon <- list.files(system.file("icons", package="gWidgetsWWW2.rapache"), full=TRUE)
-  icon <- Filter(function(x) grepl("\\.png$",x), icon)
-  nm <- gsub("\\.png$", "", basename(icon))
-  icon_css <- addStockIcons(nm, icon)
   
   title <- shQuote(title)
   tpl <- '

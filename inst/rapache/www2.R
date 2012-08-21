@@ -86,6 +86,9 @@ sink()
 if(is.null(out)) {
   ## f is a file name
   setContentType(gWidgetsWWW2.rapache:::get_content_type(f))
+  ## instruct browser it can cache file if a static request
+  if(grepl("static_file", pi))
+    setHeader("Cache-Control", "public, s-maxage=3600, max-age=3600, must-revalidate")
   size <- file.info(f)$size
   sendBin(readBin(f, 'raw', n=size))
   DONE

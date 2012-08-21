@@ -56,3 +56,6 @@ Collate:
     'gimage.R'
     'gtempfile.R'
     'gsvg.R'
+    'gpanel.R'
+    'gcalendar.R'
+    'gdialogs.R'

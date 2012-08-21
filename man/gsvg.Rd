@@ -2,13 +2,11 @@
 \alias{gsvg}
 \title{Container for an image}
 \usage{
-  gsvg(filename = "", container = NULL, ..., width = NULL,
-    height = NULL, ext.args = NULL)
+  gsvg(filename = "", container = NULL, ..., width = 480,
+    height = 400, ext.args = NULL)
 }
 \arguments{
   \item{filename}{an image file.}
-
-  \item{dirname}{ignored.}
 
   \item{size}{A vector passed to \code{width} and
   \code{height} arguments.}

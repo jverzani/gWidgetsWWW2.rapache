@@ -18,7 +18,10 @@ isIcon <- function(x) is(x,"Icon")
 
 ## an evironment to hold names of stock icons
 ..icon_list.. <- new.env()
-
+icon <- list.files(system.file("icons", package="gWidgetsWWW2.rapache"), full=TRUE)
+icon <- Filter(function(x) grepl("\\.png$",x), icon)
+nm <- gsub("\\.png$", "", basename(icon))
+sapply(nm, function(i) ..icon_list..[[i]] <- TRUE)
 
 ##' return CSS class of icon
 get_stock_icon_by_name <- function(value) {
@@ -29,11 +32,19 @@ get_stock_icon_by_name <- function(value) {
     NULL
 }
 
+##' add stock icons
+##' ## add some stock icons
+##'
+##' @examples
+##' icon <- list.files(system.file("icons", package="gWidgetsWWW2.rapache"), full=TRUE)
+##' icon <- Filter(function(x) grepl("\\.png$",x), icon)
+##' nm <- gsub("\\.png$", "", basename(icon))
+##' icon_css <- addStockIcons(nm, icon)
 addStockIcons <- function(iconNames, iconFiles) {
   ## make data:image... for each file, add somehow to CSS
   ## we need a queue to store icons
   sprintf("Ext.util.CSS.createStyleSheet('%s');",
-                 paste(mapply(icon_css, iconNames, iconFiles), collapse=" "))
+                 paste(mapply(icon_css, iconNames, iconFiles), collapse="\n"))
 }
 
 

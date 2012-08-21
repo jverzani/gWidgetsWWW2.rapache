@@ -1,1 +1,13 @@
-This icons came from http://www.small-icons.com/packs/16x16-free-application-icons.htm
+These icons came from http://www.small-icons.com/packs/16x16-free-application-icons.htm
+
+THey are read in through the file gwidgets-icons.css
+
+To create the file, one can do something like:
+
+```
+icon <- list.files(system.file("icons", package="gWidgetsWWW2.rapache"), full=TRUE)
+icon <- Filter(function(x) grepl("\\.png$",x), icon)
+nm <- gsub("\\.png$", "", basename(icon))
+out <- mapply(gWidgetsWWW2.rapache:::icon_css, nm, icon)
+cat(paste(out, collapse="\n"), file="gwidgets-icons.css")
+```
