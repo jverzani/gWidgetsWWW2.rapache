@@ -164,3 +164,51 @@ ginput <- function(message, text="", title="Input",
 }
 
 ## galert -- needs Ext.example and its css
+
+##' quick alert message -- not modal or obtrusive (dropped from above in extjs)
+##' 
+##' @param message message to display
+##' @param title title of message, if given
+##' @param delay delay in seconds
+##' @return no return value
+##' @export
+##' @examples
+##' w <- gwindow()
+##' b <- gbutton("click me", cont=w, handler=function(h,...) {
+##'   galert("alot", title="That hurt")
+##' })
+##' 
+galert <- function(msg, title=NULL, delay=3, ...) {
+
+  ## we use notification JS found in gwidgets.js from
+  ## http://www.eirik.net/Ext/ux/window/Notification.html
+
+   
+  tpl <- "
+Ext.create('widget.uxNotification', {
+    position: 'tr',
+    useXAxis: true,
+    cls: 'ux-notification-window',
+    iconCls: 'ux-notification-icon-information',
+    closable: {{closable}},
+    {{#title}}title: '{{title}}',{{/title}}
+    html: \"{{msg}}\",
+    slideInDuration: 800,
+    slideBackDuration: 1500,
+    autoCloseDelay: {{delay}},
+    stickOnClick: false,
+    slideInAnimation: 'elasticIn',
+    slideBackAnimation: 'elasticIn'
+}).show();
+"
+
+  msg <- escape_slashn(msg)
+  if(!is.null(title))
+    title <- escape_slashn(title)
+  ##closable <- ifelse(is.null(title), "false", "true"); ## sometimes hangs
+  closable <- "true"
+
+  delay <- delay * 1000                 # ms not sec
+  
+  push_queue(whisker.render(tpl))
+}

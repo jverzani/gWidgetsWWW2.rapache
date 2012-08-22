@@ -39,7 +39,7 @@ call_handler <- function(obj, signal, params=list(), ...) {
     stop("No handlers for this object")
 
   if(is.null(handlers[[key]][[signal]]))
-    stop("No handler for this signal")
+    stop(sprintf("No handler for this signal %s", signal))
   
   l <- handlers[[key]][[signal]]
 

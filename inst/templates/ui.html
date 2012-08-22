@@ -2,6 +2,7 @@
 <html>
 <head>
 <link rel="stylesheet" type="text/css" href="https://extjs.cachefly.net/ext-4.1.0-gpl/resources/css/ext-all.css">
+<link rel="stylesheet" type="text/css" href="{{{url_base}}}/static_file/css/gwidgets.css">
 <link rel="stylesheet" type="text/css" href="{{{url_base}}}/static_file/css/gwidgets-icons.css">
 
 </head>
@@ -15,7 +16,7 @@
 
 <script type="text/javascript" charset="utf-8" src="http://cdn.sencha.io/ext-4.1.0-gpl/ext-all.js"></script>
 <script type="text/javascript" charset="utf-8" src="http://code.jquery.com/jquery.min.js"></script>
-
+<script  type="text/javascript" charset="utf-8" src="{{{url_base}}}/static_file/js/gwidgets.js"></script>
 
 <script>
 var ID = null; // page id, filled in via get_id
@@ -41,6 +42,7 @@ var call_r_handler=function(id, signal, params) {
 <script>
 Ext.onReady(function() {
   Ext.get("loading").remove();
+  Ext.QuickTips.init();
 
   Ext.Ajax.request({
     url:"{{{url_base}}}/get_id",

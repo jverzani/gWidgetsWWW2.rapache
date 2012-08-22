@@ -11,13 +11,16 @@ DONE * gstackwidget
 
 Widgets
 -------
-* gtext: issue with escaping quotes
 * gfile
+
 * gtable + visible<-; infinite scrolling, multiple selection, icon+tooltip column
 * checkbox table
-* form stuff labels, ... no resizing of radio, checkboxgroup, .., but we should implement names<-, length
-* icons in gtable, gcomobobx, ..
+* icons in gtable, ..
 * editing a data frame? Not as critical as uploading data
+* gtree
+* ggooglemaps
+* gtext: issue with escaping quotes?
+DONE * galert 
 DONE * gpanel
 DONE * gaction
 DONE * gtoolbar
@@ -25,6 +28,7 @@ DONE * test gradio
 DONE* slider, spinbox (Numeric)
 DONE * gradio, gcheckboxgroup setting names
 DONE * gcheckboxgroup with gcheckbox as a specialization
+DONE * form stuff labels, ... no resizing of radio, checkboxgroup, .., but we should implement names<-, length
 
 DialogsXbgcan
 -------

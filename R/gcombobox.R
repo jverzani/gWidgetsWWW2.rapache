@@ -28,7 +28,7 @@ gcombobox <- function(items, selected=1, editable=FALSE, coerce.with=NULL,
   ## vals
   set_vals(obj, value="",
            items=f,
-           properties=list(editable=editable, coerce.with=as.character(coerce.with)))
+           properties=list(editable=editable, coerce.with=coerce.with))
   
   ## js
   store_constructor <- shQuote("Ext.data.Store")
@@ -152,7 +152,7 @@ addHandlerSelect.GCombobox <- function(obj, handler, action=NULL, ...) {
   if(ncol(items) ==2)
     '{label}'
   else if(ncol(items) ==2)
-    '<img src="{icon}"></img>{label}'
+    '<span class="x-gw-icon-{icon}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>{label}'
   else
-    '<img src="{icon}"></img><span data-qtip="{tooltip}">{label}</span>'
+    '<span class="x-gw-icon-{icon}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span data-qtip="{tooltip}">{label}</span>'
 }

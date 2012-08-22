@@ -52,9 +52,12 @@ statusbar_loading <- function(obj, show=TRUE, msg="'loading... (replace with spi
   txt <- ifelse(show,
                 msg ,
                 "''")
+  iconCls <- ifelse(show,
+                    "iconCls:'x-status-busy'",
+                    NULL)
   oid <- o_id(obj)
   tpl <- '
- {{{oid}}}.getComponent(0).setText({{{txt}}}); {{{oid}}}.doLayout();
+ {{{oid}}}.getComponent(0).setStatus({text:{{{txt}}}{{iconCls}} }); {{{oid}}}.doLayout();
 '
   push_queue(whisker.render(tpl))
 }

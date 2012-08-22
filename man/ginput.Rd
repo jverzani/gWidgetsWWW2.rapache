@@ -14,7 +14,7 @@
 
   \item{icon}{icon ignored here}
 
-  \item{parent}{parent container (main window instance)}
+  \item{parent}{ignored}
 
   \item{handler}{Called if yes is selected, the component
   \code{input} of the first argument holds the

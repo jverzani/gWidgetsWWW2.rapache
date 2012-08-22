@@ -55,8 +55,7 @@ new_item <- function() {
   
 }
 
-set_vals <- function(id, value, items, properties) {
-  db <- ..con..
+set_vals <- function(id, value, items, properties, db=..con..) {
   l <- list()
   if(!missing(value))
     l$value <- value

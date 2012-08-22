@@ -26,7 +26,7 @@ if(grepl("get_id", pi)) {
 } else if(grepl("create_ui", pi)) {
 
   ## create page UI elements
-  content_type <- "text/javascript"
+  content_type <- "application/javascript"
   out <- gWidgetsWWW2.rapache:::create_ui(params$ID, params)
 
 } else if(grepl("ajax_call", pi)) {
@@ -34,7 +34,7 @@ if(grepl("get_id", pi)) {
 
   message("ajax call: ", capture.output(str(params)))
   
-  content_type <- "text/javascript"
+  content_type <- "application/javascript"
   out <- gWidgetsWWW2.rapache:::ajax_call(params$ID, params)
   
 } else if(grepl("proxy_call_text", pi)) {
@@ -62,7 +62,22 @@ if(grepl("get_id", pi)) {
   
 } else if(grepl("file_upload", pi)) {
   ## file upload
-  XXX()
+  path <- FILES[[1]]$tmp_name
+  nm <- FILES[[1]]$name
+
+  ## move file to "permanent" place
+  tmp <- tempfile()
+  file.rename(path, tmp)
+  params$filepath <- tmp
+  params$filename <- nm
+  
+  gWidgetsWWW2.rapache:::process_file_upload(params$ID, params)
+
+
+  content_type <- "text/html"           # odd, but what extjs expects
+  out <- toJSON(list(success=TRUE, file=nm))
+
+  
 } else if(grepl("clean_up", pi)) {
   ## clean up on exit
   message("clean up:", params$ID)

@@ -24,7 +24,7 @@ list_to_object <- function(x, ...) UseMethod("list_to_object")
 list_to_object.default <- function(x, ...) toJSON(x, collapse="")
 list_to_object.AsIs <- function(x, ...) x
 list_to_object.character <- function(x, ...) {
-  if(length(x) == 1) shQuote(x) else NextMethod()
+  if(length(x) == 1) shQuote(our_escape(x)) else NextMethod()
 }
 list_to_object.numeric <- function(x, ...) {
   if(length(x) == 1) x else NextMethod()

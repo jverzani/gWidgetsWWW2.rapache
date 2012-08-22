@@ -13,8 +13,7 @@
   \item{icon}{icon to decorate dialog. One of
   \code{c("info", "warning", "error", "question")}.}
 
-  \item{parent}{parent container (the main window
-  instance)}
+  \item{parent}{ignored}
 
   \item{...}{ignored}
 }

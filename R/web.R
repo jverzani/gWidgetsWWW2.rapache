@@ -230,6 +230,24 @@ static_file <- function(x) {
   f
 }
 
+process_file_upload <- function(ID, params) {
+  path <- params$filepath
+  nm <- params$filename
+
+  message("upload Params", capture.output(print(params)))
+  
+  con <- open_connection(ID)
+  e <- get_e(ID)
+  e$..con.. <- con
+
+  attach(e)
+  out <- try(set_vals(params$obj, value=path, items=nm), silent=FALSE)
+  detach(e)
+  e$..con.. <- NULL
+  saveRDS(e, file=sprintf("/tmp/%s.rds", ID))
+  
+  return(TRUE)
+}
 
 clean_up <- function(ID) {
   ## clean up files for ID

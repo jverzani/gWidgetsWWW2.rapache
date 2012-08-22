@@ -13,7 +13,7 @@
   \item{icon}{icon. One of 'info', 'warning', 'error', or
   'question'.}
 
-  \item{parent}{parent container (main window instance)}
+  \item{parent}{ignored}
 
   \item{handler}{handler passed to dialog if confirmed}
 
