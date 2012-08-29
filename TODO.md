@@ -11,15 +11,16 @@ DONE * gstackwidget
 
 Widgets
 -------
-* gfile
 
-* gtable + visible<-; infinite scrolling, multiple selection, icon+tooltip column
-* checkbox table
+
+* gtable handlers, multiple selection, icon+tooltip column
+* checkbox table: actiongroup? also drag and drop rows?
 * icons in gtable, ..
 * editing a data frame? Not as critical as uploading data
 * gtree
 * ggooglemaps
 * gtext: issue with escaping quotes?
+DONE * gfile 
 DONE * galert 
 DONE * gpanel
 DONE * gaction

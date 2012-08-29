@@ -150,11 +150,24 @@ proxy_call <- function(ID, params) {
   e$..con.. <- con
 
   ## items is file name with text
-  attach(e)                             # needed for getting value
+  attach(e)                             # needed for getting value, detached on exit
   f <- get_vals(params$obj, "items")
-
   items <- read.table(f)
+  
+  ## pump in row_id for tracking sorting, ...
+  items <- cbind(row_id=seq.int(length.out=nrow(items)), items)
+  
+  ## visible
+  vis <- get_properties(params$obj)$visible # NULL or logical of length nrow(items)
+  message("visible is", capture.output(print(vis)))
+  if(!is.null(vis) && is.logical(vis) && length(vis) == nrow(items)) {
+    message("reduce by vis", sum(vis))
+    items <- items[vis, , drop=FALSE]
+    message("items has nrows:", nrow(items))
+  }
+  
   ## reduce items by params
+  ind <- NULL
   if(!is.null(params$start)) {
     m <- nrow(items)
     start <- as.numeric(params$start) + 1
@@ -164,24 +177,25 @@ proxy_call <- function(ID, params) {
     if(m > 0 && m >= start) {
       ind <- seq(start, min(m, start+limit))
     }
-    items <- items[ind, ,drop=FALSE]
   }
-  if(!is.null(params$sort)) {
+ if(!is.null(params$sort)) {
     ## make a list
     sort_info <- as.list(unlist(fromJSON(params$sort)))
     direction <- c(ASC=FALSE, DESC=TRUE)
     
-    x <- df[, sort_info$property]
+    x <- items[, sort_info$property]
     ordered <- order(x,
                      decreasing=if(sort_info$direction == "ASC") FALSE else TRUE
                      )
     
     ind <- ordered[ind]
-    items <- items[ind,, drop=FALSE]
+
   }
+  if(!is.null(ind))
+    items <- items[ind,, drop=FALSE] 
 
   ## go over rows, not columns
-  out <- paste(lapply(seq_len(nrow(items)), function(i) toJSON(items[i,])), collapse=",")
+  out <- paste(lapply(seq_len(nrow(items)), function(i) toJSON(items[i,, drop=FALSE])), collapse=",")
   return(sprintf("[%s]", out))
 }
 

@@ -192,6 +192,13 @@ addHandlerClicked.default <- function(obj, handler, action=NULL, ...) {
 
 
 ## click handler
+addHandlerDoubleclick <- function(obj, handler, action=NULL, ...) UseMethod("addHandlerDoubleclick")
+
+addHandlerDoubleclick.default <- function(obj, handler, action=NULL, ...) {
+  addHandler(obj, "dblclick", handler, action, ...)
+}
+
+## enter
 addHandlerEnter <- function(obj, handler, action=NULL, ...) UseMethod("addHandlerEnter")
 
 addHandlerEnter.default <- function(obj, handler, action=NULL, ...) {

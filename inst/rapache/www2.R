@@ -1,9 +1,7 @@
 ## apache file for gWidgetsWWW2.rapache
 
+require(gWidgetsWWW2.rapache)
 
-require(whisker)
-require(RJSONIO)
-require(RSQLite)
 
 url_base <- getOption('gWidgetsWWW2.rapache::url_base') %||% "/custom/gw"
 

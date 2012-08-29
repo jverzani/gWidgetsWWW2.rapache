@@ -7,8 +7,8 @@ For now we have to add this to rapache for configuration:
 LoadModule R_module /usr/libexec/apache2/mod_R.so
 
 # Load required DBI and RMySQL packages
-REvalOnStartup "library(gWidgetsWWW2.rapache)"
-
+## FILE is from <- system.file("rapache", "startup.R", package="gWidgetsWWW2.rapache")
+RFileHandler FILE
 ## from system.file("rapache", "www2.R", package="gWidgetsWWW2.rapache")
 <Location /custom/gw>
         SetHandler r-handler
@@ -19,10 +19,8 @@ REvalOnStartup "library(gWidgetsWWW2.rapache)"
 
 The module location and location of `www2.R` depend on the installation. These came from a Mac OS X Mountain Lion install.
 
-Later, the url "/custom/gw" will be customized, like through an call such as
-
-```
-REvalOnStartup "options(gWidgetsWWW2.rapache::base_url='gw')"
-```
-
-Then the Location will change, but for now the "/custom/gw" is hardcode to scripts, so can't readily be changed.
+The two files ("startup.R" and "www2.R") can (should) be moved out of
+the package tree and edited, especially the "startup.R" file. When
+done, you can edit some variables that effect the operation.  For now
+the "/custom/gw" is hardcoded into scripts, so can't readily be
+changed.

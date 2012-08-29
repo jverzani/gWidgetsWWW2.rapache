@@ -63,7 +63,7 @@ gsvg <- function(filename = "",
 
 }
 
-set_value_js <- function(obj, value) {
+set_value_js.GSvg <- function(obj, value) {
   if(!file.exists(value))
     return()
   file <- get_items(obj)

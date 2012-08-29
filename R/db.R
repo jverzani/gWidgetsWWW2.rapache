@@ -4,6 +4,8 @@ NULL
 
 
 ## data base stuff
+## we have a global connection ..con.. that gets created in web.R
+
 db_name <- function(dbname)
   sprintf("/tmp/%s.db", dbname)
 
@@ -60,9 +62,9 @@ set_vals <- function(id, value, items, properties, db=..con..) {
   if(!missing(value))
     l$value <- value
   if(!missing(items))
-    l$items <- toJSON(items) #serialize(items, NULL)
+    l$items <- toJSON(items)
   if(!missing(properties))
-    l$properties <- toJSON(properties) #serialize(properties, NULL)
+    l$properties <- toJSON(properties) 
 
   dbBeginTransaction(db)
   mapply(function(key, value,  id) {
@@ -100,6 +102,7 @@ get_vals <- function(id, key=c("value", "items", "properties")) {
 get_value <- function(obj) get_vals(obj, "value")
 get_items <- function(obj) get_vals(obj, "items")
 get_properties <- function(obj) get_vals(obj, "properties")
+get_property <- function(obj, key) get_properties(obj)[[key]]
 
 set_value <- function(obj, value) set_vals(obj, value=value)
 set_items <- function(obj, value) set_vals(obj, items=value)
