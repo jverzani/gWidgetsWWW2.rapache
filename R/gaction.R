@@ -85,7 +85,7 @@ addHandlerChanged.GAction <- function(obj, handler, action=NULL, ...) {
 ##' Ext.EventObject:
 ##' http://docs.sencha.com/ext-js/4-1/#!/api/Ext.EventObject. Use
 ##' Ctrl-X, Alt-X of Shift-X indicate keys
-add_keybinding <- function(obj, key.accel) {
+add_keybinding <- function(obj, key) {
 
   url <- make_url("ajax_call") ##"/custom/gw/ajax_call"
   

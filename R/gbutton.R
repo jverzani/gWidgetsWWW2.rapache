@@ -41,7 +41,7 @@ gbutton <- function(text, handler, action=NULL,  container,
 
 
 set_value_js.GButton <- function(obj, value) {
-  call_ext(obj, "setText", value)
+  call_ext(obj, "setText", shQuote(value))
   icon <- get_stock_icon_by_name(value)
   call_ext(obj, "setIconCls", icon)
 }

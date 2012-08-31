@@ -12,7 +12,7 @@ DONE * gstackwidget
 
 Widgets
 -------
-
+* gtable: icons, drag and drop reordering (make for checkbox?)
 
 * gtable handlers, multiple selection, icon+tooltip column
 * checkbox table: actiongroup? also drag and drop rows?
