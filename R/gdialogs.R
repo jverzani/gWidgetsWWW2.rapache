@@ -212,3 +212,30 @@ Ext.create('widget.uxNotification', {
   
   push_queue(whisker.render(tpl))
 }
+
+
+##' a basic dialog is just a vertical box container with a dismiss button
+##'
+##' @param title title of window
+##' @param parent parent window
+##' @param ... passed to gwindow call
+##' @example
+##' w <- gwindow("parent")
+##' b <- gbutton("click me", cont=w, handler=function(h,...) {
+##'   g <- gbasicdialog("some dialog", parent=w)
+##'   gtable(mtcars, cont=g)
+##' })
+##'                  
+gbasicdialog <- function(title, parent, ...) {
+  w <- gwindow(title, parent=parent, ...)
+  pg <- gvbox(cont=w)
+  g <- gvbox(cont=pg, expand=TRUE)
+  gseparator(cont=pg)
+  bg <- ggroup(cont=pg)
+  btn <- gbutton("dismiss", cont=bg, handler=function(h,...) {
+    dispose(w)
+  })
+
+  g
+}
+
