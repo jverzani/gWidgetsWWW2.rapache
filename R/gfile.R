@@ -74,7 +74,7 @@ var ogWidget_{{{obj}}} = Ext.create('Ext.form.Panel', {
                 var form = this.up('form').getForm();
                 if(form.isValid()){
                     form.submit({
-                        url: '{{{url_base}}}/file_upload',
+                        url: 'file_upload', # url_base?
                         params:{ID:ID, obj:'{{{obj}}}' },
                         waitMsg: '{{upload.message}}',
                         success: function(fp, o) {
@@ -87,7 +87,7 @@ var ogWidget_{{{obj}}} = Ext.create('Ext.form.Panel', {
     });
 "
 
-  url_base <- "/custom/gw"              # replace me!!!
+  url_base <- make_url(""); "/custom/gw"              # replace me!!!
   push_queue(whisker.render(tpl))
 
   

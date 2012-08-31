@@ -49,7 +49,7 @@ gtable <- function(items, multiple=FALSE, chosencol = 1,
                      proxy=list(
                        type="ajax",
                        extraParams=list(ID=I("ID"), obj=as.character(obj)),
-                       url="/custom/gw/proxy_call", # XXX
+                       url=make_url("proxy_call"), #"/custom/gw/proxy_call", # XXX
                        reader=list(type="json")
                        ),
                      autoLoad=TRUE,

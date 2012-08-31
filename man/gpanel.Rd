@@ -3,7 +3,8 @@
 \title{A panel to hold other JavaScript things}
 \usage{
   gpanel(container, handler = NULL, action = NULL, ...,
-    width = NULL, height = NULL, ext.args = NULL)
+    width = NULL, height = NULL, ext.args = NULL,
+    div_id = NULL)
 }
 \value{
   a \code{GPanel} reference class object

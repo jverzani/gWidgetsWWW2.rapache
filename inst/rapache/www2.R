@@ -1,9 +1,12 @@
 ## apache file for gWidgetsWWW2.rapache
+## This file is used by `rapache` to dispatch the various requests
+
 
 require(gWidgetsWWW2.rapache)
 
-
-url_base <- getOption('gWidgetsWWW2.rapache::url_base') %||% "/custom/gw"
+## this can be modified if desired
+ui_template <- getOption('gWidgetsWWW2.rapache::ui_template') %||%
+    system.file("templates", "ui.html", package="gWidgetsWWW2.rapache")
 
 ## we route based on path info
 pi <- SERVER$path_info
@@ -51,7 +54,8 @@ if(grepl("get_id", pi)) {
   
 } else if(grepl("static_file", pi)) {
   ## this returns a file, which we display
-  x <- gsub("/gw/", "", pi)             # GENERALIZE XXX
+  #x <- gsub("/gw/", "", pi)             # GENERALIZE XXX
+  x <- pi
   f <- gWidgetsWWW2.rapache:::static_file(x)
   
 } else if(grepl("temp_file", pi)) {
@@ -84,13 +88,11 @@ if(grepl("get_id", pi)) {
 } else {
   ## main page
 
-  x <- gsub("/gw/", "", pi)             # GENERALIZE XXX
+  x <- pi
   
-  tpl <- system.file("templates", "ui.html", package="gWidgetsWWW2.rapache")
+  tpl <- ui_template
   tpl <- paste(readLines(tpl, warn=FALSE), collapse="\n")
-  out <- whisker.render(tpl, list(the_script=x,
-                                  url_base=url_base
-                                  ))
+  out <- whisker.render(tpl, list(the_script=x))
 }
 sink()
 

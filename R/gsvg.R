@@ -80,6 +80,6 @@ set_value_js.GSvg <- function(obj, value) {
   tmp <- get_properties(obj)
   width <- tmp$width; height <- tmp$height
   
-  whisker.render("<embed {{#width}}width={{width}}{{/width}} {{#height}}height={{height}}{{/height}} src='/custom/gw/temp_file?ID={{ID}}&obj={{obj}}' type='image/svg+xml'/>")
+  whisker.render("<embed {{#width}}width={{width}}{{/width}} {{#height}}height={{height}}{{/height}} src='temp_file?ID={{ID}}&obj={{obj}}' type='image/svg+xml'/>") # url_base
 }
 

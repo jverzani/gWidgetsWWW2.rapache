@@ -7,3 +7,5 @@ it does not work with `rapache`. This package aims to provide a reasonable subse
 of the `gWidgetsWWW2` package for use within `rapache`. The advantage being that
 pages can be served to an audience at a larger scale. The main reason for the slowness in `gWidgetsWWW2` is the reliance on reference classes, which make programming nicer, but work slowly with the necessary serialization of environments needed to process callbacks within R.
 
+
+See the directory `inst/rapache` for installation instructions. Basically one needs to configure a simple directive.

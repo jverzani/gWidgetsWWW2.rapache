@@ -20,7 +20,6 @@ btn <- gbutton("new graphic", cont=bg)
 
 cnv <- gcanvas(cont=g, width=width, height=height)
 draw <- function(...) {
-  require(ggplot2)
   f <- tempfile(fileext=".js")
   canvas(f, width=width, height=height)
   hist(rnorm(100))

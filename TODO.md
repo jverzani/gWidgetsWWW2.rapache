@@ -1,3 +1,4 @@
+some way to access data set (gdata(mtcars, type="csv"), then call_r_handler(obj, "data")... used with gpanel.. 
 TEST gaction, gmenu, gbutton + gaction
 gtext TRANSPORT, insert (can do)
 Containers

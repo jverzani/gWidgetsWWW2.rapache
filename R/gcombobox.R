@@ -43,7 +43,7 @@ var {{{oid}}}_store = Ext.create({{{store_constructor}}},{{{store_args}}});'
                      proxy=list(
                        type="ajax",
                        extraParams=list(ID=I("ID"), obj=as.character(obj)),
-                       url="/custom/gw/proxy_call",
+                       url=make_url("proxy_call"), ##"/custom/gw/proxy_call",
                        reader=list(type="json")
                        ),
                      autoLoad=TRUE

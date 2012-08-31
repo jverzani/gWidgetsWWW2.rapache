@@ -2,8 +2,8 @@
 <html>
 <head>
 <link rel="stylesheet" type="text/css" href="https://extjs.cachefly.net/ext-4.1.0-gpl/resources/css/ext-all.css">
-<link rel="stylesheet" type="text/css" href="{{{url_base}}}/static_file/css/gwidgets.css">
-<link rel="stylesheet" type="text/css" href="{{{url_base}}}/static_file/css/gwidgets-icons.css">
+<link rel="stylesheet" type="text/css" href="static_file/css/gwidgets.css">
+<link rel="stylesheet" type="text/css" href="static_file/css/gwidgets-icons.css">
 
 </head>
 
@@ -16,7 +16,7 @@
 
 <script type="text/javascript" charset="utf-8" src="http://cdn.sencha.io/ext-4.1.0-gpl/ext-all.js"></script>
 <script type="text/javascript" charset="utf-8" src="http://code.jquery.com/jquery.min.js"></script>
-<script  type="text/javascript" charset="utf-8" src="{{{url_base}}}/static_file/js/gwidgets.js"></script>
+<script  type="text/javascript" charset="utf-8" src="static_file/js/gwidgets.js"></script>
 
 <script>
 var ID = null; // page id, filled in via get_id
@@ -32,7 +32,7 @@ var jQuery_globalEval = function (data) { // from jQuery code
 };
 var eval_response = function(response) {jQuery_globalEval(response.responseText)};
 var call_r_handler=function(id, signal, params) {
-   Ext.Ajax.request({url:"{{{url_base}}}/ajax_call",
+   Ext.Ajax.request({url:"ajax_call",
                      params:{ID:ID, obj:id,signal:signal, params:JSON.stringify(params)},
                      success:eval_response
                      });
@@ -45,11 +45,11 @@ Ext.onReady(function() {
   Ext.QuickTips.init();
 
   Ext.Ajax.request({
-    url:"{{{url_base}}}/get_id",
+    url:"get_id",
     success:function(response) {
      ID = response.responseText; 
      Ext.Ajax.request({
-          url:"{{{url_base}}}/create_ui",
+          url:"create_ui",
           params:{ID:ID,the_script:"{{{the_script}}}"},
           success:eval_response
           });
@@ -58,7 +58,7 @@ Ext.onReady(function() {
 
 Ext.EventManager.on(window, 'beforeunload', function(e) {
   Ext.Ajax.request({
-        url:"{{{url_base}}}/clean_up",
+        url:"clean_up",
         params:{ID:ID}
        });
 });

@@ -60,7 +60,8 @@ gpanel <- function(
                    ...,
                    width=NULL,
                    height=NULL,
-                   ext.args = NULL
+                   ext.args = NULL,
+                   div_id=NULL
                    ){
 
   obj <- new_item()
@@ -68,12 +69,13 @@ gpanel <- function(
 
 
    ## js
+  div_id <- div_id %||% gpanel_div_id(obj)
   constructor <- "Ext.Panel"
   args <- list(border = FALSE,
                hideBorders = FALSE,
                width=width,
                height=height,
-               html=sprintf("<div id='%s'></div>", gpanel_div_id(obj))
+               html=sprintf("<div id='%s'></div>", div_id)
                )
   
   args <- merge_list(args, ext.args, add_dots(obj, ...))
@@ -105,23 +107,23 @@ gpanel_load_external <- function(obj, url, callback) {
 
                            if(missing(callback))
                              callback <- whisker.render("
-function(data, textStatus, jqXHR) {
-  call_r_handler('{{id}}', 'onload');
+function() {
+  call_r_handler('{{obj}}', 'onload');
 }
-", list(id=get_id()))
+")
                            
                            ajax_tpl <- "
 $.ajax('{{url}}',{
     dataType: 'script',
     type:'GET',
     cache: true,
-    success: {{fn}}
+    success: {{{fn}}}
 });
 "
 
                            fn_template <- "
 function(data, textStatus, jqXHR) {
-  {{fn}}
+  {{{fn}}}
 }
 "
 

@@ -87,6 +87,6 @@ set_value_js.GImage <- function(obj, value) {
 "[.GImage" <- function(obj, ...) {
   ##
   ID <- ..e..$..ID..
-  whisker.render("<img src='/custom/gw/temp_file?ID={{ID}}&obj={{obj}}'></img>")
+  whisker.render("<img src='temp_file?ID={{ID}}&obj={{obj}}'></img>") # url_base?
 }
   

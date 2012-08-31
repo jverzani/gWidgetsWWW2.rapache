@@ -5,7 +5,9 @@
   gfile(text = "Choose a file", type = c("open"),
     filter = NULL, handler = NULL, action = NULL,
     container = NULL, ..., width = NULL, height = NULL,
-    ext.args = NULL)
+    ext.args = NULL, fieldlabel = NULL,
+    placeholder = gettext("Select a file..."),
+    upload.message = gettext("Uploading your file ..."))
 }
 \arguments{
   \item{text}{Instructional text.}
@@ -23,10 +25,18 @@
   select a file through a dialog, b) save the file to the
   server by clicking the upload button.
 }
+\details{
+  When a file is uploaded, any change handlers are called.
+
+  The \code{svalue} method gives the path of the uploaded
+  file, the \code{[} method gives the original name of the
+  file when uploaded.
+}
 \note{
   the \code{svalue} method returns the temporary filename
-  of the uploaded file, or a value of \code{NA}. The
-  property \code{filename} holds the original filename.
+  of the uploaded file, or a value of \code{""}. The
+  \code{[} method gives the original filename, once one is
+  uploaded.
 }
 \examples{
 w <- gwindow()

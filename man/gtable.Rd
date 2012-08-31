@@ -2,9 +2,11 @@
 \alias{gtable}
 \title{gtable}
 \usage{
-  gtable(items, multiple = FALSE, icon.FUN = NULL, handler,
-    action = NULL, container, ..., width, height, ext.args,
-    paging, col.widths = 1)
+  gtable(items, multiple = FALSE, chosencol = 1,
+    icon.col = NULL, tooltip.col = NULL, handler = NULL,
+    action = NULL, container, ..., width = NULL,
+    height = NULL, ext.args = list(), store.args = list(),
+    selection = TRUE, paging = NULL, col.widths = 1)
 }
 \description{
   gtable

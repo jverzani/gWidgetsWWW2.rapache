@@ -27,7 +27,7 @@ ghtml <- function(x, markdown=FALSE, container, ...,
  
  ## js
  constructor <- "Ext.Component"
- args <- list(loader=list(url="/custom/gw/proxy_call_text",
+ args <- list(loader=list(url=make_url("proxy_call_text"), ##"/custom/gw/proxy_call_text",
                   autoLoad=TRUE,
                   params=list(ID=I("ID"), obj=as.character(obj))
                   )

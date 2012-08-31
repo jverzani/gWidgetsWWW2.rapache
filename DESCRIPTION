@@ -60,3 +60,4 @@ Collate:
     'gcalendar.R'
     'gdialogs.R'
     'gfile.R'
+    'zzz.R'

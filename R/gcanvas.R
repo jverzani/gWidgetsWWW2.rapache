@@ -120,12 +120,14 @@ gcanvas <- function(f=NULL, width=480, height=400,
   
   
   
-#  if(!is.null(f) && file.exists(f))
-#    set_value_js(obj, f)
-  
   ## add
   add(container, obj, ...)
 
+  ## need to add first then draw
+  if(!is.null(f) && file.exists(f))
+    set_value_js(obj, f)
+  
+  
   obj
 }
 
@@ -205,7 +207,7 @@ ctx.addEventListener("{{{signal}}}", function(e) {
 });
 '
 
-  url <- "/custom/gw/ajax_call"
+  url <- make_url("ajax_call") ##"/custom/gw/ajax_call"
   canvas_id <- get_canvas_id(obj)
 
   push_queue(whisker.render(tpl))

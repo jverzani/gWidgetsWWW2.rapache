@@ -310,3 +310,10 @@ rook_file_extname <- function(fname=NULL){
 }
 
 get_content_type <- function(f) rook_mime_type(rook_file_extname(basename(f)))
+
+
+
+##' Make url with url base appended
+##'
+##' @param x frament of url
+make_url <- function(x) x#sprintf("%s/%s", url_base, x)

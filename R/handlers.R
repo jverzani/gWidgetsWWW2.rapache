@@ -158,7 +158,7 @@ addHandler.default <- function(obj, signal, handler, action=NULL,
   if(n > 1) return()
 
   ## add JS code
-  url <- "/custom/gw/ajax_call"
+  url <- make_url("ajax_call") ##"/custom/gw/ajax_call"
   
     tpl <- '
 ogWidget_{{obj}}.on("{{signal}}", function({{{fn_args}}}) {
