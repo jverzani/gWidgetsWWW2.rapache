@@ -35,7 +35,9 @@ svalue.default <- function(obj, index=NULL, drop=NULL, ...) {
 ## set JS. Here so that we can override
 set_value_js <- function(obj, value) UseMethod("set_value_js")
 set_value_js.default <- function(obj, value)   {
-  call_ext(obj, "set", shQuote(value))
+  if(is.character(value))
+    value <- shQuote(paste(value, collapse="\n"))
+  call_ext(obj, "set", value)
 }
   
 
