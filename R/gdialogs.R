@@ -219,7 +219,7 @@ Ext.create('widget.uxNotification', {
 ##' @param title title of window
 ##' @param parent parent window
 ##' @param ... passed to gwindow call
-##' @example
+##' @examples
 ##' w <- gwindow("parent")
 ##' b <- gbutton("click me", cont=w, handler=function(h,...) {
 ##'   g <- gbasicdialog("some dialog", parent=w)

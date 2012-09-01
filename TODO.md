@@ -32,8 +32,12 @@ DONE * gradio, gcheckboxgroup setting names
 DONE * gcheckboxgroup with gcheckbox as a specialization
 DONE * form stuff labels, ... no resizing of radio, checkboxgroup, .., but we should implement names<-, length
 
-DialogsXbgcan
+Exmaples to write
 -------
+* about
+* handlers
+* timers
+* tables (filter, ...)
 
 
 Graphics

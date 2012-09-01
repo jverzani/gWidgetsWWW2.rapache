@@ -61,3 +61,4 @@ Collate:
     'gdialogs.R'
     'gfile.R'
     'zzz.R'
+    'gtimer.R'
