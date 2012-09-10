@@ -235,7 +235,7 @@ nm <- "huh?"
 add_page(list(name=nm,
               title=nm,
               content=function(container) {
-                vb <- gvbox(container,expand=TRUE, use.scrollwindow=TRUE)
+                vb <- gvbox(container,expand=TRUE, use.scrollwindow=FALSE)
                 ghtml("
 The basic idea consists of:
 
@@ -338,7 +338,7 @@ nm <- "Selection components"
 add_page(list(name=nm,
               title=nm,
               content=function(container) {
-                vb <- gvbox(container, use.scrollwindow=TRUE)
+                vb <- gvbox(container, use.scrollwindow=FALSE)
                 ghtml("
 There a numerous widgets where the user can select one or more values from a list of items. In `gWidgets` the items to select are referenced through `[`, `svalue` refers to the selection, as appropriate. The argument `index` can be used to specify if the selected index -- or selected value -- is returned.
 ", markdown=TRUE,  cont=vb)

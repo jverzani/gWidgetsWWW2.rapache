@@ -87,7 +87,7 @@ add.GGroup <- function(parent, child, ...) {
 
 
 ## easier to type than horizontal=FALSE
-gvbox <- function(container=NULL, ..., use.scrollwindow=TRUE,
+gvbox <- function(container=NULL, ..., use.scrollwindow=FALSE,
                   width=NULL, height=NULL, ext.args=list())
   ggroup(horizontal=FALSE, container=container, ...,
          use.scrollwindow=use.scrollwindow,
