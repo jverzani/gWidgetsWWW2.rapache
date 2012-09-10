@@ -16,8 +16,9 @@ Map(function(x) {
   nm <- basename(x)
   g <- ggroup(cont=vb)
   gbutton("Source", cont=g, handler=function(h,...) {
-    w1 <- gbasicdialog(sprintf("Source of %s", nm), parent=w)
+    w1 <- gbasicdialog(sprintf("Source of %s", nm), width=600, height=400, parent=w)
     txt <- paste(readLines(x), collapse="\n")
+    txt <- gsub("'", "`", txt)
     gtext(txt, cont=w1)
     visible(w1) <- TRUE
   })
