@@ -4,15 +4,22 @@ NULL
 ## TODO: icons, dates, visible!, transport, handler, paging, infinite scrolling, ...
 
 ##' gtable
-##'
+##' @param items data frame to view. Columns with class 'Icon' are rendered as icons.
+##' @param multiple If \code{TRUE}, then more than one row can be selected. See also \code{selection} where a checkbox can be provided to make a selection.
+##' @param chosencol. By default, \code{svalue} returns this column
+##' for the selected rows. The \code{drop=FALSE} argument may be
+##' specified to return the rows.
+##' @includeParams gwidget.R
+##' @param selection one of 'single', 'multiple', or 'checkbox'. Defaults to choice of multiple. The 'checkbox' options gives intuitive checkboxes for selection.
+##' @param col.widths A numeric value. Recycled to length given by
+##' number of columns in \code{items}. The relative width
+##' of each column.
 ##' @export
 gtable <- function(items, multiple=FALSE, chosencol = 1,
-                   icon.col = NULL,
-                   tooltip.col=NULL,
                    handler=NULL, action=NULL,
                    container, ...,
                    width=NULL, height=NULL, ext.args=list(), store.args=list(),
-                   selection=TRUE,      # FALSE for infinite scroll
+                   selection=if(multiple) "multiple" else "single",      # also "checkbox"
                    paging=NULL,         # a number (pageSize) or NULL
                    col.widths=1         # flex value for columns, recycled
                    ) {
@@ -55,12 +62,7 @@ gtable <- function(items, multiple=FALSE, chosencol = 1,
                      autoLoad=TRUE,
                      pageSize=paging
                      )
-  if(!selection) {
-    store_args <- merge_list(store_args,
-                             list(buffered=TRUE,
-                                  leadingBufferZone=300L)
-                             )
-  }
+
   store_args <- merge_list(store_args, store.args)
   nrows <- nrow(items)
   
@@ -68,14 +70,22 @@ gtable <- function(items, multiple=FALSE, chosencol = 1,
 
   push_queue(whisker.render(tpl))
 
+  
   ## panel
   constructor <- "Ext.grid.Panel"
-
-  if(!selection)
+  
+  if(selection == "checkbox") {
     multiple <- NULL                    # no selection -> no multiple
+    push_queue(whisker.render("var {{oid}}_sm = Ext.create('Ext.selection.CheckboxModel');"))
+  }
 
+
+  
   store_nm <- paste(oid, "store", sep="_")
+  sel_model_nm <- paste(oid, "sm", sep="_")
+  
   args <- list(store=I(store_nm),
+               selModel= if(selection == "checkbox") I(sel_model_nm) else NULL,
                columns=make_columns(items, col.width=1),
                multiSelect=multiple,
                frame=FALSE,
@@ -84,6 +94,7 @@ gtable <- function(items, multiple=FALSE, chosencol = 1,
                height=height
                )
 
+  
   if(!is.null(paging))                  # add toolbar if paging
     args$dockedItems <- I(whisker.render("[{
         xtype: 'pagingtoolbar',
@@ -105,32 +116,22 @@ gtable <- function(items, multiple=FALSE, chosencol = 1,
   addHandlerSelect(obj, function(...) {}) # transport
   if(!missing(handler)) {
     addHandlerChanged(obj, handler, action=action)
-
-  ##   tpl <- '
-## ogWidget_{{obj}}.on("{{signal}}", function(e, opts) {
-  
-##   Ext.Ajax.request({
-##     url:"/custom/gw/ajax_call",
-##     params:{ID:ID,obj:"{{obj}}", signal:"{{signal}}"},
-##     success:function(response) {
-##               eval(response.responseText);
-##               console.log("ajax call done");
-##             }
-##   });
-## });
-## '
-##     push_queue(whisker.render(tpl))
-
   }
 
   obj
 }
 
 
+## Make entry for each column. Customize cell renderer for things
 ## return pasted together columns object
 make_columns <- function(items, col.widths=1) {
   f <- function(name="", x, width=1) {
-    l <- list(text=name, dataIndex=name, flex=width,
+    text <- name
+    if(is(x, "Icon")) {
+      text <- ""
+      width <- 0
+    }
+    l <- list(text=text, dataIndex=name, flex=width,
               renderer=cell_renderer(x)
               )
     list_to_object(l)
@@ -142,7 +143,8 @@ make_columns <- function(items, col.widths=1) {
 ## return JavaScript array object with fields
 make_fields <- function(items) {
   f <- function(nm, x) {
-    list_to_object(list(name=nm, type=field_type(x)))
+    l <- list(name=nm, type=field_type(x))
+    list_to_object(l)
   }
   out <- mapply(f, names(items), items, SIMPLIFY=FALSE)
   out <- c(list_to_object(list(name="row_id", type="int")), out)
@@ -166,6 +168,7 @@ field_type.default <- function(x) "auto"
 ## default_value.default <- function(x) "NA"
 ## default_value.numeric <- function(x) NA
 
+## What to use to render this object. Might use something different for dates, ...
 cell_renderer <- function(x) UseMethod("cell_renderer")
 cell_renderer.default <- function(x) {
   tpl <- "function(value) {
@@ -174,6 +177,16 @@ var x = value == null ? 'NA' : Ext.String.format('{0}', value); return x;
 "
   I(whisker.render(tpl))
 }
+
+cell_renderer.Icon <- function(x) {
+  tpl <- "function(value, metaData, record, row, col, store, gridView) {
+    metaData.style = 'background-repeat:no-repeat';
+    return '<img src=\"static_file/images/' + value +  '.png\" />';
+}
+"
+  I(whisker.render(tpl))
+}
+
 
 ## write JS to load store
 load_store <- function(obj) {
@@ -236,23 +249,26 @@ clear_selection <- function(obj) {
 set_value_js.GTable <- function(obj, value) {
   ## value is vector of indices
   message("clear selection")
-  clear_selection()
-##   if(base:::length(value) == 0 ||
-##      (base:::length(value) == 1 && is.na(value)) ||
-##      value[1] <= 0) {
-##     return()
-##   }
-##   ## else
-##   tpl <- "
-##   {{oid}}.getSelectionModel().selectRange({{start}},{{end}}, true);
-## "
-##   f <- function(start, end) {
-##     cmd <- whisker.render(tpl, list(oid=o_id(obj),
-##                                     start=start-1, end=end-1))
-##     push_queue(cmd)
-##   }
-##   ## should figure out runs to shorten this
-##   sapply(value, function(i) f(i,i))
+  clear_selection(obj)
+  if(base:::length(value) == 0 ||
+     (base:::length(value) == 1 && is.na(value)) ||
+     value[1] <= 0) {
+    return()
+  }
+  ## else
+  tpl <- "
+  {{oid}}.getSelectionModel().selectRange({{start}},{{end}}, true);
+"
+  f <- function(start, end) {
+    message("start, end ", start, "...", end)
+    cmd <- whisker.render(tpl, list(oid=o_id(obj),
+                                    start=as.numeric(start)-1,
+                                    end=as.numeric(end)-1))
+    push_queue(cmd)
+  }
+  message("set vlaue js", paste(value, collapse=" :: "))
+  ## should figure out runs to shorten this
+  sapply(value, function(i) f(i,i))
 }
 
 ## set values. We ignore i,j bit here
@@ -279,6 +295,7 @@ set_value_js.GTable <- function(obj, value) {
   items[i,j, ..., drop=drop]
 }
 
+## which rows are  visible
 visible.GTable <- function(obj) {
   vis <- get_property(obj, "visible")
   if(is.null(vis) || !is.logical(vis))

@@ -10,6 +10,9 @@ require(gWidgetsWWW2.rapache)
 options('gWidgetsWWW2.rapache::script_base' = 
         c(system.file('examples', package='gWidgetsWWW2.rapache')))
 
+## favicon
+options('gWidgetsWWW2.rapache::favicon' = "static_file/images/r-logo.png")
+
 
 ## basic template for a page. Might want to modify, though unlikely
 options('gWidgetsWWW2.rapache::ui_template' = 

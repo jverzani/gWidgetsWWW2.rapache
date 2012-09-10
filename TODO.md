@@ -1,6 +1,11 @@
+* checkbox selection model; tree; ex- link to roxygen; demos; about; rook front; 
+
 some way to access data set (gdata(mtcars, type="csv"), then call_r_handler(obj, "data")... used with gpanel.. 
 TEST gaction, gmenu, gbutton + gaction
 gtext TRANSPORT, insert (can do)
+
+* change_favicon
+
 Containers
 -----------
 DONE * test gborderlayout
@@ -12,15 +17,13 @@ DONE * gstackwidget
 
 Widgets
 -------
-* gtable: icons, drag and drop reordering (make for checkbox?)
-
-* gtable handlers, multiple selection, icon+tooltip column
-* checkbox table: actiongroup? also drag and drop rows?
-* icons in gtable, ..
-* editing a data frame? Not as critical as uploading data
 * gtree
 * ggooglemaps
 * gtext: issue with escaping quotes?
+* widget for dnd reordering? Use case?
+ISSUE * gdf, editing a data frame? Not as critical as uploading data
+DONE * checkbox table: actiongroup? also drag and drop rows?
+DONE * gtable handlers, multiple selection, icon+tooltip column
 DONE * gfile 
 DONE * galert 
 DONE * gpanel

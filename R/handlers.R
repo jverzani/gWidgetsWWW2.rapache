@@ -78,12 +78,25 @@ unblock_handler <- function(obj, handler_id) {
 block_handlers <- function(obj) {
   handlers <- ..e..$..handlers..
   handlers$all_blocked <- unique(c(obj, handlers$all_blocked))
+  message("blocked:", handlers$all_blocked)
   ..e..$..handlers.. <- handlers
 }
 
 unblock_handlers <- function(obj) {
   handlers <- ..e..$..handlers..
-  handlers$all_blocked <- Filter(function(x) !identical(x,obj), handlers$all_blocked)
+  message("is blocked: ", handlers$all_blocked)
+  message("class", class(handlers$all_blocked))
+  message("obj ",as.character(obj))
+  message("class", class(obj))
+  handlers$all_blocked <- Filter(function(x) !identical(x,as.integer(obj)), handlers$all_blocked)
+  message("blocked:", handlers$all_blocked)
+  ..e..$..handlers.. <- handlers
+}
+
+
+remove_handlers <- function(obj) {
+  handlers <- ..e..$..handlers..
+  handlers[[as.character(obj)]] <- NULL
   ..e..$..handlers.. <- handlers
 }
 

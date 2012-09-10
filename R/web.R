@@ -45,13 +45,15 @@ push_queue <- function(cmd) {
   invisible(..e..$..queue..)
 }
 
-## look for script in script_base
+## look for script in script_base or check for index.R
 find_script <- function(x, dirs) {
 
   out <- Filter(function(x) file.exists(x) && !file.info(x)$isdir,
                 paste(dirs, x, sep=.Platform$file.sep))
   if(length(out))
       return(out[1])
+  else if(x != "index.R")
+    find_script("index.R", dirs)
   else
     NULL
 }
@@ -95,7 +97,6 @@ create_ui <- function(ID, params) {
   
 
 ajax_call <- function(ID, params) {
-  message("ajax call")
   init_globals()
   ..e..$..ID.. <- ID  
 
@@ -132,8 +133,6 @@ ajax_call <- function(ID, params) {
 ## handle table requests
 ## use reader="json"
 proxy_call <- function(ID, params) {
-  message("proxy call, ID=", ID)
-
   
   con <- open_connection(ID)
   create_table(con)
@@ -159,11 +158,9 @@ proxy_call <- function(ID, params) {
   
   ## visible
   vis <- get_properties(params$obj)$visible # NULL or logical of length nrow(items)
-  message("visible is", capture.output(print(vis)))
+
   if(!is.null(vis) && is.logical(vis) && length(vis) == nrow(items)) {
-    message("reduce by vis", sum(vis))
     items <- items[vis, , drop=FALSE]
-    message("items has nrows:", nrow(items))
   }
   
   ## reduce items by params
@@ -248,8 +245,6 @@ process_file_upload <- function(ID, params) {
   path <- params$filepath
   nm <- params$filename
 
-  message("upload Params", capture.output(print(params)))
-  
   con <- open_connection(ID)
   e <- get_e(ID)
   e$..con.. <- con

@@ -48,6 +48,7 @@ ggroup <- function(horizontal=TRUE,
                  margins=sprintf("%s %s %s %s", margins[1], margins[2], margins[3], margins[4])
                  ),
                autoScroll=use.scrollwindow,
+               preventBodyReset=TRUE,
                title=text,
                collapsible=collapsible
                )
@@ -85,10 +86,11 @@ add.GGroup <- function(parent, child, ...) {
 }
 
 
-
-gvbox <- function(container=NULL, ...,
+## easier to type than horizontal=FALSE
+gvbox <- function(container=NULL, ..., use.scrollwindow=TRUE,
                   width=NULL, height=NULL, ext.args=list())
   ggroup(horizontal=FALSE, container=container, ...,
+         use.scrollwindow=use.scrollwindow,
          width=width, height=height, ext.args=ext.args)
 
 
@@ -100,7 +102,7 @@ addSpring <- function(obj) {
 ##'
 ##' Use \code{svalue<-} to adjust title
 ##' @export
-gframe <- function(text = "", horizontal=FALSE,
+gframe <- function(text = "", horizontal=TRUE,
                    spacing=2, body.padding=2,
                    use.scrollwindow=FALSE,
                    container=NULL, ...,

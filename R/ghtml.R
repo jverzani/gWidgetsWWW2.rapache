@@ -26,10 +26,13 @@ ghtml <- function(x, markdown=FALSE, container, ...,
  
  
  ## js
- constructor <- "Ext.Component"
+  constructor <- "Ext.Component"
  args <- list(loader=list(url=make_url("proxy_call_text"), ##"/custom/gw/proxy_call_text",
                   autoLoad=TRUE,
-                  params=list(ID=I("ID"), obj=as.character(obj))
+                  params=list(ID=I("ID"), obj=as.character(obj)),
+                bodyPadding=5,
+                width=width,
+                height=height
                   )
                 )
 
@@ -55,6 +58,8 @@ ghtml <- function(x, markdown=FALSE, container, ...,
 
   obj
 }
+
+set_value_js.GWidgetTextProxy <- function(obj, value) {}
 
 ## helper
 .write_file_ghtml <- function(x, f) {

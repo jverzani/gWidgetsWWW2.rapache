@@ -62,3 +62,5 @@ Collate:
     'gfile.R'
     'zzz.R'
     'gtimer.R'
+    'gcheckboxtable.R'
+    'gdf.R'

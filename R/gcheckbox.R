@@ -18,7 +18,7 @@ NA
 ##' w <- gwindow()
 ##' sb <- gstatusbar("Powered by gWidgetsWWW and Rook", cont=w)
 ##' cbg <- gcheckboxgroup(state.name[1:4], cont=w)
-gcheckboxgroup = function (items, checked = FALSE, horizontal = FALSE,
+gcheckboxgroup = function (items, checked = FALSE, horizontal = TRUE,
   use.table=FALSE,
   handler = NULL, action = NULL,
   container = NULL, ...,

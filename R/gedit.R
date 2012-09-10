@@ -6,7 +6,7 @@ NULL
 ##' gedit
 ##'
 ##' @export
-gedit <- function(text, width=25, coerce.with=NULL, placeholder=NULL,
+gedit <- function(text="", width=25, coerce.with=NULL, placeholder=NULL,
                   container, handler, action=NULL,
                   ..., ext.args=list()
                   ) {
@@ -23,15 +23,15 @@ gedit <- function(text, width=25, coerce.with=NULL, placeholder=NULL,
   ## js
   constructor <- "Ext.form.field.Text"
   args <- list(value=as.character(text),
-                 enableKeyEvents=TRUE,
-                 width=ifelse(is.character(width), width, sprintf("%spx", 8*width)),
-                 emptyText=placeholder
-                 )
+               enableKeyEvents=TRUE,
+               width=ifelse(is.character(width), width, sprintf("%spx", 8*width)),
+               emptyText=placeholder
+               )
 
   
   args <- merge_list(args, ext.args, add_dots(obj, ...))
   push_queue(write_ext_constructor(obj, constructor, args))
-
+  
   ## add
   add(container, obj, ...)
 

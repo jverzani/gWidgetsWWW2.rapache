@@ -22,13 +22,13 @@ svalue.default <- function(obj, index=NULL, drop=NULL, ...) {
 ## we store value -- not index Use matching to get index
 "svalue<-" <- function(obj, index=FALSE,  ..., value) UseMethod("svalue<-")
 "svalue<-.default" <- function(obj, index=FALSE, ..., value) {
-
   index <- index %||% FALSE
   if(index) 
     value <- get_items(obj)[value]
 
-  set_value(obj, value)  
+  set_value(obj, value)
   set_value_js(obj, value)
+  
   obj
 }
 
@@ -125,7 +125,7 @@ set_height.default <- function(obj, px)
 
 
 ##
-"tooltip<-" <- function(obj, value) UseMethod("tooltip")
+"tooltip<-" <- function(obj, value) UseMethod("tooltip<-")
 "tooltip<-.default" <- function(obj, value) {
   call_ext(obj, "setTooltip", shQuote(value))
 

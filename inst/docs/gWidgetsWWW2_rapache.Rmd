@@ -1,0 +1,40 @@
+``` {r echo=FALSE, results="asis"}
+## Nothing to see here ... move along
+require("questionr", quietly=TRUE)
+page <- questionr:::Page$new()
+nav <- questionr:::NavBar$new()
+cat(page$write_header())
+```
+
+
+`r I(nav$write_header("gWidgetsWWW2.rapache", "Programming web pages with the gWidgets API"))`
+
+`r I(nav$add("About"))`
+   
+* cf JSS article (link) http://www.jstatsoft.org/v49/i10/
+
+
+`r I(nav$add("Installation: rapache configuration"))`
+
+`r I(nav$add("Containers and components"))`
+
+
+`r I(nav$add("handlers"))`
+
+
+* issue with packages
+
+* stored in an environment -- avoid reference classes
+
+
+`r I(nav$add("Graphics"))`
+
+`r I(nav$add("Data uploads"))`
+
+`r I(nav$add("Security"))`
+
+<!--- Finish this off -->
+
+`r I(nav$write_footer())`
+
+`r I(page$write_footer())`

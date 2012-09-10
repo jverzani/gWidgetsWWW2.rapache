@@ -4,8 +4,8 @@ NULL
 
 ##' A text area widget
 ##'
-##' XXX: there are issues with new lines when setting text
-##' @param text initial text
+##' XXX: there is an issue with single quotes.
+##' @param text initial text. There is an issue with single quotes -- avoid them.
 ##' @param width width in pixels
 ##' @param height height in pixels
 ##' @param font.attr Ignored. Default font attributes
@@ -42,28 +42,24 @@ gtext <- function(text = "", width = NULL, height = 300,
   ## js
   constructor <- "Ext.form.field.TextArea"
   args <- list(
-               width="100%", #width,
-               height="100%", #height,
                grow=grow,
                selectOnFocus = TRUE,
-               enableKeyEvents=TRUE #,
-               ## loader=list( ## THis didn't work
-               ##   url="/custom/gw/proxy_call_text",
-               ##   #autoLoad=TRUE,
-               ##   params=list(ID=I("ID"), obj=as.character(obj)), ## this is issue!
-               ##   renderer=I("function(loader, response, active) {
-               ##    loader.getTarget().update(response.responseText)
-               ##  }")
-               ##   )
+               enableKeyEvents=TRUE
                )
+  if(grow) {
+    args$growMax <- height
+  } else {
+    args$width <- width; args$height <- height
+  }
   
   args <- merge_list(args, ext.args, add_dots(obj, ...))
   push_queue(write_ext_constructor(obj, constructor, args))
 
-  set_value_js(obj, text)
   ## add
   add(container, obj, ...)
 
+  set_value_js(obj, text)
+  
   ## handlers
   addHandlerChanged(obj, function(...) {}) # transport
   if(!missing(handler)) 
@@ -90,11 +86,11 @@ insert <- function(obj, value, where=c("beginning", "end"),
 
 set_value_js.GText <- function(obj, value) {
   tpl <- '
-  {{{oid}}}.setRawValue("{{{value}}}");
+  {{{oid}}}.setRawValue(\'{{{value}}}\');
 '
   oid <- o_id(obj)
 #  value <- shQuote(escape_slashn(value)) #our_escape(value, type="double")
-  value <- I(our_escape(value))
+  value <- I(our_escape(value, type="single"))
 #  value <- I(sprintf("\"%s\"",gsub("\\n", "\\\\n", escape_double_quote(value))))
   push_queue(whisker.render(tpl))
 }

@@ -3,11 +3,6 @@
 
 
 require(gWidgetsWWW2.rapache)
-
-## this can be modified if desired
-ui_template <- getOption('gWidgetsWWW2.rapache::ui_template') %||%
-    system.file("templates", "ui.html", package="gWidgetsWWW2.rapache")
-
 ## we route based on path info
 pi <- SERVER$path_info
 content_type <- "text/html"
@@ -15,7 +10,6 @@ content_type <- "text/html"
 sink(tempfile())
 
 params <- POST %||% GET %||% list()
-
 out <- NULL
 
 if(grepl("get_id", pi)) {
@@ -33,7 +27,6 @@ if(grepl("get_id", pi)) {
 } else if(grepl("ajax_call", pi)) {
   ## process ajax call (transport, handler)
 
-  message("ajax call: ", capture.output(str(params)))
   
   content_type <- "application/javascript"
   out <- gWidgetsWWW2.rapache:::ajax_call(params$ID, params)
@@ -46,9 +39,6 @@ if(grepl("get_id", pi)) {
 } else if(grepl("proxy_call", pi)) {
   ## proxy call for data (gtable, gcheckbox, ...)
 
-  message("proxy_call post=", capture.output(str(params)))
-
-  
   content_type <- "application/json"
   out <- gWidgetsWWW2.rapache:::proxy_call(params$ID, params)
   
@@ -90,9 +80,15 @@ if(grepl("get_id", pi)) {
 
   x <- pi
   
-  tpl <- ui_template
+  ## this can be modified if desired
+  tpl <- ui_template <- getOption('gWidgetsWWW2.rapache::ui_template') %||%
+    system.file("templates", "ui.html", package="gWidgetsWWW2.rapache")
+  
+
   tpl <- paste(readLines(tpl, warn=FALSE), collapse="\n")
-  out <- whisker.render(tpl, list(the_script=x))
+  out <- whisker.render(tpl, list(the_script=x, # name of file
+                                  favicon=getOption('gWidgetsWWW2.rapache::favicon') %||%  "static_file/images/r-logo.png"
+                                  ))
 }
 sink()
 

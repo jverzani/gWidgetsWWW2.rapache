@@ -12,7 +12,7 @@ NA
 ##' @export
 ##' @note the \code{[<-} method (to change the labels) is not implemented.
 gradio <- function(items,
-                   selected = 1, horizontal=FALSE,
+                   selected = 1, horizontal=TRUE,
                    handler = NULL, action = NULL,
                    container = NULL, ...,
                    width=NULL, height=NULL, ext.args=NULL,
