@@ -89,9 +89,7 @@ set_value_js.GText <- function(obj, value) {
   {{{oid}}}.setRawValue(\'{{{value}}}\');
 '
   oid <- o_id(obj)
-#  value <- shQuote(escape_slashn(value)) #our_escape(value, type="double")
   value <- I(our_escape(value, type="single"))
-#  value <- I(sprintf("\"%s\"",gsub("\\n", "\\\\n", escape_double_quote(value))))
   push_queue(whisker.render(tpl))
 }
 

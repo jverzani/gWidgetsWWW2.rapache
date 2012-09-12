@@ -74,7 +74,7 @@ var ogWidget_{{{obj}}} = Ext.create('Ext.form.Panel', {
                 var form = this.up('form').getForm();
                 if(form.isValid()){
                     form.submit({
-                        url: 'file_upload', # url_base?
+                        url: 'file_upload', 
                         params:{ID:ID, obj:'{{{obj}}}' },
                         waitMsg: '{{upload.message}}',
                         success: function(fp, o) {

@@ -33,5 +33,5 @@ glabel <- function(text, container,
 
 ## methods
 set_value_js.GLabel <- function(obj, value) {
-  call_ext(obj, "setText", value)
+  call_ext(obj, "setText", shQuote(value))
 }
