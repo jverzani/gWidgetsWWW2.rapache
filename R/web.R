@@ -11,7 +11,7 @@
 ## just integers with extra class attributes. Makes for small -- and much quicker
 ## to deserialize -- environments storing the state.
 
-tmp_dir <- getOption("gWidgetsWWW2.rapache::tmp_dir") || "/tmp"
+tmp_dir <- getOption("gWidgetsWWW2.rapache::tmp_dir") %||% "/tmp"
 
 ## web interface
 get_id <- function(...) {
