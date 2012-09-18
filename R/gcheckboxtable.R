@@ -11,6 +11,10 @@ gcheckboxtable <- function(items, handler=NULL, action=NULL, container, ...,
   
 }
 
+##' assignment method for svalue
+##' @method svalue<- GCheckboxTable
+##' @S3method svalue<- GCheckboxTable
+##' @rdname svalue_assign
 "svalue<-.GCheckboxTable" <- function(obj, index=NULL, ..., value) {
   if(is.logical(value)) {
     value <- which(value)

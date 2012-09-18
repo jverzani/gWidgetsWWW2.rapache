@@ -8,7 +8,7 @@ files <- Filter(function(i) basename(i) != "index.R", files)
 
 vb <- gvbox(cont=w)
 glabel("<h3>gWidgetsWWW2.rapache examples</h3>", cont=vb)
-glabel("Click the buttons below to view some examples of gWidgetsWWW2.rapache.",
+glabel("Click the link below to view some examples of gWidgetsWWW2.rapache.",
        cont=vb)
 
 
@@ -23,9 +23,12 @@ Map(function(x) {
     visible(w1) <- TRUE
   })
 
-  gbutton("Run example", cont=g, handler=function(h, ...) {
-    push_queue(sprintf("window.open('%s', '_blank');window.focus();", nm))
-  })
+  ## label faster than ghtml which has a callback to get data
+  glabel(sprintf("<a href='%s' target='_blank'>Run example</a>", nm ), cont=g)
+  ## button wants to open a popup window
+  ##  gbutton("Run example", cont=g, handler=function(h, ...) {
+  ##    push_queue(sprintf("window.open('%s', '_blank');window.focus();", nm))
+  ##  })
 
   glabel(nm, cont=g)
 }, files)

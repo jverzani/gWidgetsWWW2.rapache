@@ -74,6 +74,7 @@ unblock_handler <- function(obj, handler_id) {
   ..e..$..handlers.. <- handlers
 }
 
+
 ## block handlers
 block_handlers <- function(obj) {
   handlers <- ..e..$..handlers..
@@ -84,20 +85,16 @@ block_handlers <- function(obj) {
 
 unblock_handlers <- function(obj) {
   handlers <- ..e..$..handlers..
-  message("is blocked: ", handlers$all_blocked)
-  message("class", class(handlers$all_blocked))
-  message("obj ",as.character(obj))
-  message("class", class(obj))
   handlers$all_blocked <- Filter(function(x) !identical(x,as.integer(obj)), handlers$all_blocked)
-  message("blocked:", handlers$all_blocked)
   ..e..$..handlers.. <- handlers
 }
 
-
+## really dangerous thing to do, as it removes transport values too!
 remove_handlers <- function(obj) {
-  handlers <- ..e..$..handlers..
-  handlers[[as.character(obj)]] <- NULL
-  ..e..$..handlers.. <- handlers
+  stop("Really a bad idea for us. Just block them instead.")
+#  handlers <- ..e..$..handlers..
+#  handlers[[as.character(obj)]] <- NULL
+#  ..e..$..handlers.. <- handlers
 }
 
 callback_args <- function(signal) {
@@ -166,13 +163,14 @@ addHandler.default <- function(obj, signal, handler, action=NULL,
                                fn_args=callback_args(signal),
                                params=NULL ## "var params=...;"
                                ) {
-  message("addHandler")
+
   n <- add_handler(obj, signal, handler, action) # stores handler
-  if(n > 1) return()
+  if(n > 1) return() ## only write JS once
 
   ## add JS code
   url <- make_url("ajax_call") ##"/custom/gw/ajax_call"
-  
+
+  ## put in buffer but don't know that it works
     tpl <- '
 ogWidget_{{obj}}.on("{{signal}}", function({{{fn_args}}}) {
   {{#params}}{{{params}}};{{/params}}
@@ -183,6 +181,7 @@ ogWidget_{{obj}}.on("{{signal}}", function({{{fn_args}}}) {
   });
 });
 '
+  ## , {buffer:50});
   push_queue(whisker.render(tpl))
 }
 

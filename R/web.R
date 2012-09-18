@@ -11,13 +11,15 @@
 ## just integers with extra class attributes. Makes for small -- and much quicker
 ## to deserialize -- environments storing the state.
 
+tmp_dir <- getOption("gWidgetsWWW2.rapache::tmp_dir") || "/tmp"
+
 ## web interface
 get_id <- function(...) {
   ## return an ID
   paste(sample(LETTERS, 10, TRUE), collapse="")
 }
 
-get_e_name <- function(ID) sprintf("/tmp/%s.rds", ID)
+get_e_name <- function(ID) sprintf("%s/%s.rds", tmp_dir, ID)
 
 ## get serialized environment
 get_e <- function(ID) {
@@ -89,7 +91,7 @@ create_ui <- function(ID, params) {
   detach(e)
 
   e$..handlers.. <- ..e..$..handlers..          # store
-  saveRDS(e, file=sprintf("/tmp/%s.rds", ID))
+  saveRDS(e, file=sprintf("%s/%s.rds", tmp_dir, ID))
 
   
   return(paste(..e..$..queue.., collapse="\n"))
@@ -124,7 +126,7 @@ ajax_call <- function(ID, params) {
   detach(e)
 
   e$..handlers.. <- ..e..$..handlers..          # store
-  saveRDS(e, file=sprintf("/tmp/%s.rds", ID))
+  saveRDS(e, file=sprintf("%s/%s.rds", tmp_dir, ID))
 
   return(paste(..e..$..queue.., collapse="\n"))
 
@@ -132,6 +134,7 @@ ajax_call <- function(ID, params) {
 
 ## handle table requests
 ## use reader="json"
+## XXX This is pretty slow!
 proxy_call <- function(ID, params) {
   
   con <- open_connection(ID)
@@ -253,7 +256,7 @@ process_file_upload <- function(ID, params) {
   out <- try(set_vals(params$obj, value=path, items=nm), silent=FALSE)
   detach(e)
   e$..con.. <- NULL
-  saveRDS(e, file=sprintf("/tmp/%s.rds", ID))
+  saveRDS(e, file=sprintf("%s/%s.rds", tmp_dir, ID))
   
   return(TRUE)
 }

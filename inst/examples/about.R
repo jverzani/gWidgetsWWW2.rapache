@@ -48,7 +48,7 @@ map_page <- function(i, lst) {
 
 ## Basic layout has button prev, next controls
 w <- gwindow("About gWidgetsWWW2.rpache")
-sb <- gstatusbar("Powered by gWidgetsWWW2, Rook and FastRWeb", container=w)
+sb <- gstatusbar("Powered by gWidgetsWWW2.rapache and rapache", container=w)
 glabel(" ", cont=sb, expand=TRUE)
 dog_food <- gbutton("Source...", container=sb, handler=function(h,...) {
   f <- system.file("examples", "about.R", package="gWidgetsWWW2.rapache")
@@ -397,7 +397,10 @@ add_page(list(name=nm,
                 ghtml("
 Handlers are used by `gWidgetsWWW2.rapache` to callback into the R
 process from the web page. A handler is simply an R function with a
-first argument that takes a list.  A technical point needs to be
+first argument that takes a list.
+
+<br/>
+A technical point needs to be
 made. R functions have environments. To share these among many
 different processes (that are started by rapache) an environment is
 serialized. Two points:
@@ -409,6 +412,11 @@ responsive pages.
 <br/>
 2) you may need to reload packages within the handler, unless they are
 loaded by rapache (and not the script).
+<br/>
+
+In practice it can take between 50 and 100ms to process a handler. A
+such, we callback to the server as infrequently as possible and still
+maintain state server side.
 
 ", markdown=TRUE,  cont=vb)
 
@@ -422,9 +430,7 @@ loaded by rapache (and not the script).
                 gbutton("unblock handlers", cont=bg, handler=function(h,...) {
                   unblock_handlers(btn)
                 })
-                gbutton("remove handlers", cont=bg, handler=function(h,...) {
-                  remove_handlers(btn)
-                })
+                
 
                 ## other
               }))

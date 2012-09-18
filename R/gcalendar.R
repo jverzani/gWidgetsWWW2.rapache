@@ -64,12 +64,22 @@ before_handler.GCalendar <- function(obj, signal, params) {
   set_value(obj, as.character(as.Date(params$value, date_format)))
 }
 
+##' svalue method
+##' 
+##' @rdname svalue
+##' @method svalue GCalandar
+##' @S3method svalue GCalandar
 svalue.GCalendar <- function(obj, ...) {
   val <- get_vals(obj, "value")
   date_format <- get_properties(obj)$date_format
   as.Date(val, format=date_format)
 }
 
+
+##' assignment method for svalue
+##' @method svalue<- GCalandar
+##' @S3method svalue<- GCalandar
+##' @rdname svalue_assign
 "svalue<-.GCalendar" <- function(obj, ..., value) {
   date_format <- get_properties(obj)$date_format
   val <- as.Date(value, format=date_format)

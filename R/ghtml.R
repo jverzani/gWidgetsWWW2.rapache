@@ -46,7 +46,10 @@ ghtml <- function(x, markdown=FALSE, container, ...,
 
 }
 
-
+##' assignment method for svalue
+##' @method svalue<- GWidgetTextProxy
+##' @S3method svalue<- GWidgetTextProxy
+##' @rdname svalue_assign
 "svalue<-.GWidgetTextProxy" <- function(obj, ..., value) {
   f <- get_vals(obj, "items")
   if(get_vals(obj, "properties")$markdown)

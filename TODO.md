@@ -1,10 +1,16 @@
-* checkbox selection model; tree; ex- link to roxygen; demos; about; rook front; 
+tree; 
+ex- link to roxygen; 
+demos;
+*rook front; 
+* export methods (manipulate example!)
+DONE ** checkbox selection model; 
+DONE * about; 
 
 some way to access data set (gdata(mtcars, type="csv"), then call_r_handler(obj, "data")... used with gpanel.. 
 TEST gaction, gmenu, gbutton + gaction
 gtext TRANSPORT, insert (can do)
 
-* change_favicon
+DONE * change_favicon
 
 Containers
 -----------
@@ -17,6 +23,7 @@ DONE * gstackwidget
 
 Widgets
 -------
+* gpanel?
 * gtree
 * ggooglemaps
 * gtext: issue with escaping quotes?
@@ -37,10 +44,11 @@ DONE * form stuff labels, ... no resizing of radio, checkboxgroup, .., but we sh
 
 Exmaples to write
 -------
-* about
-* handlers
+DONE * about
+DONE * handlers
+DONE * manipuate
 * timers
-* tables (filter, ...)
+* tables (DONE filter, ...)
 
 
 Graphics
@@ -51,7 +59,7 @@ DONE * images
 
 Plumbing
 --------
-DONE * static files, temp_urls, ...
+DONE * static files, temp_urls, ... (not needed!)
 DONE * need to limit serach for scripts (script_base=c("example_dir", "/tmp", ...)) i.e. relative to this
 DONE * clean_up being called?
 DONE * stock icons are slow (.3sec. could cache, could use urls...) (moved to file, load with static_... need to cache)

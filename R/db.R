@@ -6,8 +6,10 @@ NULL
 ## data base stuff
 ## we have a global connection ..con.. that gets created in web.R
 
-db_name <- function(dbname)
-  sprintf("/tmp/%s.db", dbname)
+db_name <- function(dbname) {
+  tmp_dir <- getOption("gWidgetsWWW2.rapache::tmp_dir") || "/tmp"
+  sprintf("%s/%s.db", tmp_dir, dbname)
+}
 
 
 open_connection <- function(dbname=..ID..) {

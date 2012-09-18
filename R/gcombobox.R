@@ -48,6 +48,19 @@ var {{{oid}}}_store = Ext.create({{{store_constructor}}},{{{store_args}}});'
                        ),
                      autoLoad=TRUE
                      )
+
+  if(selected >= 1) {
+    val <- items[selected, 1, drop=TRUE]
+    set_value(obj, val)
+
+    if(!is.numeric(val)) val <- shQuote(val)
+    ## must put in to load listener. Don't like this, as what happens when we
+    ## reload data?
+    store_args$listeners=I(whisker.render("{
+load: function() {
+  {{{oid}}}.setValue({{{val}}});
+}}"))
+  }
   store_args <- list_to_object(store_args)
   push_queue(whisker.render(tmpl))
 
@@ -57,10 +70,18 @@ var {{{oid}}}_store = Ext.create({{{store_constructor}}},{{{store_args}}});'
   
   tpl <- sprintf("Ext.create('Ext.XTemplate','<tpl for=\".\"><div class=\"x-boundlist-item\">%s</div></tpl>')", tpl)
 
+  get_class_stupid <- function(x) {
+    if(is.numeric(x))
+      I(x)
+    else
+      x
+  }
+  
   ## cf., http://skirtlesden.com/articles/extjs-comboboxes-part-1
   constructor <- "Ext.form.field.ComboBox"
   args <- list(store=I(paste(oid, "store", sep="_")),
                displayField="value",
+#               value=if(selected >= 1) get_class_stupid(items[selected,1, drop=TRUE]) else NULL,
                tpl=I(tpl),
                minChars=1,
                forceSelection=!editable,
@@ -76,6 +97,14 @@ var {{{oid}}}_store = Ext.create({{{store_constructor}}},{{{store_args}}});'
   ## add
   add(container, obj, ...)
 
+  ## need to call this after proxy loads data, but
+  ## don't have such a signal defined
+  ## if(selected >= 1) {
+  ##   gtimer(300, function(...) 
+  ##          svalue(obj) <- items[selected, 1, drop=TRUE],
+  ##          one.shot=TRUE)
+  ## }
+
   
   ## handlers
   transport <- function(h,...) {}
@@ -84,15 +113,19 @@ var {{{oid}}}_store = Ext.create({{{store_constructor}}},{{{store_args}}});'
   if(!missing(handler)) 
     addHandlerChanged(obj, handler, action)
 
+  
   obj
 }
 
 ##
 set_value_js.GCombobox <- function(obj,  value) {
-  if(!is.na(value) && length(value) && nchar(value))
+  if(!is.na(value) && length(value) && nchar(value)) {
+    if(!is.numeric(value))
+      value <- shQuote(value)
     call_ext(obj, "setValue", value)
-  else
+  } else {
     call_ext(obj, "setValue", "")
+  }
 }
 
 
@@ -136,7 +169,7 @@ addHandlerSelect.GCombobox <- function(obj, handler, action=NULL, ...) {
    if(!is.data.frame(items)) {
      items <- data.frame(value=items, label=items, stringsAsFactors=FALSE)
    }
-   items[[1]] <- as.character(items[[1]]) # name is character
+#   items[[1]] <- as.character(items[[1]]) # name is character
    ## standardize first three names
    nms <- c("value", "label", "icon", "tooltip")
    nc <- ncol(items)

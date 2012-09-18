@@ -111,9 +111,9 @@ gtable <- function(items, multiple=FALSE, chosencol = 1,
   add(container, obj, ...)
   
   ## need transport
+  addHandlerSelect(obj, function(...) {}) # transport
   
   ## handlers
-  addHandlerSelect(obj, function(...) {}) # transport
   if(!missing(handler)) {
     addHandlerChanged(obj, handler, action=action)
   }
@@ -202,15 +202,20 @@ load_store <- function(obj) {
 
 ## methods
 gtable_delimiter <- "::--::" ## used with indices to sotre as string
+
+##' svalue method
+##' 
+##' @rdname svalue
+##' @method svalue GTable
+##' @S3method svalue GTable
 svalue.GTable <- function(obj, index=NULL, drop=NULL, ...) {
   ## get selected
   index <- index %||% FALSE
   drop <- drop %||% TRUE
 
   sel <- get_value(obj)
-  message("svalue gtable sel", sel)
-  ## unslit
-  ind <- strsplit(sel, gtable_delimiter)[[1]]
+  ## split
+  ind <- as.integer(strsplit(sel, gtable_delimiter)[[1]])
 
   if(index) {
     return(ind)
@@ -222,6 +227,10 @@ svalue.GTable <- function(obj, index=NULL, drop=NULL, ...) {
   }
 }
 
+##' assignment method for svalue
+##' @method svalue<- GTable
+##' @S3method svalue<- GTable
+##' @rdname svalue_assign
 "svalue<-.GTable" <- function(obj, index=NULL, ..., value) {
   ## we set by index
   index <- index %||% FALSE

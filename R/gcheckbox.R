@@ -85,6 +85,11 @@ addHandlerChange.GCheckboxGroup <- function(obj, handler, action=NULL, ...) {
              )
 }
 
+##' svalue method
+##' 
+##' @rdname svalue
+##' @method svalue GCheckboxGroup
+##' @S3method svalue GCheckboxGroup
 svalue.GCheckboxGroup <- function(obj, index=NULL, drop=NULL, ...) {
   items <- get_items(obj)
   vals <- .from_string(get_value(obj))
@@ -97,6 +102,10 @@ svalue.GCheckboxGroup <- function(obj, index=NULL, drop=NULL, ...) {
   return(vals)
 }
 
+##' assignment method for svalue
+##' @method svalue<- GCheckboxGroup
+##' @S3method svalue<- GCheckboxGroup
+##' @rdname svalue_assign
 "svalue<-.GCheckboxGroup" <- function(obj, index=NULL, ..., value) {
   if(is.logical(value)) {
     value <- which(value)
@@ -150,6 +159,12 @@ gcheckbox = function(text="", checked = FALSE, use.togglebutton=FALSE,
 }
 
 ## difference is we use logicals here
+
+##' svalue method
+##' 
+##' @rdname svalue
+##' @method svalue GCheckbox
+##' @S3method svalue GCheckbox
 svalue.GCheckbox <- function(obj, value) {
   val <- NextMethod()
   ## return logical

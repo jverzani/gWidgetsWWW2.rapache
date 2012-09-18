@@ -125,8 +125,18 @@ gframe <- function(text = "", horizontal=TRUE,
   obj
 }
 
+
+##' svalue method
+##' 
+##' @rdname svalue
+##' @method svalue GFrame
+##' @S3method svalue GFrame
 svalue.GFrame <- function(obj, ...) get_properties(obj)$text
 
+##' assignment method for svalue
+##' @method svalue<- GFrame
+##' @S3method svalue<- GFrame
+##' @rdname svalue_assign
 "svalue<-.GFrame" <- function(obj, ..., value) {
   value <-  as.character(value)
   props <- get_properties(obj)

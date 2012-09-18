@@ -15,14 +15,14 @@ NULL
 ##' @export
 ##' @examples
 ##' w <- gwindow("gtext example")
-##' sb <- gstatusbar("Powered by gWidgetsWWW and Rook", cont=w)
+##' sb <- gstatusbar("Powered by gWidgetsWWW2.rapache and rapache", cont=w)
 ##' g <- ggroup(cont=w, horizontal=FALSE)
-##' t <- gtext("Some text with \n new lines", cont=g)
+##' txt <- gtext("Some text with \n new lines", cont=g)
 ##' b <- gbutton("click", cont=g, handler=function(h,...) {
 ##'   galert(svalue(b), parent=w)
 ##' })
 ##'  b <- gbutton("change", cont=g, handler=function(h,...) {
-##'    svalue(t) <= "some new text"
+##'    svalue(txt) <- "some new text"
 ##' })
 gtext <- function(text = "", width = NULL, height = 300,
                   font.attr = NULL, wrap = TRUE,
