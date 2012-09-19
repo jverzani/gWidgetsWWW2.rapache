@@ -13,7 +13,9 @@ RSourceOnStartup('system.file("rapache", startup.R", package="gWidgetsWWW2.rapac
 ## override to look in more places than default
 REvalOnStartup "options('gWidgetsWWW2.rapache::script_base'=c(system.file('examples', package='gWidgetsWWW2.rapache'), '/tmp/','/var/www/gw_scripts'))"
 
+## LimitRequestBody puts cap on upload size. Set to 0 for unlimited
 <Location /gw>
+	  LimitRequestBody 1024000
         SetHandler r-handler
         ## from system.file("rapache", "www2.R", package="gWidgetsWWW2.rapache")
 	RFileHandler /Library/Frameworks/R.framework/Versions/2.15/Resources/library/gWidgetsWWW2.rapache/rapache/www2.R
