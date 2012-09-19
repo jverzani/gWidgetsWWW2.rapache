@@ -59,6 +59,7 @@ DONE * images
 
 Plumbing
 --------
+* gfile can limit size with apache configuration, but can't make graceful via callback
 DONE * static files, temp_urls, ... (not needed!)
 DONE * need to limit serach for scripts (script_base=c("example_dir", "/tmp", ...)) i.e. relative to this
 DONE * clean_up being called?
