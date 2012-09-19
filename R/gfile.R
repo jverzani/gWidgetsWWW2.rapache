@@ -79,6 +79,9 @@ var ogWidget_{{{obj}}} = Ext.create('Ext.form.Panel', {
                         waitMsg: '{{upload.message}}',
                         success: function(fp, o) {
                             call_r_handler('{{{obj}}}', 'upload');
+                        },
+                        failure: function(fm, a) {
+                            console.log('failure: file size too large.')
                         }
                     });
                 }
