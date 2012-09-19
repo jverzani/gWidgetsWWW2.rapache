@@ -54,22 +54,31 @@ if(grepl("get_id", pi)) {
   
 } else if(grepl("file_upload", pi)) {
   ## file upload
-  path <- FILES[[1]]$tmp_name
-  nm <- FILES[[1]]$name
 
-  ## move file to "permanent" place
-  tmp <- tempfile()
-  file.rename(path, tmp)
-  params$filepath <- tmp
-  params$filename <- nm
-  
-  gWidgetsWWW2.rapache:::process_file_upload(params$ID, params)
+  if(is.null(FILES)) {
+    ## failed upload
+    ## This unfortunately does not give a graceful error message.
 
+    content_type <- "application/json" 
+    out <- toJSON(list(success=FALSE, reason="Data set is too large."))
 
-  content_type <- "text/html"           # odd, but what extjs expects
-  out <- toJSON(list(success=TRUE, file=nm))
-
-  
+  } else {
+    path <- FILES[[1]]$tmp_name
+    nm <- FILES[[1]]$name
+    
+    ## move file to "permanent" place
+    tmp <- tempfile()
+    file.rename(path, tmp)
+    params$filepath <- tmp
+    params$filename <- nm
+    
+    gWidgetsWWW2.rapache:::process_file_upload(params$ID, params)
+    
+    
+    content_type <- "text/html"           # odd, but what extjs expects
+    out <- toJSON(list(success=TRUE, file=nm))
+  }
+    
 } else if(grepl("clean_up", pi)) {
   ## clean up on exit
   message("clean up:", params$ID)
