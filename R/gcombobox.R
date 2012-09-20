@@ -119,7 +119,7 @@ load: function() {
 
 ##
 set_value_js.GCombobox <- function(obj,  value) {
-  if(!is.na(value) && length(value) && nchar(value)) {
+  if(!is.na(value) && length(value)) {
     if(!is.numeric(value))
       value <- shQuote(value)
     call_ext(obj, "setValue", value)
