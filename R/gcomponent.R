@@ -24,8 +24,10 @@ svalue.default <- function(obj, index=NULL, drop=NULL, ...) {
   index <- index %||% FALSE
   value <- get_vals(obj, "value")
   
-  if(index) {
-    items <- get_vals(obj, "items")
+  if(!is.null(index) && index) {
+    items <- obj[]
+    if(!is.null(dim(items)))
+      items <- items[,1,drop=TRUE]
     value <- match(value, items)
   } else if(!is.null(coerce_with <- get_properties(obj)$coerce.with)) {
     value <- match.fun(coerce_with)(value)
@@ -53,8 +55,14 @@ svalue.default <- function(obj, index=NULL, drop=NULL, ...) {
 ##' @rdname svalue_assign
 "svalue<-.default" <- function(obj, index=FALSE, ..., value) {
   index <- index %||% FALSE
-  if(index) 
-    value <- get_items(obj)[value]
+  if(!is.null(index) && index) {
+    items <- obj[]
+    if(!is.null(dim(items))) {
+      value <- items[value, 1, drop=TRUE]
+    } else {
+      value <- items[value]
+    }
+  }
 
   set_value(obj, value)
   set_value_js(obj, value)
@@ -81,7 +89,10 @@ set_value_js.default <- function(obj, value)   {
 ##' @rdname bracket
 "[.GComponent" <- function(x, i, j, ... , drop = FALSE) {
   items <- get_vals(x, "items")
-  items[i, j, drop=drop]
+  if(!is.null(dim(items)))
+    items[i, j, drop=drop]
+  else
+    items[i]
 }
 
 ##' assignment method for "["
