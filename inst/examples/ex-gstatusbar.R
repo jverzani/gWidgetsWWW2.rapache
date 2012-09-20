@@ -19,7 +19,7 @@ gbutton("hide loading", cont=bg, handler=function(...) {
 addSpring(bg)
 gbutton("add widget", cont=bg, handler=function(...) {
   gbutton("new widget", cont=sb, handler=function(h,...) {
-    push_queue("alert('hello');")
+    galert('hello')
   })
 })
 

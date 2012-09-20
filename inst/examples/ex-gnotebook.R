@@ -21,7 +21,7 @@ gbutton("add", cont=bg, handler=function(h,...) {
   glabel("new page", cont=nb, label="Tab new")
 })
 gbutton("length", cont=bg, handler=function(h,...) {
-  push_queue(sprintf("alert('There are %s tabs')", length(nb)))
+  galert(sprintf("There are %s tabs", length(nb)))
 })
 gbutton("names<-", cont=bg, handler=function(h,...) {
   names(nb)[1] <- "NEW NAME"

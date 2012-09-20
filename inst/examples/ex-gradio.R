@@ -6,7 +6,7 @@ g <- gvbox(cont=w)
 bg <- ggroup(cont=g)
 
 gbutton("svalue", cont=bg, handler=function(h,...) {
-  push_queue(sprintf("alert('%s');", svalue(rb1)))
+  galert(svalue(rb1))
 })
 gbutton("svalue<-, 3", cont=bg, handler=function(h,...) {
   svalue(rb1) <- state.name[3]
