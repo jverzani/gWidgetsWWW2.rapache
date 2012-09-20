@@ -23,6 +23,7 @@ DONE * gstackwidget
 
 Widgets
 -------
+* ghtml needs svalue method
 * gpanel?
 * gtree
 * ggooglemaps

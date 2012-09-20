@@ -341,9 +341,46 @@ The uploaded file and its name are passed back to the callback via the
 name).
 
 
-
-<script>$('#navbar-header').append("<li><a href='#nav7' target='_self'>Security</a></li>");</script>
+<script>$('#navbar-header').append("<li><a href='#nav7' target='_self'>JavaScript</a></li>");</script>
 <span><div id="nav7"></div></span>
+<span><div class='page-header'><h2>JavaScript</h2></div></span>
+
+The package uses the `ExtJS` libraries provided by `sencha.com`. These
+are widely used in commercial and GPL projects. There may be some
+restrictions on their use in your project, there may not be. I don't
+know and don't want to. 
+
+`JavaScript` is a language that can be used to manipulate a web page
+in numerous ways. The package makes no assumption that an R user knows
+`JavaScript`. The point is to make it easy for non-web programmers to
+create web pages. That being said, there are a few ways one with
+`JavaScript` knowledge can integrate that into the framework.
+
+The `ExtJS` API is very rich and far more extensive than that provided
+by `gWidgets`. The function `call_ext` can be used to call a method on
+an object not available through the base interface.
+
+Each constructor has an argument `ext.args` for passing in extra
+arguments to the `ExtJS` constructor. This is specified with a list
+that is converted to a `JavaScript` object through the function
+`list_to_object`.
+
+When a callback is run, the package creates `JavaScript` to pass back
+to the browser. So a command like `svalue(obj) <- "some value"` will
+produce the appropriate `JavaScript`. Each command has it `JavaScript`
+added to a queue. One can add their own `JavaScript` commands to the
+queue via the `push_queue` function.
+
+Finally, the `gpanel` widget does nothing more than make a `DIV` tag
+on the page to be filled in by `JavaScript`. The widget allows one to
+load some external `JavaScript` code asynchronously and call a handler
+once loaded.
+
+
+
+
+<script>$('#navbar-header').append("<li><a href='#nav8' target='_self'>Security</a></li>");</script>
+<span><div id="nav8"></div></span>
 <span><div class='page-header'><h2>Security</h2></div></span>
 
 Web security is a big deal. There is the potential for malicious
@@ -352,8 +389,8 @@ security features, but standard web safety guidelines should be
 followed. (E.g., don't eval code that a user can upload, ...)
 
 
-<script>$('#navbar-header').append("<li><a href='#nav8' target='_self'>Installation: rapache configuration</a></li>");</script>
-<span><div id="nav8"></div></span>
+<script>$('#navbar-header').append("<li><a href='#nav9' target='_self'>Installation: rapache configuration</a></li>");</script>
+<span><div id="nav9"></div></span>
 <span><div class='page-header'><h2>Installation: rapache configuration</h2></div></span>
 
 Installing this software requires a few steps:

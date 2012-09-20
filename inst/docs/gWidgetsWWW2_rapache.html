@@ -466,9 +466,45 @@ GUI to reflect the change in state.</p>
 <code>svalue</code> method (the path of the uploaded file) and <code>[</code> (the original<br/>
 name).</p>
 
-<script>$('#navbar-header').append("<li><a href='#nav7' target='_self'>Security</a></li>");</script>
+<script>$('#navbar-header').append("<li><a href='#nav7' target='_self'>JavaScript</a></li>");</script>
 
 <p><span><div id="nav7"></div></span><br/>
+<span><div class='page-header'><h2>JavaScript</h2></div></span></p>
+
+<p>The package uses the <code>ExtJS</code> libraries provided by <code>sencha.com</code>. These<br/>
+are widely used in commercial and GPL projects. There may be some<br/>
+restrictions on their use in your project, there may not be. I don&#39;t<br/>
+know and don&#39;t want to. </p>
+
+<p><code>JavaScript</code> is a language that can be used to manipulate a web page<br/>
+in numerous ways. The package makes no assumption that an R user knows<br/>
+<code>JavaScript</code>. The point is to make it easy for non-web programmers to<br/>
+create web pages. That being said, there are a few ways one with<br/>
+<code>JavaScript</code> knowledge can integrate that into the framework.</p>
+
+<p>The <code>ExtJS</code> API is very rich and far more extensive than that provided<br/>
+by <code>gWidgets</code>. The function <code>call_ext</code> can be used to call a method on<br/>
+an object not available through the base interface.</p>
+
+<p>Each constructor has an argument <code>ext.args</code> for passing in extra<br/>
+arguments to the <code>ExtJS</code> constructor. This is specified with a list<br/>
+that is converted to a <code>JavaScript</code> object through the function<br/>
+<code>list_to_object</code>.</p>
+
+<p>When a callback is run, the package creates <code>JavaScript</code> to pass back<br/>
+to the browser. So a command like <code>svalue(obj) &lt;- &quot;some value&quot;</code> will<br/>
+produce the appropriate <code>JavaScript</code>. Each command has it <code>JavaScript</code><br/>
+added to a queue. One can add their own <code>JavaScript</code> commands to the<br/>
+queue via the <code>push_queue</code> function.</p>
+
+<p>Finally, the <code>gpanel</code> widget does nothing more than make a <code>DIV</code> tag<br/>
+on the page to be filled in by <code>JavaScript</code>. The widget allows one to<br/>
+load some external <code>JavaScript</code> code asynchronously and call a handler<br/>
+once loaded.</p>
+
+<script>$('#navbar-header').append("<li><a href='#nav8' target='_self'>Security</a></li>");</script>
+
+<p><span><div id="nav8"></div></span><br/>
 <span><div class='page-header'><h2>Security</h2></div></span></p>
 
 <p>Web security is a big deal. There is the potential for malicious<br/>
@@ -476,9 +512,9 @@ intent on the part of a user. This package provides no additional<br/>
 security features, but standard web safety guidelines should be<br/>
 followed. (E.g., don&#39;t eval code that a user can upload, &hellip;)</p>
 
-<script>$('#navbar-header').append("<li><a href='#nav8' target='_self'>Installation: rapache configuration</a></li>");</script>
+<script>$('#navbar-header').append("<li><a href='#nav9' target='_self'>Installation: rapache configuration</a></li>");</script>
 
-<p><span><div id="nav8"></div></span><br/>
+<p><span><div id="nav9"></div></span><br/>
 <span><div class='page-header'><h2>Installation: rapache configuration</h2></div></span></p>
 
 <p>Installing this software requires a few steps:</p>
