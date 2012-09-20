@@ -17,7 +17,7 @@ gstatusbar("Powered by gWidgetsWWW2.rapache and rapache", cont=w)
 manipulate(
            {
              y <- get(distribution)(size)
-             plot(density(y, bw=bandwidth, kernel=kernel))
+             plot(density(y, bw=bandwidth/100, kernel=kernel))
              points(y, rep(0, size))
            },
            ##
@@ -25,7 +25,7 @@ manipulate(
            kernel=picker("gaussian", "epanechnikov", "rectangular",
              "triangular", "cosine"),
            size=picker(5, 50, 100, 200, 300),
-           bandwidth=slider(0.05, 2.00, step=0.05, initial=1),
+           bandwidth=slider(0.05 * 100, 2.00 * 100, step=0.05 * 100, initial=1* 100),
            button=button("Refresh"),
            ##
            container=w,       
