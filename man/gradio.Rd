@@ -2,7 +2,7 @@
 \alias{gradio}
 \title{Radio button group}
 \usage{
-  gradio(items, selected = 1, horizontal = FALSE,
+  gradio(items, selected = 1, horizontal = TRUE,
     handler = NULL, action = NULL, container = NULL, ...,
     width = NULL, height = NULL, ext.args = NULL, flex = 1,
     columns = ifelse(horizontal, length(items), 1))

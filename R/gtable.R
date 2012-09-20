@@ -9,7 +9,6 @@ NULL
 ##' @param chosencol. By default, \code{svalue} returns this column
 ##' for the selected rows. The \code{drop=FALSE} argument may be
 ##' specified to return the rows.
-##' @includeParams gwidget.R
 ##' @param selection one of 'single', 'multiple', or 'checkbox'. Defaults to choice of multiple. The 'checkbox' options gives intuitive checkboxes for selection.
 ##' @param col.widths A numeric value. Recycled to length given by
 ##' number of columns in \code{items}. The relative width

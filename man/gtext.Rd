@@ -8,7 +8,8 @@
     grow = FALSE)
 }
 \arguments{
-  \item{text}{initial text}
+  \item{text}{initial text. There is an issue with single
+  quotes -- avoid them.}
 
   \item{width}{width in pixels}
 
@@ -22,18 +23,18 @@
   an ExtWidget instance
 }
 \description{
-  XXX: there are issues with new lines when setting text
+  XXX: there is an issue with single quotes.
 }
 \examples{
 w <- gwindow("gtext example")
-sb <- gstatusbar("Powered by gWidgetsWWW and Rook", cont=w)
+sb <- gstatusbar("Powered by gWidgetsWWW2.rapache and rapache", cont=w)
 g <- ggroup(cont=w, horizontal=FALSE)
-t <- gtext("Some text with \\n new lines", cont=g)
+txt <- gtext("Some text with \\n new lines", cont=g)
 b <- gbutton("click", cont=g, handler=function(h,...) {
   galert(svalue(b), parent=w)
 })
  b <- gbutton("change", cont=g, handler=function(h,...) {
-   svalue(t) <= "some new text"
+   svalue(txt) <- "some new text"
 })
 }
 

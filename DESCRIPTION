@@ -20,7 +20,8 @@ Depends:
     RJSONIO,
     whisker,
     canvas,
-    markdown
+    markdown,
+    digest
 LazyLoad: yes
 Collate:
     'utils.R'

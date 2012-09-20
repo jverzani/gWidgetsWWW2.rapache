@@ -378,12 +378,13 @@ associated to it.</p>
 copies changes in the GUI back to the R process.</p>
 
 <p>As such, these callbacks happen often. Each callback requires the<br/>
-handling R process to unserialize an environment, call the handler,<br/>
-then serialize the environment. This should happen quickly. To make<br/>
-this the case, the environment must be kept small. (In <code>gWidgetsWWW2</code><br/>
-it was seen that environments with reference classes do not serialize<br/>
-small and so this took far too long.) To ensure that a few compromises<br/>
-are needed:</p>
+handling R process to unserialize an environment containing the scope<br/>
+of the callback, call the handler, then serialize the environment so<br/>
+it can be shared with other processes. This should happen quickly. To<br/>
+make this the case, the environment must be kept small. (In<br/>
+<code>gWidgetsWWW2</code> it was seen that environments with reference classes do<br/>
+not serialize small and so this took far too long.) To ensure that a<br/>
+few compromises are needed:</p>
 
 <ul>
 <li><p>you should avoid reference classes</p></li>
@@ -392,10 +393,11 @@ attached during a script (not loaded when <code>rapache</code> is) are not<br/>
 recorded or restored when the serialization takes place.</p></li>
 </ul>
 
-<p>By employing these, the response time for handling an event was kept<br/>
-down to between 30 and 100ms. Not great, but acceptable. We don&#39;t try<br/>
-to track keystrokes in <code>gedit</code> or all updates for the <code>gslider</code><br/>
-widget, but otherwise, most things work with this response time.</p>
+<p>By employing these compromises, the response time for handling an<br/>
+event was kept down to between 30 and 100ms. Not great, but<br/>
+acceptable. We don&#39;t try to track keystrokes in <code>gedit</code> or all updates<br/>
+for the <code>gslider</code> widget, but otherwise, most things work with this<br/>
+response time.</p>
 
 <h4>gtimer</h4>
 
@@ -445,7 +447,8 @@ interactive graphics.</p>
 <code>gcanvas</code>.</p>
 
 <p>There are a few examples in the <code>examples</code> directory including an<br/>
-implementation of RStudio&#39;s <code>manipulate</code> package which uses all three.</p>
+implementation of RStudio&#39;s <code>manipulate</code> package which shows how all<br/>
+three can be used.</p>
 
 <script>$('#navbar-header').append("<li><a href='#nav6' target='_self'>Data uploads</a></li>");</script>
 
@@ -456,9 +459,9 @@ implementation of RStudio&#39;s <code>manipulate</code> package which uses all t
 the server. A cap on the size of the upload can be specified when<br/>
 <code>rapache</code> is configured.</p>
 
-<p>The constructor call any <code>upload</code> callback when the data is<br/>
-successfully uploaded. The example in the <code>examples</code> directory shows<br/>
-how using <code>gstackwidget</code> a new page can be created once the data is<br/>
+<p>The widget calls any <code>upload</code> callback when the data is successfully<br/>
+uploaded. The example in the <code>examples</code> directory shows how<br/>
+<code>gstackwidget</code> can be used to open a new page once the data is<br/>
 uploaded. Otherwise, the callback can update portions of the current<br/>
 GUI to reflect the change in state.</p>
 
@@ -466,9 +469,20 @@ GUI to reflect the change in state.</p>
 <code>svalue</code> method (the path of the uploaded file) and <code>[</code> (the original<br/>
 name).</p>
 
-<script>$('#navbar-header').append("<li><a href='#nav7' target='_self'>JavaScript</a></li>");</script>
+<script>$('#navbar-header').append("<li><a href='#nav7' target='_self'>Persistence</a></li>");</script>
 
 <p><span><div id="nav7"></div></span><br/>
+<span><div class='page-header'><h2>Persistence</h2></div></span></p>
+
+<p>Each time a page is loaded (even when refreshed) a new environment is<br/>
+made for evaluating any callbacks. As such, the data within a page is<br/>
+not persistent across page loads unless it is programmed to be so. One<br/>
+can write to the file system or data base to keep values across<br/>
+sessions. (The package uses <code>RSQLite</code> for this purpose.)</p>
+
+<script>$('#navbar-header').append("<li><a href='#nav8' target='_self'>JavaScript</a></li>");</script>
+
+<p><span><div id="nav8"></div></span><br/>
 <span><div class='page-header'><h2>JavaScript</h2></div></span></p>
 
 <p>The package uses the <code>ExtJS</code> libraries provided by <code>sencha.com</code>. These<br/>
@@ -502,9 +516,9 @@ on the page to be filled in by <code>JavaScript</code>. The widget allows one to
 load some external <code>JavaScript</code> code asynchronously and call a handler<br/>
 once loaded.</p>
 
-<script>$('#navbar-header').append("<li><a href='#nav8' target='_self'>Security</a></li>");</script>
+<script>$('#navbar-header').append("<li><a href='#nav9' target='_self'>Security</a></li>");</script>
 
-<p><span><div id="nav8"></div></span><br/>
+<p><span><div id="nav9"></div></span><br/>
 <span><div class='page-header'><h2>Security</h2></div></span></p>
 
 <p>Web security is a big deal. There is the potential for malicious<br/>
@@ -512,9 +526,9 @@ intent on the part of a user. This package provides no additional<br/>
 security features, but standard web safety guidelines should be<br/>
 followed. (E.g., don&#39;t eval code that a user can upload, &hellip;)</p>
 
-<script>$('#navbar-header').append("<li><a href='#nav9' target='_self'>Installation: rapache configuration</a></li>");</script>
+<script>$('#navbar-header').append("<li><a href='#nav10' target='_self'>Installation: rapache configuration</a></li>");</script>
 
-<p><span><div id="nav9"></div></span><br/>
+<p><span><div id="nav10"></div></span><br/>
 <span><div class='page-header'><h2>Installation: rapache configuration</h2></div></span></p>
 
 <p>Installing this software requires a few steps:</p>

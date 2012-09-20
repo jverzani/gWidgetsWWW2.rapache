@@ -8,7 +8,7 @@
 \arguments{
   \item{ms}{interval in milliseconds}
 
-  \item{FUN}{FUnction to call. Has one argument, data
+  \item{FUN}{Function to call. Has one argument, data
   passed in}
 
   \item{data}{passed to function}

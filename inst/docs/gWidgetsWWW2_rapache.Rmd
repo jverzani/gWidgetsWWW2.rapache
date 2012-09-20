@@ -188,12 +188,13 @@ All widgets with a state have a transport handler defined for it that
 copies changes in the GUI back to the R process.
 
 As such, these callbacks happen often. Each callback requires the
-handling R process to unserialize an environment, call the handler,
-then serialize the environment. This should happen quickly. To make
-this the case, the environment must be kept small. (In `gWidgetsWWW2`
-it was seen that environments with reference classes do not serialize
-small and so this took far too long.) To ensure that a few compromises
-are needed:
+handling R process to unserialize an environment containing the scope
+of the callback, call the handler, then serialize the environment so
+it can be shared with other processes. This should happen quickly. To
+make this the case, the environment must be kept small. (In
+`gWidgetsWWW2` it was seen that environments with reference classes do
+not serialize small and so this took far too long.) To ensure that a
+few compromises are needed:
 
 * you should avoid reference classes
 
@@ -201,10 +202,11 @@ are needed:
   attached during a script (not loaded when `rapache` is) are not
   recorded or restored when the serialization takes place.
 
-By employing these, the response time for handling an event was kept
-down to between 30 and 100ms. Not great, but acceptable. We don't try
-to track keystrokes in `gedit` or all updates for the `gslider`
-widget, but otherwise, most things work with this response time.
+By employing these compromises, the response time for handling an
+event was kept down to between 30 and 100ms. Not great, but
+acceptable. We don't try to track keystrokes in `gedit` or all updates
+for the `gslider` widget, but otherwise, most things work with this
+response time.
 
 <h4>gtimer</h4>
 
@@ -251,7 +253,8 @@ The `gimage` solution looks fine and is nearly as responsive as
 `gcanvas`.
 
 There are a few examples in the `examples` directory including an
-implementation of RStudio's `manipulate` package which uses all three.
+implementation of RStudio's `manipulate` package which shows how all
+three can be used.
 
 `r I(nav$add("Data uploads"))`
 
@@ -259,15 +262,24 @@ The `gfile` constructor can be used to allow a user to upload data to
 the server. A cap on the size of the upload can be specified when
 `rapache` is configured.
 
-The constructor call any `upload` callback when the data is
-successfully uploaded. The example in the `examples` directory shows
-how using `gstackwidget` a new page can be created once the data is
+The widget calls any `upload` callback when the data is successfully
+uploaded. The example in the `examples` directory shows how
+`gstackwidget` can be used to open a new page once the data is
 uploaded. Otherwise, the callback can update portions of the current
 GUI to reflect the change in state.
 
 The uploaded file and its name are passed back to the callback via the
 `svalue` method (the path of the uploaded file) and `[` (the original
 name).
+
+`r I(nav$add("Persistence"))`
+
+Each time a page is loaded (even when refreshed) a new environment is
+made for evaluating any callbacks. As such, the data within a page is
+not persistent across page loads unless it is programmed to be so. One
+can write to the file system or data base to keep values across
+sessions. (The package uses `RSQLite` for this purpose.)
+
 
 `r I(nav$add("JavaScript"))`
 

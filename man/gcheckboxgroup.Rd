@@ -2,10 +2,10 @@
 \alias{gcheckboxgroup}
 \title{A group of checkboxes}
 \usage{
-  gcheckboxgroup(items, checked = FALSE,
-    horizontal = FALSE, use.table = FALSE, handler = NULL,
-    action = NULL, container = NULL, ..., width = NULL,
-    height = NULL, ext.args = NULL, flex = 1,
+  gcheckboxgroup(items, checked = FALSE, horizontal = TRUE,
+    use.table = FALSE, handler = NULL, action = NULL,
+    container = NULL, ..., width = NULL, height = NULL,
+    ext.args = NULL, flex = 1,
     columns = ifelse(horizontal, length(items), 1))
 }
 \arguments{

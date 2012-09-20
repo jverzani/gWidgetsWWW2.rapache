@@ -67,8 +67,8 @@ before_handler.GCalendar <- function(obj, signal, params) {
 ##' svalue method
 ##' 
 ##' @rdname svalue
-##' @method svalue GCalandar
-##' @S3method svalue GCalandar
+##' @method svalue GCalendar
+##' @S3method svalue GCalendar
 svalue.GCalendar <- function(obj, ...) {
   val <- get_vals(obj, "value")
   date_format <- get_properties(obj)$date_format
@@ -77,8 +77,8 @@ svalue.GCalendar <- function(obj, ...) {
 
 
 ##' assignment method for svalue
-##' @method svalue<- GCalandar
-##' @S3method svalue<- GCalandar
+##' @method svalue<- GCalendar
+##' @S3method svalue<- GCalendar
 ##' @rdname svalue_assign
 "svalue<-.GCalendar" <- function(obj, ..., value) {
   date_format <- get_properties(obj)$date_format

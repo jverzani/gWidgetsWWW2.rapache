@@ -2,7 +2,7 @@
 \alias{gframe}
 \title{Framed box container}
 \usage{
-  gframe(text = "", horizontal = FALSE, spacing = 2,
+  gframe(text = "", horizontal = TRUE, spacing = 2,
     body.padding = 2, use.scrollwindow = FALSE,
     container = NULL, ..., width = NULL, height = NULL,
     ext.args = list())
