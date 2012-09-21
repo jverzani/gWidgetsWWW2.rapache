@@ -31,5 +31,5 @@ rb3 <- gradio(state.name[1:4], horizontal=TRUE, cont=fl, flex=NULL, label="flex=
 
 addHandlerChanged(rb3, function(h, ...) {
   val <- svalue(h$obj)
-  push_queue(sprintf("alert('%s');",val))
+  galert(val)
 })

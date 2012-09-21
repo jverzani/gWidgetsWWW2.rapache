@@ -32,7 +32,7 @@ gbutton("disabled", cont=bg, handler=function(h,...) {
 
 
 gbutton("checkbox value", cont=bg, handler=function(h,...) {
-  push_queue(sprintf("alert('%s');", svalue(cb3)))
+  galert(svalue(cb3))
 })
 
 fl <- gformlayout(cont=g)

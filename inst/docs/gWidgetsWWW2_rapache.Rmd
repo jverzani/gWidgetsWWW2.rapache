@@ -30,14 +30,15 @@ was rewritten to take advantage of the `Rook` package interfacing with
 `proto` package. The result was `gWidgetsWWW2`. With that package,
 serving pages locally through `Rook` works fine, but the package did
 not play nicely with `rapache` to serve pages remotely. (One could use
-`Rook` for this, but that method doesn't scale well.).
+`Rook` for this, but that method doesn't scale well.)
 
-This package, `gWidgetsWWW2.rapache` then is a rewrite of the plumbing
-to serve pages through apache. The main technical issue involves
-having the callbacks in R share their environment amongst potentially
-many `R` processes spawned by `apache`. The solution is to work really
+This package, `gWidgetsWWW2.rapache`, then is a rewrite of the
+plumbing to serve pages through apache and a streamlining of some of
+the functionality. The main technical issue involved having the
+callbacks in R share their environment amongst potentially many `R`
+processes spawned by `apache`. The solution used was to work really
 hard to make these environments small enough that they can be
-serialized/unserialized in a reasonable amount of time.
+serialized/unserialized to disk in a reasonable amount of time.
 
 `r I(nav$add("Basic usage"))`
 
@@ -87,13 +88,14 @@ Containers are used to organize components (controls or other
 containers). Unlike some GUI toolkits, the layout of child components
 is integrated into the specification of the widget. The widget
 constructors have a `container` argument where the parent is
-specified. Layout arguments are given at time of construction, such as
-`expand` or `fill`.
+specified. Layout arguments are given at the time of construction,
+such as `expand` or `fill`.
 
-The package implements most -- but not all -- of the containers in the `gWidgets` API:
+The package implements most -- but not all -- of the containers in the
+`gWidgets` API:
 
 * box containers which pack children in left to right (horizontal) or
-  top to bottom(vertical): `ggroup`, `gvbox` (a vertical box),
+  top to bottom (vertical): `ggroup`, `gvbox` (a vertical box),
   `gframe` (a decorated box) and `gexpandgroup` (a box with a
   disclosure icon to hide or show the contents).
 
@@ -109,8 +111,9 @@ The package implements most -- but not all -- of the containers in the `gWidgets
 
 Not implemented are the table layout container (`glayout`) and the
 paned container (`gpanedgroup`). The `gformlayout` container covers
-most uses of the formal and the latter can be implemented with
-`gborderlayout` (though that container does not like to be nested.)
+most uses of the former and the latter can be implemented with
+`gborderlayout` (though that container does not like to be nested
+within other containers.)
 
 Containers have just a few methods:
 
@@ -126,9 +129,9 @@ The `gWidgets` API has several controls specified. A control allows
 the user to interact with the GUI or the programmer to display
 information for the user. Most controls have some event that will
 trigger a callback, if specified. For most controls, this event is
-clear and is identified through `addHandlerChanged`. As seen, for a
-button this is the clicking of the button. A few controls have more
-than one event they can respond. For these, there are other
+clear and is identified through the generic `addHandlerChanged`. As
+seen, for a button this is the clicking of the button. A few controls
+have more than one event they can respond. For these, there are other
 `addHandlerXXX` methods.
 
 
@@ -149,7 +152,7 @@ The basic controls are:
 * table displays: `gtable` (`gdf` is not (yet) implemented in
   `gWidgetsWWW2.rapache` but is in `gWidgetsWWW2`)
 
-* graphics controls: `gimage`, `gcanvas`, `gsvg`
+* graphics displays: `gimage`, `gcanvas`, `gsvg`
 
 * `gpanel` for incorporating external JavaScript libraries
 
@@ -167,11 +170,12 @@ The main widget methods are
   (for the selection widgets). For such widgets, the S3 methods
   `names`, `length` and `dim` are typically implemented.
 
-* `enabled<-` to change is a widget is sensitive to user input
+* `enabled<-` to change if a widget is sensitive to user input
 
 * `visible<-` to change some visibility property of the widget. (There
   are many overloads, but the default is to specify if a widget is
-  shown or hidden.)
+  shown or hidden. One overload is for `gtable` objects, where this
+  method is use to show or hide rows of the displayed data.)
 
 * `tooltip<-` to specify a tooltip when the mouse hovers over the widget.
 
@@ -220,10 +224,10 @@ process is complete to carry back the results to the browser.
 
 The `manipulate` example shows one use of `gtimer` that unfortunately
 has no better idiom within this framework. That example has several
-comboboxes. The value of a combobox is only available after the data
+combo boxes. The value of a combobox is only available after the data
 is loaded. This is done asynchronously. As such, the initial graphic
-can not be made until the comboboxes are loaded. But there is no hook
-(in `gWidgetsWWW2.rapache`) to allow the graphic call to happen until
+can not be made until the combo boxes are loaded. But there is no hook
+(in `gWidgetsWWW2.rapache`) to defer the graphic call to happen until
 after that event. Instead, we just use a one-shot timer with a
 heuristically chosen delay to pause before making the call to create
 the initial graphic.
@@ -243,7 +247,7 @@ The display of graphics has several different options:
 
 The `gcanvas` solution is best for quickly refreshing a graph produced
 with R's base graphics. It does not work with lattice graphics or
-`ggplot2`.
+`ggplot2`. One can do low level commands on the JavaScript `canvas` object.
 
 The `gsvg` solution is arguably the best looking, but flickers when
 the graphic is refreshed making it not such a great choice for
@@ -278,7 +282,9 @@ Each time a page is loaded (even when refreshed) a new environment is
 made for evaluating any callbacks. As such, the data within a page is
 not persistent across page loads unless it is programmed to be so. One
 can write to the file system or data base to keep values across
-sessions. (The package uses `RSQLite` for this purpose.)
+sessions. The package uses `RSQLite` for this purpose. (It also means,
+despite cleaning up when it can, that the temporary directory needs
+periodic flushing.)
 
 
 `r I(nav$add("JavaScript"))`
@@ -305,9 +311,14 @@ that is converted to a `JavaScript` object through the function
 
 When a callback is run, the package creates `JavaScript` to pass back
 to the browser. So a command like `svalue(obj) <- "some value"` will
-produce the appropriate `JavaScript`. Each command has it `JavaScript`
-added to a queue. One can add their own `JavaScript` commands to the
-queue via the `push_queue` function.
+produce the appropriate `JavaScript`. Each command has its
+`JavaScript` added to a queue. One can add their own `JavaScript`
+commands to the queue via the `push_queue` function. For example, to
+use the browsers alert dialog add this to a handler
+
+```
+push_queue("alert('hello world')")
+```
 
 Finally, the `gpanel` widget does nothing more than make a `DIV` tag
 on the page to be filled in by `JavaScript`. The widget allows one to
@@ -328,15 +339,15 @@ followed. (E.g., don't eval code that a user can upload, ...)
 Installing this software requires a few steps:
 
 * the package needs to be installed in such a way that the R process
-  spawned by the web server can see the package (not a local
-  directory)
+  spawned by the web server can see the package (i.e., do not use a
+  local directory)
 
 ```
 require(devtools)
 install_github("gWidgetsWWW2.rapache", "jverzani")
 ```
 
-* rapache must be installed (http://www.rapache.net)
+* rapache must be installed (follow the instructions here http://www.rapache.net).
 
 * rapache must be configured. There are 2-3 steps:
 
@@ -346,6 +357,9 @@ install_github("gWidgetsWWW2.rapache", "jverzani")
 ```
 LoadModule R_module /usr/libexec/apache2/mod_R.so
 ```
+
+  The location of `mod_R.so` is system dependent, the above is a Mac
+  OS X installation point.
 
 - Some basic customization must be made. The defaults are installed
   through the apache directive:
@@ -362,10 +376,10 @@ important, as this specifies where to look for files.
 
 ```
 <Location /gw>
-	  LimitRequestBody 1024000
-        SetHandler r-handler
-        ## from system.file("rapache", "www2.R", package="gWidgetsWWW2.rapache")
-	RFileHandler /Library/Frameworks/R.framework/Versions/2.15/Resources/library/gWidgetsWWW2.rapache/rapache/www2.R
+     LimitRequestBody 1024000
+     SetHandler r-handler
+     ## from system.file("rapache", "www2.R", package="gWidgetsWWW2.rapache")
+     RFileHandler /Library/Frameworks/R.framework/Versions/2.15/Resources/library/gWidgetsWWW2.rapache/rapache/www2.R
 </Location>
 ```
 
@@ -375,14 +389,20 @@ for the file `ex.R` in the directory (directories) specified through
 the option `gWidgetsWWW2.rapache::script_base`.
 
 The `LimitRequestBody` limits the size of file uploads. A value of 0
-is unlimited.
+is use to indicate no limit.
 
 The path of the `www2.R` script comes from invoking `system.file` with
-the appropriate commands. Alternatively, this script can be copied and
-modified should there be a need.
+the appropriate commands, as indicated in the comment. Alternatively,
+this script can be copied and modified should there be a need.
 
 One could add to the above apache configuration, say restricting
 access using one of apache's modules.
+
+
+That's it. Not much harder than installing `rapache` itself. With the
+default installation, the examples directory from the package is where
+URLs will be mapped to. Going to `http://your.address.com/gw` will
+open a page with links.
 
 
 <!--- Finish this off -->

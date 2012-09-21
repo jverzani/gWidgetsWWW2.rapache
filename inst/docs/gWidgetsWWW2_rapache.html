@@ -227,14 +227,15 @@ was rewritten to take advantage of the <code>Rook</code> package interfacing wit
 <code>proto</code> package. The result was <code>gWidgetsWWW2</code>. With that package,<br/>
 serving pages locally through <code>Rook</code> works fine, but the package did<br/>
 not play nicely with <code>rapache</code> to serve pages remotely. (One could use<br/>
-<code>Rook</code> for this, but that method doesn&#39;t scale well.).</p>
+<code>Rook</code> for this, but that method doesn&#39;t scale well.)</p>
 
-<p>This package, <code>gWidgetsWWW2.rapache</code> then is a rewrite of the plumbing<br/>
-to serve pages through apache. The main technical issue involves<br/>
-having the callbacks in R share their environment amongst potentially<br/>
-many <code>R</code> processes spawned by <code>apache</code>. The solution is to work really<br/>
+<p>This package, <code>gWidgetsWWW2.rapache</code>, then is a rewrite of the<br/>
+plumbing to serve pages through apache and a streamlining of some of<br/>
+the functionality. The main technical issue involved having the<br/>
+callbacks in R share their environment amongst potentially many <code>R</code><br/>
+processes spawned by <code>apache</code>. The solution used was to work really<br/>
 hard to make these environments small enough that they can be<br/>
-serialized/unserialized in a reasonable amount of time.</p>
+serialized/unserialized to disk in a reasonable amount of time.</p>
 
 <script>$('#navbar-header').append("<li><a href='#nav2' target='_self'>Basic usage</a></li>");</script>
 
@@ -285,14 +286,15 @@ default installation has these accessible out of the box.</p>
 containers). Unlike some GUI toolkits, the layout of child components<br/>
 is integrated into the specification of the widget. The widget<br/>
 constructors have a <code>container</code> argument where the parent is<br/>
-specified. Layout arguments are given at time of construction, such as<br/>
-<code>expand</code> or <code>fill</code>.</p>
+specified. Layout arguments are given at the time of construction,<br/>
+such as <code>expand</code> or <code>fill</code>.</p>
 
-<p>The package implements most &ndash; but not all &ndash; of the containers in the <code>gWidgets</code> API:</p>
+<p>The package implements most &ndash; but not all &ndash; of the containers in the<br/>
+<code>gWidgets</code> API:</p>
 
 <ul>
 <li><p>box containers which pack children in left to right (horizontal) or<br/>
-top to bottom(vertical): <code>ggroup</code>, <code>gvbox</code> (a vertical box),<br/>
+top to bottom (vertical): <code>ggroup</code>, <code>gvbox</code> (a vertical box),<br/>
 <code>gframe</code> (a decorated box) and <code>gexpandgroup</code> (a box with a<br/>
 disclosure icon to hide or show the contents).</p></li>
 <li><p>a page layout container <code>gborderlayout</code> for placing widgets at the<br/>
@@ -306,8 +308,9 @@ in an neatly organized manner.</p></li>
 
 <p>Not implemented are the table layout container (<code>glayout</code>) and the<br/>
 paned container (<code>gpanedgroup</code>). The <code>gformlayout</code> container covers<br/>
-most uses of the formal and the latter can be implemented with<br/>
-<code>gborderlayout</code> (though that container does not like to be nested.)</p>
+most uses of the former and the latter can be implemented with<br/>
+<code>gborderlayout</code> (though that container does not like to be nested<br/>
+within other containers.)</p>
 
 <p>Containers have just a few methods:</p>
 
@@ -323,9 +326,9 @@ restore.</p></li>
 the user to interact with the GUI or the programmer to display<br/>
 information for the user. Most controls have some event that will<br/>
 trigger a callback, if specified. For most controls, this event is<br/>
-clear and is identified through <code>addHandlerChanged</code>. As seen, for a<br/>
-button this is the clicking of the button. A few controls have more<br/>
-than one event they can respond. For these, there are other<br/>
+clear and is identified through the generic <code>addHandlerChanged</code>. As<br/>
+seen, for a button this is the clicking of the button. A few controls<br/>
+have more than one event they can respond. For these, there are other<br/>
 <code>addHandlerXXX</code> methods.</p>
 
 <p>The basic controls are:</p>
@@ -341,7 +344,7 @@ instances.</p></li>
 <code>gspinbutton</code></p></li>
 <li><p>table displays: <code>gtable</code> (<code>gdf</code> is not (yet) implemented in<br/>
 <code>gWidgetsWWW2.rapache</code> but is in <code>gWidgetsWWW2</code>)</p></li>
-<li><p>graphics controls: <code>gimage</code>, <code>gcanvas</code>, <code>gsvg</code></p></li>
+<li><p>graphics displays: <code>gimage</code>, <code>gcanvas</code>, <code>gsvg</code></p></li>
 <li><p><code>gpanel</code> for incorporating external JavaScript libraries</p></li>
 <li><p><code>gfile</code> for uploading files</p></li>
 </ul>
@@ -356,10 +359,11 @@ are <code>gtree</code>, <code>ggooglemaps</code>, and <code>gdf</code>.</p>
 <li><p><code>[</code> and <code>[&lt;-</code> for accessing the items that selection can occur from<br/>
 (for the selection widgets). For such widgets, the S3 methods<br/>
 <code>names</code>, <code>length</code> and <code>dim</code> are typically implemented.</p></li>
-<li><p><code>enabled&lt;-</code> to change is a widget is sensitive to user input</p></li>
+<li><p><code>enabled&lt;-</code> to change if a widget is sensitive to user input</p></li>
 <li><p><code>visible&lt;-</code> to change some visibility property of the widget. (There<br/>
 are many overloads, but the default is to specify if a widget is<br/>
-shown or hidden.)</p></li>
+shown or hidden. One overload is for <code>gtable</code> objects, where this<br/>
+method is use to show or hide rows of the displayed data.)</p></li>
 <li><p><code>tooltip&lt;-</code> to specify a tooltip when the mouse hovers over the widget.</p></li>
 </ul>
 
@@ -411,10 +415,10 @@ process is complete to carry back the results to the browser.</p>
 
 <p>The <code>manipulate</code> example shows one use of <code>gtimer</code> that unfortunately<br/>
 has no better idiom within this framework. That example has several<br/>
-comboboxes. The value of a combobox is only available after the data<br/>
+combo boxes. The value of a combobox is only available after the data<br/>
 is loaded. This is done asynchronously. As such, the initial graphic<br/>
-can not be made until the comboboxes are loaded. But there is no hook<br/>
-(in <code>gWidgetsWWW2.rapache</code>) to allow the graphic call to happen until<br/>
+can not be made until the combo boxes are loaded. But there is no hook<br/>
+(in <code>gWidgetsWWW2.rapache</code>) to defer the graphic call to happen until<br/>
 after that event. Instead, we just use a one-shot timer with a<br/>
 heuristically chosen delay to pause before making the call to create<br/>
 the initial graphic.</p>
@@ -437,7 +441,7 @@ with the <code>gsvg</code> widget</p></li>
 
 <p>The <code>gcanvas</code> solution is best for quickly refreshing a graph produced<br/>
 with R&#39;s base graphics. It does not work with lattice graphics or<br/>
-<code>ggplot2</code>.</p>
+<code>ggplot2</code>. One can do low level commands on the JavaScript <code>canvas</code> object.</p>
 
 <p>The <code>gsvg</code> solution is arguably the best looking, but flickers when<br/>
 the graphic is refreshed making it not such a great choice for<br/>
@@ -478,7 +482,9 @@ name).</p>
 made for evaluating any callbacks. As such, the data within a page is<br/>
 not persistent across page loads unless it is programmed to be so. One<br/>
 can write to the file system or data base to keep values across<br/>
-sessions. (The package uses <code>RSQLite</code> for this purpose.)</p>
+sessions. The package uses <code>RSQLite</code> for this purpose. (It also means,<br/>
+despite cleaning up when it can, that the temporary directory needs<br/>
+periodic flushing.)</p>
 
 <script>$('#navbar-header').append("<li><a href='#nav8' target='_self'>JavaScript</a></li>");</script>
 
@@ -507,9 +513,13 @@ that is converted to a <code>JavaScript</code> object through the function<br/>
 
 <p>When a callback is run, the package creates <code>JavaScript</code> to pass back<br/>
 to the browser. So a command like <code>svalue(obj) &lt;- &quot;some value&quot;</code> will<br/>
-produce the appropriate <code>JavaScript</code>. Each command has it <code>JavaScript</code><br/>
-added to a queue. One can add their own <code>JavaScript</code> commands to the<br/>
-queue via the <code>push_queue</code> function.</p>
+produce the appropriate <code>JavaScript</code>. Each command has its<br/>
+<code>JavaScript</code> added to a queue. One can add their own <code>JavaScript</code><br/>
+commands to the queue via the <code>push_queue</code> function. For example, to<br/>
+use the browsers alert dialog add this to a handler</p>
+
+<pre><code>push_queue(&quot;alert(&#39;hello world&#39;)&quot;)
+</code></pre>
 
 <p>Finally, the <code>gpanel</code> widget does nothing more than make a <code>DIV</code> tag<br/>
 on the page to be filled in by <code>JavaScript</code>. The widget allows one to<br/>
@@ -535,8 +545,8 @@ followed. (E.g., don&#39;t eval code that a user can upload, &hellip;)</p>
 
 <ul>
 <li>the package needs to be installed in such a way that the R process
-spawned by the web server can see the package (not a local
-directory)</li>
+spawned by the web server can see the package (i.e., do not use a
+local directory)</li>
 </ul>
 
 <pre><code>require(devtools)
@@ -544,7 +554,7 @@ install_github(&quot;gWidgetsWWW2.rapache&quot;, &quot;jverzani&quot;)
 </code></pre>
 
 <ul>
-<li><p>rapache must be installed (<a href="http://www.rapache.net">http://www.rapache.net</a>)</p></li>
+<li><p>rapache must be installed (follow the instructions here <a href="http://www.rapache.net">http://www.rapache.net</a>).</p></li>
 <li><p>rapache must be configured. There are 2-3 steps:</p></li>
 <li><p>The <code>mod_R.so</code> module must be loaded. Likely this is already done,<br/>
 but if not you must add this to your apache configuration:</p></li>
@@ -552,6 +562,9 @@ but if not you must add this to your apache configuration:</p></li>
 
 <pre><code>LoadModule R_module /usr/libexec/apache2/mod_R.so
 </code></pre>
+
+<p>The location of <code>mod_R.so</code> is system dependent, the above is a Mac<br/>
+  OS X installation point.</p>
 
 <ul>
 <li>Some basic customization must be made. The defaults are installed
@@ -570,10 +583,10 @@ important, as this specifies where to look for files.</p>
 </ul>
 
 <pre><code>&lt;Location /gw&gt;
-      LimitRequestBody 1024000
-        SetHandler r-handler
-        ## from system.file(&quot;rapache&quot;, &quot;www2.R&quot;, package=&quot;gWidgetsWWW2.rapache&quot;)
-    RFileHandler /Library/Frameworks/R.framework/Versions/2.15/Resources/library/gWidgetsWWW2.rapache/rapache/www2.R
+     LimitRequestBody 1024000
+     SetHandler r-handler
+     ## from system.file(&quot;rapache&quot;, &quot;www2.R&quot;, package=&quot;gWidgetsWWW2.rapache&quot;)
+     RFileHandler /Library/Frameworks/R.framework/Versions/2.15/Resources/library/gWidgetsWWW2.rapache/rapache/www2.R
 &lt;/Location&gt;
 </code></pre>
 
@@ -583,14 +596,19 @@ for the file <code>ex.R</code> in the directory (directories) specified through<
 the option <code>gWidgetsWWW2.rapache::script_base</code>.</p>
 
 <p>The <code>LimitRequestBody</code> limits the size of file uploads. A value of 0<br/>
-is unlimited.</p>
+is use to indicate no limit.</p>
 
 <p>The path of the <code>www2.R</code> script comes from invoking <code>system.file</code> with<br/>
-the appropriate commands. Alternatively, this script can be copied and<br/>
-modified should there be a need.</p>
+the appropriate commands, as indicated in the comment. Alternatively,<br/>
+this script can be copied and modified should there be a need.</p>
 
 <p>One could add to the above apache configuration, say restricting<br/>
 access using one of apache&#39;s modules.</p>
+
+<p>That&#39;s it. Not much harder than installing <code>rapache</code> itself. With the<br/>
+default installation, the examples directory from the package is where<br/>
+URLs will be mapped to. Going to <code>http://your.address.com/gw</code> will<br/>
+open a page with links.</p>
 
 <!--- Finish this off -->
 
