@@ -361,9 +361,40 @@ despite cleaning up when it can, that the temporary directory needs
 periodic flushing.)
 
 
-
-<script>$('#navbar-header').append("<li><a href='#nav8' target='_self'>JavaScript</a></li>");</script>
+<script>$('#navbar-header').append("<li><a href='#nav8' target='_self'>Start up time</a></li>");</script>
 <span><div id="nav8"></div></span>
+<span><div class='page-header'><h2>Start up time</h2></div></span>
+
+The initial web page is constructed through various stages:
+
+* a basic template is loaded
+
+* some large `JavaScript` libraries are loaded from CDNs. These will
+  be slow the first time, but should be cached so subsequent reloads
+  are not lengthy
+
+* Then a unique session ID is fetched from the server
+
+* Then the `JavaScript` that creates the page layout is fetched from
+  the server
+
+* Finally the browser uses this `JavaScript` to layout out the page.
+
+Of these, the time of the last two steps depends on the complexity of
+the GUI design. In basic testing with a modest machine, each
+additional widget takes about 40ms to load with a base initialization
+of around 100ms (40ms is a minimum, more complex widgets will take
+longer). So a not-so-complex interface with 20 or so widgets will take
+around 1 second or more to fetch from the server. It may take another
+second for the browser to actually process the `JavaScript`. Once
+loaded the pages are fairly responsive, but the initial loading can
+seem somewhat slow. A loading mask it employed to indicate that
+activity is taking place.
+
+
+
+<script>$('#navbar-header').append("<li><a href='#nav9' target='_self'>JavaScript</a></li>");</script>
+<span><div id="nav9"></div></span>
 <span><div class='page-header'><h2>JavaScript</h2></div></span>
 
 The package uses the `ExtJS` libraries provided by `sencha.com`. These
@@ -405,8 +436,8 @@ once loaded.
 
 
 
-<script>$('#navbar-header').append("<li><a href='#nav9' target='_self'>Security</a></li>");</script>
-<span><div id="nav9"></div></span>
+<script>$('#navbar-header').append("<li><a href='#nav10' target='_self'>Security</a></li>");</script>
+<span><div id="nav10"></div></span>
 <span><div class='page-header'><h2>Security</h2></div></span>
 
 Web security is a big deal. There is the potential for malicious
@@ -415,8 +446,8 @@ security features, but standard web safety guidelines should be
 followed. (E.g., don't eval code that a user can upload, ...)
 
 
-<script>$('#navbar-header').append("<li><a href='#nav10' target='_self'>Installation: rapache configuration</a></li>");</script>
-<span><div id="nav10"></div></span>
+<script>$('#navbar-header').append("<li><a href='#nav11' target='_self'>Installation: rapache configuration</a></li>");</script>
+<span><div id="nav11"></div></span>
 <span><div class='page-header'><h2>Installation: rapache configuration</h2></div></span>
 
 Installing this software requires a few steps:

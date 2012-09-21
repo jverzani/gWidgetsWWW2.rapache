@@ -286,6 +286,34 @@ sessions. The package uses `RSQLite` for this purpose. (It also means,
 despite cleaning up when it can, that the temporary directory needs
 periodic flushing.)
 
+`r I(nav$add("Start up time"))`
+
+The initial web page is constructed through various stages:
+
+* a basic template is loaded
+
+* some large `JavaScript` libraries are loaded from CDNs. These will
+  be slow the first time, but should be cached so subsequent reloads
+  are not lengthy
+
+* Then a unique session ID is fetched from the server
+
+* Then the `JavaScript` that creates the page layout is fetched from
+  the server
+
+* Finally the browser uses this `JavaScript` to layout out the page.
+
+Of these, the time of the last two steps depends on the complexity of
+the GUI design. In basic testing with a modest machine, each
+additional widget takes about 40ms to load with a base initialization
+of around 100ms (40ms is a minimum, more complex widgets will take
+longer). So a not-so-complex interface with 20 or so widgets will take
+around 1 second or more to fetch from the server. It may take another
+second for the browser to actually process the `JavaScript`. Once
+loaded the pages are fairly responsive, but the initial loading can
+seem somewhat slow. A loading mask it employed to indicate that
+activity is taking place.
+
 
 `r I(nav$add("JavaScript"))`
 

@@ -486,9 +486,38 @@ sessions. The package uses <code>RSQLite</code> for this purpose. (It also means
 despite cleaning up when it can, that the temporary directory needs<br/>
 periodic flushing.)</p>
 
-<script>$('#navbar-header').append("<li><a href='#nav8' target='_self'>JavaScript</a></li>");</script>
+<script>$('#navbar-header').append("<li><a href='#nav8' target='_self'>Start up time</a></li>");</script>
 
 <p><span><div id="nav8"></div></span><br/>
+<span><div class='page-header'><h2>Start up time</h2></div></span></p>
+
+<p>The initial web page is constructed through various stages:</p>
+
+<ul>
+<li><p>a basic template is loaded</p></li>
+<li><p>some large <code>JavaScript</code> libraries are loaded from CDNs. These will<br/>
+be slow the first time, but should be cached so subsequent reloads<br/>
+are not lengthy</p></li>
+<li><p>Then a unique session ID is fetched from the server</p></li>
+<li><p>Then the <code>JavaScript</code> that creates the page layout is fetched from<br/>
+the server</p></li>
+<li><p>Finally the browser uses this <code>JavaScript</code> to layout out the page.</p></li>
+</ul>
+
+<p>Of these, the time of the last two steps depends on the complexity of<br/>
+the GUI design. In basic testing with a modest machine, each<br/>
+additional widget takes about 40ms to load with a base initialization<br/>
+of around 100ms (40ms is a minimum, more complex widgets will take<br/>
+longer). So a not-so-complex interface with 20 or so widgets will take<br/>
+around 1 second or more to fetch from the server. It may take another<br/>
+second for the browser to actually process the <code>JavaScript</code>. Once<br/>
+loaded the pages are fairly responsive, but the initial loading can<br/>
+seem somewhat slow. A loading mask it employed to indicate that<br/>
+activity is taking place.</p>
+
+<script>$('#navbar-header').append("<li><a href='#nav9' target='_self'>JavaScript</a></li>");</script>
+
+<p><span><div id="nav9"></div></span><br/>
 <span><div class='page-header'><h2>JavaScript</h2></div></span></p>
 
 <p>The package uses the <code>ExtJS</code> libraries provided by <code>sencha.com</code>. These<br/>
@@ -526,9 +555,9 @@ on the page to be filled in by <code>JavaScript</code>. The widget allows one to
 load some external <code>JavaScript</code> code asynchronously and call a handler<br/>
 once loaded.</p>
 
-<script>$('#navbar-header').append("<li><a href='#nav9' target='_self'>Security</a></li>");</script>
+<script>$('#navbar-header').append("<li><a href='#nav10' target='_self'>Security</a></li>");</script>
 
-<p><span><div id="nav9"></div></span><br/>
+<p><span><div id="nav10"></div></span><br/>
 <span><div class='page-header'><h2>Security</h2></div></span></p>
 
 <p>Web security is a big deal. There is the potential for malicious<br/>
@@ -536,9 +565,9 @@ intent on the part of a user. This package provides no additional<br/>
 security features, but standard web safety guidelines should be<br/>
 followed. (E.g., don&#39;t eval code that a user can upload, &hellip;)</p>
 
-<script>$('#navbar-header').append("<li><a href='#nav10' target='_self'>Installation: rapache configuration</a></li>");</script>
+<script>$('#navbar-header').append("<li><a href='#nav11' target='_self'>Installation: rapache configuration</a></li>");</script>
 
-<p><span><div id="nav10"></div></span><br/>
+<p><span><div id="nav11"></div></span><br/>
 <span><div class='page-header'><h2>Installation: rapache configuration</h2></div></span></p>
 
 <p>Installing this software requires a few steps:</p>
