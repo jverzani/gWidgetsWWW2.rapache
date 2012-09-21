@@ -45,24 +45,31 @@ var call_r_handler=function(id, signal, params) {
                      success:eval_response
                      });
 };
+Ext.get("loading").remove();
+var myMask = new Ext.LoadMask(Ext.getBody(), {msg:"Getting page information..."});
+myMask.show();
 </script>
 
 <script>
 Ext.onReady(function() {
-  Ext.get("loading-text").setHTML("Getting page information...");
   Ext.QuickTips.init();
 
   Ext.Ajax.request({
     url:"get_id",
     success:function(response) {
-     Ext.get("loading-text").setHTML("Creating interface...");
+
+    myMask.destroy();
+    myMask = new Ext.LoadMask(Ext.getBody(), {msg:"Creating interface ..."});
+    myMask.show();
+
      ID = response.responseText; 
      Ext.Ajax.request({
           url:"create_ui",
           params:{ID:ID,the_script:"{{{the_script}}}"},
           success:function(response) {
-            Ext.get("loading").remove();
+           
             eval_response(response);
+            myMask.destroy()
           }
           });
      }
