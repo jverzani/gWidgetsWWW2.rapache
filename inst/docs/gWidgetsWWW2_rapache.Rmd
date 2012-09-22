@@ -362,6 +362,29 @@ intent on the part of a user. This package provides no additional
 security features, but standard web safety guidelines should be
 followed. (E.g., don't eval code that a user can upload, ...)
 
+`r I(nav$add("Debugging"))`
+
+Debugging scripts is made more difficult, as the scripts must be
+processed through the browser. Here are some useful tricks:
+
+* A test setup is useful where a local `apache` server is used. (This
+  isn't helpful for windows users). Most -- but not all -- scripts can
+  be tested locally with `gWidgetsWWW2` under `Rook`. There are a few
+  differences in the API though, so this won't be fool proofed.
+
+* Errors are logged in apache's log file
+
+* `print` statements do not appear in the log file, but those generated with `message`
+  appear in apache's log file. This can be useful to track down issues with
+  the script.
+
+* There may be errors in `gWidgetsWWW2.rapache` that are `JavaScript`
+  errors. Of course, the package author would love to hear about this,
+  so they can be fixed. But how can the end user tell? Well, a
+  `JavaScript` console can be used. The main browsers include these:
+  Chrome and Safari have built in ones available through the menu bar,
+  Firefox has the excellent `firebug` add on http://getfirebug.com/ .
+
 `r I(nav$add("Installation: rapache configuration"))`
 
 Installing this software requires a few steps:

@@ -1,5 +1,5 @@
 w <- gwindow("gradio")
-sb <- gstatusbar("Powered by gWidgetsWWW2 and rapache", cont=w)
+sb <- gstatusbar("Powered by gWidgetsWWW2.rapache and rapache", cont=w)
 
 
 g <- gvbox(cont=w)

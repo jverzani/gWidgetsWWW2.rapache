@@ -56,14 +56,14 @@ dog_food <- gbutton("Source...", container=sb, handler=function(h,...) {
                        width=subw_width,
                        height=subw_height)
   vb <- gvbox(container=subwindow)
-                  gtext(paste(readLines(f), collapse="\n"),
-                              container=vb)
-                  gseparator(container=vb)
-                  bg <- ggroup(container=vb)
-                  addSpring(bg)
-                  gbutton("dismiss", container=bg, handler=function(h,...) {
-                    dispose(subwindow)
-                  })
+  gtext(paste(gsub("'", "`", readLines(f)), collapse="\n"),
+        container=vb)
+  gseparator(container=vb)
+  bg <- ggroup(container=vb)
+  addSpring(bg)
+  gbutton("dismiss", container=bg, handler=function(h,...) {
+    dispose(subwindow)
+  })
 })
 
 

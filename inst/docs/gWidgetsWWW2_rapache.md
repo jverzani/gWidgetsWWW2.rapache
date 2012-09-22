@@ -446,8 +446,34 @@ security features, but standard web safety guidelines should be
 followed. (E.g., don't eval code that a user can upload, ...)
 
 
-<script>$('#navbar-header').append("<li><a href='#nav11' target='_self'>Installation: rapache configuration</a></li>");</script>
+<script>$('#navbar-header').append("<li><a href='#nav11' target='_self'>Debugging</a></li>");</script>
 <span><div id="nav11"></div></span>
+<span><div class='page-header'><h2>Debugging</h2></div></span>
+
+Debugging scripts is made more difficult, as the scripts must be
+processed through the browser. Here are some useful tricks:
+
+* A test setup is useful where a local `apache` server is used. (This
+  isn't helpful for windows users). Most -- but not all -- scripts can
+  be tested locally with `gWidgetsWWW2` under `Rook`. There are a few
+  differences in the API though, so this won't be fool proofed.
+
+* Errors are logged in apache's log file
+
+* `print` statements do not appear in the log file, but those generated with `message`
+  appear in apache's log file. This can be useful to track down issues with
+  the script.
+
+* There may be errors in `gWidgetsWWW2.rapache` that are `JavaScript`
+  errors. Of course, the package author would love to hear about this,
+  so they can be fixed. But how can the end user tell? Well, a
+  `JavaScript` console can be used. The main browsers include these:
+  Chrome and Safari have built in ones available through the menu bar,
+  Firefox has the excellent `firebug` add on http://getfirebug.com/ .
+
+
+<script>$('#navbar-header').append("<li><a href='#nav12' target='_self'>Installation: rapache configuration</a></li>");</script>
+<span><div id="nav12"></div></span>
 <span><div class='page-header'><h2>Installation: rapache configuration</h2></div></span>
 
 Installing this software requires a few steps:

@@ -565,9 +565,34 @@ intent on the part of a user. This package provides no additional<br/>
 security features, but standard web safety guidelines should be<br/>
 followed. (E.g., don&#39;t eval code that a user can upload, &hellip;)</p>
 
-<script>$('#navbar-header').append("<li><a href='#nav11' target='_self'>Installation: rapache configuration</a></li>");</script>
+<script>$('#navbar-header').append("<li><a href='#nav11' target='_self'>Debugging</a></li>");</script>
 
 <p><span><div id="nav11"></div></span><br/>
+<span><div class='page-header'><h2>Debugging</h2></div></span></p>
+
+<p>Debugging scripts is made more difficult, as the scripts must be<br/>
+processed through the browser. Here are some useful tricks:</p>
+
+<ul>
+<li><p>A test setup is useful where a local <code>apache</code> server is used. (This<br/>
+isn&#39;t helpful for windows users). Most &ndash; but not all &ndash; scripts can<br/>
+be tested locally with <code>gWidgetsWWW2</code> under <code>Rook</code>. There are a few<br/>
+differences in the API though, so this won&#39;t be fool proofed.</p></li>
+<li><p>Errors are logged in apache&#39;s log file</p></li>
+<li><p><code>print</code> statements do not appear in the log file, but those generated with <code>message</code><br/>
+appear in apache&#39;s log file. This can be useful to track down issues with<br/>
+the script.</p></li>
+<li><p>There may be errors in <code>gWidgetsWWW2.rapache</code> that are <code>JavaScript</code><br/>
+errors. Of course, the package author would love to hear about this,<br/>
+so they can be fixed. But how can the end user tell? Well, a<br/>
+<code>JavaScript</code> console can be used. The main browsers include these:<br/>
+Chrome and Safari have built in ones available through the menu bar,<br/>
+Firefox has the excellent <code>firebug</code> add on <a href="http://getfirebug.com/">http://getfirebug.com/</a> .</p></li>
+</ul>
+
+<script>$('#navbar-header').append("<li><a href='#nav12' target='_self'>Installation: rapache configuration</a></li>");</script>
+
+<p><span><div id="nav12"></div></span><br/>
 <span><div class='page-header'><h2>Installation: rapache configuration</h2></div></span></p>
 
 <p>Installing this software requires a few steps:</p>
