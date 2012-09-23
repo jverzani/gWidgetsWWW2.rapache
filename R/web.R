@@ -86,9 +86,8 @@ create_ui <- function(ID, params) {
   e$..con.. <- con
   e$ID <- ID
   
-  attach(e)
-  out <- try(sys.source(the_script, envir=e, keep.source=FALSE), silent=FALSE)
-  detach(e)
+  attach(e); on.exit(detach(e))
+  out <- sys.source(the_script, envir=e, keep.source=FALSE)
 
   e$..handlers.. <- ..e..$..handlers..          # store
   saveRDS(e, file=sprintf("%s/%s.rds", tmp_dir, ID))
@@ -121,9 +120,8 @@ ajax_call <- function(ID, params) {
   params <- as.list(fromJSON(params$params %||% "{}"))
 
   e$ID <- ID  
-  attach(e)
-  out <- try(call_handler(obj, signal, params), silent=FALSE)
-  detach(e)
+  attach(e); on.exit(detach(e))
+  out <- call_handler(obj, signal, params)
 
   e$..handlers.. <- ..e..$..handlers..          # store
   saveRDS(e, file=sprintf("%s/%s.rds", tmp_dir, ID))
