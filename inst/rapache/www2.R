@@ -27,30 +27,31 @@ if(grepl("get_id", pi)) {
 } else if(grepl("ajax_call", pi)) {
   ## process ajax call (transport, handler)
 
-  
+  message("start ajax call")
   content_type <- "application/javascript"
-  out <- gWidgetsWWW2.rapache:::ajax_call(params$ID, params)
+  out <- try(gWidgetsWWW2.rapache:::ajax_call(params$ID, params), silent=TRUE)
+  message("end ajax call. Class: ", class(out))
   
 } else if(grepl("proxy_call_text", pi)) {
   ## proxy call for text (ghtml)
   
-  out <- gWidgetsWWW2.rapache:::proxy_call_text(params$ID, params)
+  out <- try(gWidgetsWWW2.rapache:::proxy_call_text(params$ID, params), silent=TRUE)
   
 } else if(grepl("proxy_call", pi)) {
   ## proxy call for data (gtable, gcheckbox, ...)
 
   content_type <- "application/json"
-  out <- gWidgetsWWW2.rapache:::proxy_call(params$ID, params)
+  out <- try(gWidgetsWWW2.rapache:::proxy_call(params$ID, params), silent=TRUE)
   
 } else if(grepl("static_file", pi)) {
   ## this returns a file, which we display
   #x <- gsub("/gw/", "", pi)             # GENERALIZE XXX
   x <- pi
-  f <- gWidgetsWWW2.rapache:::static_file(x)
+  f <- try(gWidgetsWWW2.rapache:::static_file(x), silent=TRUE)
   
 } else if(grepl("temp_file", pi)) {
   
-  f <- gWidgetsWWW2.rapache:::temp_file(params$ID, params)
+  f <- try(gWidgetsWWW2.rapache:::temp_file(params$ID, params), silent=TRUE)
   
 } else if(grepl("file_upload", pi)) {
   ## file upload
@@ -83,7 +84,7 @@ if(grepl("get_id", pi)) {
   ## clean up on exit
   message("clean up:", params$ID)
   content_type <- "application/json"
-  out <- gWidgetsWWW2.rapache:::clean_up(params$ID)
+  out <- try(gWidgetsWWW2.rapache:::clean_up(params$ID), silent=TRUE)
 } else {
   ## main page
 
@@ -114,6 +115,11 @@ if(is.null(out)) {
   DONE
 } else  {
   setContentType(content_type)
-  cat(out)
+  if(inherits(out, "try-error")) {
+    ## what to do on an error??
+    message(out) ## write to log file
+  } else {
+    cat(out)
+  }
   DONE
 }
