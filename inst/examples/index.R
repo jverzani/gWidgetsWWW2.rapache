@@ -6,7 +6,7 @@ sb <- gstatusbar("Powered by gWidgetsWWW2.rapache and rapache", cont=w)
 files <- list.files(system.file("examples", package="gWidgetsWWW2.rapache"), full=TRUE)
 files <- Filter(function(i) basename(i) != "index.R", files)
 
-vb <- gvbox(cont=w)
+vb <- gvbox(cont=w, use.scrollwindow=TRUE)
 glabel("<h3>gWidgetsWWW2.rapache examples</h3>", cont=vb)
 glabel("Click the link below to view some examples of gWidgetsWWW2.rapache.",
        cont=vb)
