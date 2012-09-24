@@ -18,7 +18,7 @@ isIcon <- function(x) is(x,"Icon")
 
 ## an evironment to hold names of stock icons
 ..icon_list.. <- new.env()
-icon <- list.files(system.file("icons", package="gWidgetsWWW2.rapache"), full=TRUE)
+icon <- list.files(system.file("extra", "images", package="gWidgetsWWW2.rapache"), full=TRUE)
 icon <- Filter(function(x) grepl("\\.png$",x), icon)
 nm <- gsub("\\.png$", "", basename(icon))
 sapply(nm, function(i) ..icon_list..[[i]] <- TRUE)

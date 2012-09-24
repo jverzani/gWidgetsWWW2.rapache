@@ -27,10 +27,8 @@ if(grepl("get_id", pi)) {
 } else if(grepl("ajax_call", pi)) {
   ## process ajax call (transport, handler)
 
-  message("start ajax call")
   content_type <- "application/javascript"
   out <- try(gWidgetsWWW2.rapache:::ajax_call(params$ID, params), silent=TRUE)
-  message("end ajax call. Class: ", class(out))
   
 } else if(grepl("proxy_call_text", pi)) {
   ## proxy call for text (ghtml)
@@ -82,7 +80,6 @@ if(grepl("get_id", pi)) {
     
 } else if(grepl("clean_up", pi)) {
   ## clean up on exit
-  message("clean up:", params$ID)
   content_type <- "application/json"
   out <- try(gWidgetsWWW2.rapache:::clean_up(params$ID), silent=TRUE)
 } else {
