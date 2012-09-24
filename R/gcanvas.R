@@ -233,13 +233,14 @@ cnv_call_method <- function(obj, method, ...) {
 }
 
 cnv_set_property <- function(obj, property, value) {
+  
   tpl <- "{{{context}}}.{{{property}}} = {{{value}}};"
 
   context <- get_canvas_context(obj)
   push_queue(whisker.render(tpl))
 }
 
-cnv_set_styles <- function(obj,
+cnv_set_style <- function(obj,
                            lwd=NULL, lcol=NULL, lineJoin=NULL,
                            col = NULL, alpha=NULL, ...
                            ) {
@@ -252,15 +253,15 @@ cnv_set_styles <- function(obj,
                                                 sprintf("rbg(%s);", paste(lcol, collapse=",")),
                                                 lcol))
 
-  lineJoin <- getWithDefault(lineJoin, "miter")
-  cnv_set_property(obj, "lineJoin", lineJoin)
+  lineJoin <- lineJoin %||% "miter"
+  cnv_set_property(obj, "lineJoin", shQuote(lineJoin))
   
   if(!is.null(col))
     cnv_set_property(obj, "fillStyle", ifelse(is.numeric(col),
                                               sprintf("rbg(%s);", paste(col, collapse=",")),
                                               col))
   if(!is.null(alpha))
-    cnv_set_property(obj, "globalAlpha", alpha)
+    cnv_set_property(obj, "globalAlpha", shQuote(alpha))
 }
 
 ##' Like x[i], but recycles and handles NULL
