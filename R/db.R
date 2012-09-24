@@ -16,7 +16,6 @@ open_connection <- function(dbname=..ID..) {
   drv <- dbDriver("SQLite")
   
   f <- db_name(dbname)
-  message("open connection ", f)
   db <- dbConnect(drv, dbname = f)
 
   db

@@ -39,11 +39,20 @@ gbutton <- function(text, handler, action=NULL,  container,
   obj
 }
 
+##' Set the icon for this button
+##'
+##' Called by svalue, but can also be called directly to override default
+##' which matches by button label.
+##' @param obj button object
+##' @param value stock icon name
+set_button_icon <- function(obj, value) {
+  icon <- get_stock_icon_by_name(value)
+  call_ext(obj, "setIconCls", shQuote(icon))
+}
 
 set_value_js.GButton <- function(obj, value) {
   call_ext(obj, "setText", shQuote(value))
-  icon <- get_stock_icon_by_name(value)
-  call_ext(obj, "setIconCls", icon)
+  set_button_icon(obj, value)
 }
 
 

@@ -2,7 +2,6 @@
 ## Add a handler for a signal
 add_handler <- function(obj, signal, handler, action=NULL, ...) {
 
-  message("add_handler")
   handlers <- ..e..$..handlers..
   
   key <- as.character(obj)
@@ -26,10 +25,9 @@ add_handler <- function(obj, signal, handler, action=NULL, ...) {
 ## how to call the handler
 ## XXX Sometimes this calls handlers twice
 call_handler <- function(obj, signal, params=list(), ...) {
-  message("call handler")
   
   key <- as.character(obj)
-  message("key:", key)
+
   handlers <- ..handlers.. #get("..handlers..", envir=topenv())
   blocked <- handlers$blocked
   if(obj %in% handlers$all_blocked)
@@ -79,7 +77,6 @@ unblock_handler <- function(obj, handler_id) {
 block_handlers <- function(obj) {
   handlers <- ..e..$..handlers..
   handlers$all_blocked <- unique(c(obj, handlers$all_blocked))
-  message("blocked:", handlers$all_blocked)
   ..e..$..handlers.. <- handlers
 }
 
@@ -190,7 +187,6 @@ ogWidget_{{obj}}.on("{{signal}}", function({{{fn_args}}}) {
 ## changed
 addHandlerChanged <- function(obj, handler, action=NULL, ...) UseMethod("addHandlerChanged")
 addHandlerChanged.default <- function(obj, handler, action=NULL, ...) {
-  message("Changed handler")
   addHandlerClicked(obj, handler, action, ...)
 }
 
@@ -198,7 +194,6 @@ addHandlerChanged.default <- function(obj, handler, action=NULL, ...) {
 addHandlerClicked <- function(obj, handler, action=NULL, ...) UseMethod("addHandlerClicked")
 
 addHandlerClicked.default <- function(obj, handler, action=NULL, ...) {
-  message("click handler")
   addHandler(obj, "click", handler, action, ...)
 }
 

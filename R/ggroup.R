@@ -76,7 +76,6 @@ ggroup <- function(horizontal=TRUE,
 ## add for window captures "bars"
 add.GGroup <- function(parent, child, ...) {
   if(is(child, "GStatusBar") || is(child, "GMenuBar") || is(child, "GToolBar")) {
-    message("add a bar")
     oid <- o_id(parent)
     cid <- o_id(child)
     push_queue(whisker.render("{{oid}}.addDocked({{cid}});"))

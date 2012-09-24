@@ -106,7 +106,6 @@ var ogWidget_{{{obj}}} = Ext.create('Ext.form.Panel', {
 }
   
 addHandlerChanged.GFile <- function(obj, handler, action=NULL, ...) {
-  message("add upload handler for gfile")
   addHandler(obj, "upload", handler, action, ...)
 }
 

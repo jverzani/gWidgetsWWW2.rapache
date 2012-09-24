@@ -170,7 +170,6 @@ addHandlerMouseUp.GCanvas <- function(obj, handler, action=NULL, ...)
 
 ## the id. Return string
 get_canvas_id <- function(obj) {
-  message("get id, obj:", obj)
   sprintf("ogWidget_%s_canvas", obj)
 }
 ## the context, return string

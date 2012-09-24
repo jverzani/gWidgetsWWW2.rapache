@@ -233,14 +233,12 @@ svalue.GTable <- function(obj, index=NULL, drop=NULL, ...) {
 "svalue<-.GTable" <- function(obj, index=NULL, ..., value) {
   ## we set by index
   index <- index %||% FALSE
-  message("svalue value:", capture.output(print(value)))
   if(!index) {
     chosencol <- get_property(obj, "chosencol")
     value <- match(value, obj[, chosencol, drop=TRUE])
   }
 
   val <- paste(value, collapse=gtable_delimiter)
-  message("set value:", val)
   set_value(obj, val)
 
   set_value_js(obj, svalue(obj, index=TRUE))
@@ -256,7 +254,6 @@ clear_selection <- function(obj) {
 
 set_value_js.GTable <- function(obj, value) {
   ## value is vector of indices
-  message("clear selection")
   clear_selection(obj)
   if(base:::length(value) == 0 ||
      (base:::length(value) == 1 && is.na(value)) ||
@@ -268,13 +265,11 @@ set_value_js.GTable <- function(obj, value) {
   {{oid}}.getSelectionModel().selectRange({{start}},{{end}}, true);
 "
   f <- function(start, end) {
-    message("start, end ", start, "...", end)
     cmd <- whisker.render(tpl, list(oid=o_id(obj),
                                     start=as.numeric(start)-1,
                                     end=as.numeric(end)-1))
     push_queue(cmd)
   }
-  message("set vlaue js", paste(value, collapse=" :: "))
   ## should figure out runs to shorten this
   sapply(value, function(i) f(i,i))
 }
@@ -332,11 +327,9 @@ length.GTable <- function(x) length(x[,])
 ## can't select when selection is NULL (but can infinite scroll)
 
 before_handler.GTable <- function(obj, signal, params) {
-  message("before handler signal:", signal)
   if(signal %in% c("selectionchange")) {
     ## XXX what to do?
     value <- paste(params$value, collapse=gtable_delimiter)
-    message("before handler", value)
     set_value(obj, value)
 
   }

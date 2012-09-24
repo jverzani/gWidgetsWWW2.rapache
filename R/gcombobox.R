@@ -133,7 +133,6 @@ set_value_js.GCombobox <- function(obj,  value) {
 
 # handlers
 before_handler.GCombobox <- function(obj, signal, params, ...) {
-  message("before handler:", capture.output(params))
   set_vals(obj, value=params$value)
 }
 

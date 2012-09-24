@@ -261,7 +261,6 @@ process_file_upload <- function(ID, params) {
 
 clean_up <- function(ID) {
   ## clean up files for ID
-  message("clean up")
   unlink(db_name(ID))                   # data base
   unlink(get_e_name(ID))
 

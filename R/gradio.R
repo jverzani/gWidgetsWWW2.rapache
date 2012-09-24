@@ -94,7 +94,6 @@ before_handler.GRadio <- function(obj, signal, params, ...) {
   idx <- as.integer(params$value)
   value <- items[idx]
   set_value(obj, items[idx])
-  message("before handler done")
 }
 
 addHandlerChanged.GRadio <- function(obj, handler, action=NULL, ...) {
