@@ -9,7 +9,7 @@ has access and then configure `rapache` along the lines of:
 LoadModule R_module /usr/libexec/apache2/mod_R.so
 
 ## Simple configuration. Here we modify value. Could also move script and edit.
-RSourceOnStartup('system.file("rapache", startup.R", package="gWidgetsWWW2.rapache")')
+RSourceOnStartup('system.file("rapache", "startup.R", package="gWidgetsWWW2.rapache")')
 ## override to look in more places than default
 REvalOnStartup "options('gWidgetsWWW2.rapache::script_base'=c(system.file('examples', package='gWidgetsWWW2.rapache'), '/tmp/','/var/www/gw_scripts'))"
 

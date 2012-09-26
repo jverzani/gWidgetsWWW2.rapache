@@ -48,17 +48,18 @@ set_value_js.GStatusBar <- function(obj, value) {
 }
 
 ## show/hide loading image
-statusbar_loading <- function(obj, show=TRUE, msg="'loading... (replace with spinner)'") {
-  txt <- ifelse(show,
-                msg ,
-                "''")
-  iconCls <- ifelse(show,
-                    "iconCls:'x-status-busy'",
-                    NULL)
-  oid <- o_id(obj)
-  tpl <- '
- {{{oid}}}.getComponent(0).setStatus({text:{{{txt}}}{{iconCls}} }); {{{oid}}}.doLayout();
-'
-  push_queue(whisker.render(tpl))
-}
+## not working?
+## statusbar_loading <- function(obj, show=TRUE, msg="'loading... (replace with spinner)'") {
+##   txt <- ifelse(show,
+##                 msg ,
+##                 "''")
+##   iconCls <- ifelse(show,
+##                     ",iconCls:'x-status-busy'",
+##                     NULL)
+##   oid <- o_id(obj)
+##   tpl <- '
+##  {{{oid}}}.getComponent(1).setStatus({text:{{{txt}}}{{iconCls}} }); {{{oid}}}.doLayout();
+## '
+##   push_queue(whisker.render(tpl))
+## }
   
