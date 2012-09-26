@@ -1,34 +1,47 @@
+## Show index page
+require(whisker)
+
+f <- list.files(system.file("examples", package="gWidgetsWWW2.rapache"), full=TRUE)
+f <- Filter(function(x) !grepl("index.R|README",x), f)
+
+nms <- lapply(f, function(i) list(nm=basename(i)))
+
+tpl <- "
+<h2>gWidgetsWWW2.rapache</h2>
+<p>
+The <code>gWidgetsWWW2.rapache</code> package allows webpages to be
+written with <code>R</code> code using the <code>gWidgets</code>
+interface. <br/>
+
+The pages are served through the <code>apache</code>
+webserver with the aid of Jeffrey
+Horner's <code>rapache</code> module. <br/>
+
+The package is a relative of
+<code>gWidgetsWWW2</code>, which uses the <code>Rook</code> package
+to serve pages locally through <code>R</code>'s
+internal web server.
+</p>
+
+<h3>Details</h3>
+Some details on the package can be read
+<a href='static_file/html/gWidgetsWWW2_rapache.html' target='_blank'>here</a>.
+
+
+<h3>Examples</h3>
+<ul>
+{{#nms}}
+<li>
+  (<a href=https://raw.github.com/jverzani/gWidgetsWWW2.rapache/master/inst/examples/{{nm}} target='_blank'>source</a>)
+  &nbsp; <a href='{{nm}}' target='_blank'>See example</a>
+   {{nm}}
+</li>
+{{/nms}}
+</ul>
+"
+
 w <- gwindow("gWidgetsWWW2.rapache")
 sb <- gstatusbar("Powered by gWidgetsWWW2.rapache and rapache", cont=w)
 
-## show links for about, ...
-
-files <- list.files(system.file("examples", package="gWidgetsWWW2.rapache"), full=TRUE)
-files <- Filter(function(i) basename(i) != "index.R", files)
-
-vb <- gvbox(cont=w, use.scrollwindow=TRUE)
-glabel("<h3>gWidgetsWWW2.rapache examples</h3>", cont=vb)
-glabel("Click the link below to view some examples of gWidgetsWWW2.rapache.",
-       cont=vb)
-
-
-Map(function(x) {
-  nm <- basename(x)
-  g <- ggroup(cont=vb)
-  gbutton("Source", cont=g, handler=function(h,...) {
-    w1 <- gbasicdialog(sprintf("Source of %s", nm), width=600, height=400, parent=w)
-    txt <- paste(readLines(x), collapse="\n")
-    txt <- gsub("'", "`", txt)
-    gtext(txt, cont=w1)
-    visible(w1) <- TRUE
-  })
-
-  ## label faster than ghtml which has a callback to get data
-  glabel(sprintf("<a href='%s' target='_blank'>Run example</a>", nm ), cont=g)
-  ## button wants to open a popup window
-  ##  gbutton("Run example", cont=g, handler=function(h, ...) {
-  ##    push_queue(sprintf("window.open('%s', '_blank');window.focus();", nm))
-  ##  })
-
-  glabel(nm, cont=g)
-}, files)
+g <- ggroup(cont=w, spacing=10)
+ghtml(whisker.render(tpl), cont=g)

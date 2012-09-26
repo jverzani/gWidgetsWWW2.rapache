@@ -140,9 +140,9 @@ default installation has these accessible out of the box.
 
 
 
-<script>$('#navbar-header').append("<li><a href='#nav3' target='_self'>Containers and components</a></li>");</script>
+<script>$('#navbar-header').append("<li><a href='#nav3' target='_self'>Components</a></li>");</script>
 <span><div id="nav3"></div></span>
-<span><div class='page-header'><h2>Containers and components</h2></div></span>
+<span><div class='page-header'><h2>Components&nbsp;<small>containers and controls</small></h2></div></span>
 
 <h4>Containers</h4>
 
@@ -329,9 +329,9 @@ implementation of RStudio's `manipulate` package which shows how all
 three can be used.
 
 
-<script>$('#navbar-header').append("<li><a href='#nav6' target='_self'>Data uploads</a></li>");</script>
+<script>$('#navbar-header').append("<li><a href='#nav6' target='_self'>Data</a></li>");</script>
 <span><div id="nav6"></div></span>
-<span><div class='page-header'><h2>Data uploads</h2></div></span>
+<span><div class='page-header'><h2>Data&nbsp;<small>uploads</small></h2></div></span>
 
 The `gfile` constructor can be used to allow a user to upload data to
 the server. A cap on the size of the upload can be specified when
@@ -361,9 +361,9 @@ despite cleaning up when it can, that the temporary directory needs
 periodic flushing.)
 
 
-<script>$('#navbar-header').append("<li><a href='#nav8' target='_self'>Start up time</a></li>");</script>
+<script>$('#navbar-header').append("<li><a href='#nav8' target='_self'>Start up</a></li>");</script>
 <span><div id="nav8"></div></span>
-<span><div class='page-header'><h2>Start up time</h2></div></span>
+<span><div class='page-header'><h2>Start up</h2></div></span>
 
 The initial web page is constructed through various stages:
 
@@ -472,9 +472,9 @@ processed through the browser. Here are some useful tricks:
   Firefox has the excellent `firebug` add on http://getfirebug.com/ .
 
 
-<script>$('#navbar-header').append("<li><a href='#nav12' target='_self'>Installation: rapache configuration</a></li>");</script>
+<script>$('#navbar-header').append("<li><a href='#nav12' target='_self'>Installation:</a></li>");</script>
 <span><div id="nav12"></div></span>
-<span><div class='page-header'><h2>Installation: rapache configuration</h2></div></span>
+<span><div class='page-header'><h2>Installation:&nbsp;<small>rapache configuration</small></h2></div></span>
 
 Installing this software requires a few steps:
 

@@ -80,7 +80,7 @@ There are more examples in the `examples` directory of the package. A
 default installation has these accessible out of the box.
 
 
-`r I(nav$add("Containers and components"))`
+`r I(nav$add("Components", "containers and controls"))`
 
 <h4>Containers</h4>
 
@@ -260,7 +260,7 @@ There are a few examples in the `examples` directory including an
 implementation of RStudio's `manipulate` package which shows how all
 three can be used.
 
-`r I(nav$add("Data uploads"))`
+`r I(nav$add("Data","uploads"))`
 
 The `gfile` constructor can be used to allow a user to upload data to
 the server. A cap on the size of the upload can be specified when
@@ -286,7 +286,7 @@ sessions. The package uses `RSQLite` for this purpose. (It also means,
 despite cleaning up when it can, that the temporary directory needs
 periodic flushing.)
 
-`r I(nav$add("Start up time"))`
+`r I(nav$add("Start up"))`
 
 The initial web page is constructed through various stages:
 
@@ -385,7 +385,7 @@ processed through the browser. Here are some useful tricks:
   Chrome and Safari have built in ones available through the menu bar,
   Firefox has the excellent `firebug` add on http://getfirebug.com/ .
 
-`r I(nav$add("Installation: rapache configuration"))`
+`r I(nav$add("Installation:","rapache configuration"))`
 
 Installing this software requires a few steps:
 
