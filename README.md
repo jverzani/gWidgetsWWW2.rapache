@@ -9,3 +9,6 @@ pages can be served to an audience at a larger scale. The main reason for the sl
 
 
 See the directory `inst/rapache` for installation instructions. Basically one needs to configure a simple directive. See `inst/docs/gWidgetsWWW2_rapache.html` for an overview.
+
+
+Some examples may be seen here http://www.math.csi.cuny.edu/gw/index.R
