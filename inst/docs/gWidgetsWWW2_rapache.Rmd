@@ -15,12 +15,12 @@ The `gWidgetsWWW2.rapache` package implements most of the `gWidgets`
 API to program interactive web pages with pure `R` code.
 
 The `gWidgets` API is a simple-to-learn set of constructors and
-methods that make specifying the widgets for a GUI, their layout and
-their interactions. The API is implemented to some degree for use with
-the `RGtk2`, `tcltk` and `qtbase` packages for desktop GUIs. This
-package provides the ability to serve such GUIs through the `apache`
-server through Jeffrey Horner's `rapache` module linking `R` with
-`apache.
+methods that make easy the specifying of widgets for a GUI, their
+layout and their interactions. The API is implemented, to varying
+degrees, for use with the `RGtk2`, `tcltk` and `qtbase` packages to
+make desktop GUIs. This package provides the ability to serve such
+interfacess with the `apache` web server through Jeffrey Horner's `rapache`
+module linking `R` with `apache.
 
 Implementing the API for web programming took some iterations. The
 `gWidgetsWWW` package (documented in the JSS article
@@ -36,8 +36,8 @@ This package, `gWidgetsWWW2.rapache`, then is a rewrite of the
 plumbing to serve pages through apache and a streamlining of some of
 the functionality. The main technical issue involved having the
 callbacks in R share their environment amongst potentially many `R`
-processes spawned by `apache`. The solution used was to work really
-hard to make these environments small enough that they can be
+processes spawned by `apache`. The solution used was to work to make
+these environments small enough that they can be
 serialized/unserialized to disk in a reasonable amount of time.
 
 `r I(nav$add("Basic usage"))`
@@ -75,9 +75,12 @@ The above script demonstrates the main points of the package:
   clicked. The callback above produces some JavaScript that causes a
   message to flash briefly on the screen.
 
+If this script is saved as `test.R` in the proper directory, then the
+page will load through a url such as
+http://www.youraddress.com/gw/test.R .
 
-There are more examples in the `examples` directory of the package. A
-default installation has these accessible out of the box.
+There are more examples in the `examples` directory of the
+package. A default installation has these accessible out of the box.
 
 
 `r I(nav$add("Components", "containers and controls"))`
@@ -88,13 +91,14 @@ Containers are used to organize components (controls or other
 containers). Unlike some GUI toolkits, the layout of child components
 is integrated into the specification of the widget. The widget
 constructors have a `container` argument where the parent is
-specified. Layout arguments are given at the time of construction,
-such as `expand` or `fill`.
+specified. (E.g., above we had `gvbox(cont=w)` to next the vertical
+box container inside the top-level window.) `Layout arguments are
+given at the time of construction, such as `expand` or `fill`.
 
 The package implements most -- but not all -- of the containers in the
 `gWidgets` API:
 
-* box containers which pack children in left to right (horizontal) or
+* box containers, which pack children in left to right (horizontal) or
   top to bottom (vertical): `ggroup`, `gvbox` (a vertical box),
   `gframe` (a decorated box) and `gexpandgroup` (a box with a
   disclosure icon to hide or show the contents).
@@ -130,9 +134,9 @@ the user to interact with the GUI or the programmer to display
 information for the user. Most controls have some event that will
 trigger a callback, if specified. For most controls, this event is
 clear and is identified through the generic `addHandlerChanged`. As
-seen, for a button this is the clicking of the button. A few controls
-have more than one event they can respond. For these, there are other
-`addHandlerXXX` methods.
+seen above, for a button this is the clicking of the button. A few
+controls have more than one event they can respond. For these, there
+are other `addHandlerXXX` methods.
 
 
 The basic controls are:
@@ -182,23 +186,16 @@ The main widget methods are
 `r I(nav$add("Handlers"))`
 
 
-The interactivity of the GUI is controlled by assigning callbacks (or
-handlers) to events. The methods `addHandlerXXX` are used for
-this. The generic call is `addHandlerChanged` which calls the callback
-after the "typical" event. Some widgets may have more than one event
-associated to it.
-
-All widgets with a state have a transport handler defined for it that
-copies changes in the GUI back to the R process.
-
-As such, these callbacks happen often. Each callback requires the
-handling R process to unserialize an environment containing the scope
-of the callback, call the handler, then serialize the environment so
-it can be shared with other processes. This should happen quickly. To
-make this the case, the environment must be kept small. (In
-`gWidgetsWWW2` it was seen that environments with reference classes do
-not serialize small and so this took far too long.) To ensure that a
-few compromises are needed:
+In addition to user-defined callbacks, all widgets with a state have a
+transport handler defined for it that copies changes in the GUI back
+to the `R` process. As such, these callbacks happen often. Each callback
+requires the handling `R` process to unserialize an environment
+containing the scope of the callback, call the handler, then serialize
+the environment so it can be shared with other processes. This should
+happen quickly. To make this the case, the environment must be kept
+small. (In `gWidgetsWWW2` it was seen that environments with reference
+classes do not serialize small and so this took far too long.) To
+ensure that a few compromises are needed:
 
 * you should avoid reference classes
 
@@ -226,11 +223,11 @@ The `manipulate` example shows one use of `gtimer` that unfortunately
 has no better idiom within this framework. That example has several
 combo boxes. The value of a combobox is only available after the data
 is loaded. This is done asynchronously. As such, the initial graphic
-can not be made until the combo boxes are loaded. But there is no hook
-(in `gWidgetsWWW2.rapache`) to defer the graphic call to happen until
-after that event. Instead, we just use a one-shot timer with a
-heuristically chosen delay to pause before making the call to create
-the initial graphic.
+can not be made until after some unknow period. Unfortunately, there
+is no hook (in `gWidgetsWWW2.rapache`) to defer the graphic call to
+happen until after that event. Instead, we just use a one-shot timer
+with a heuristically chosen delay to pause before making the call to
+create the initial graphic.
 
 `r I(nav$add("Graphics"))`
 
@@ -247,7 +244,8 @@ The display of graphics has several different options:
 
 The `gcanvas` solution is best for quickly refreshing a graph produced
 with R's base graphics. It does not work with lattice graphics or
-`ggplot2`. One can do low level commands on the JavaScript `canvas` object.
+`ggplot2`. One can do low level commands on the JavaScript `canvas`
+object.
 
 The `gsvg` solution is arguably the best looking, but flickers when
 the graphic is refreshed making it not such a great choice for
@@ -282,9 +280,9 @@ Each time a page is loaded (even when refreshed) a new environment is
 made for evaluating any callbacks. As such, the data within a page is
 not persistent across page loads unless it is programmed to be so. One
 can write to the file system or data base to keep values across
-sessions. The package uses `RSQLite` for this purpose. (It also means,
-despite cleaning up when it can, that the temporary directory needs
-periodic flushing.)
+sessions. (The package uses `RSQLite` for this purpose. This also
+means, despite cleaning up when it can, that the temporary directory
+needs periodic flushing.)
 
 `r I(nav$add("Start up"))`
 
@@ -324,9 +322,9 @@ know and don't want to.
 
 `JavaScript` is a language that can be used to manipulate a web page
 in numerous ways. The package makes no assumption that an R user knows
-`JavaScript`. The point is to make it easy for non-web programmers to
-create web pages. That being said, there are a few ways one with
-`JavaScript` knowledge can integrate that into the framework.
+`JavaScript`. Rather, its novelty is to make it easy for non-web
+programmers to create web pages. That being said, there are a few ways
+one with `JavaScript` knowledge can integrate that into the framework.
 
 The `ExtJS` API is very rich and far more extensive than that provided
 by `gWidgets`. The function `call_ext` can be used to call a method on
@@ -360,7 +358,9 @@ once loaded.
 Web security is a big deal. There is the potential for malicious
 intent on the part of a user. This package provides no additional
 security features, but standard web safety guidelines should be
-followed. (E.g., don't eval code that a user can upload, ...)
+followed. (E.g., don't eval code that a user can upload, ...) With
+the advent of cloud-based servers, you might want to deploy your
+server in a stand-alone manner.
 
 `r I(nav$add("Debugging"))`
 
@@ -374,9 +374,9 @@ processed through the browser. Here are some useful tricks:
 
 * Errors are logged in apache's log file
 
-* `print` statements do not appear in the log file, but those generated with `message`
-  appear in apache's log file. This can be useful to track down issues with
-  the script.
+* `print` statements do not appear in the log file, but those
+  generated with `message` appear in apache's log file. This can be
+  useful to track down issues with the script.
 
 * There may be errors in `gWidgetsWWW2.rapache` that are `JavaScript`
   errors. Of course, the package author would love to hear about this,
@@ -398,7 +398,8 @@ require(devtools)
 install_github("gWidgetsWWW2.rapache", "jverzani")
 ```
 
-* rapache must be installed (follow the instructions here http://www.rapache.net).
+* rapache must be installed (follow the instructions here
+  http://www.rapache.net).
 
 * rapache must be configured. There are 2-3 steps:
 
@@ -416,7 +417,7 @@ LoadModule R_module /usr/libexec/apache2/mod_R.so
   through the apache directive:
 
 ```
-RSourceOnStartup('system.file("rapache", startup.R", package="gWidgetsWWW2.rapache")')
+RSourceOnStartup 'system.file("rapache", startup.R", package="gWidgetsWWW2.rapache")'
 ```
 
 Alternatively, one can copy that file to the file system and modify
@@ -434,7 +435,7 @@ important, as this specifies where to look for files.
 </Location>
 ```
 
-The above uses the base url `http://your.address.com/gw` for accessing
+The above uses the base url `http://your.address.com/gw/` for accessing
 scripts. (So the url `http://your.address.com/gw/ex.R` causes a search
 for the file `ex.R` in the directory (directories) specified through
 the option `gWidgetsWWW2.rapache::script_base`.
@@ -452,7 +453,7 @@ access using one of apache's modules.
 
 That's it. Not much harder than installing `rapache` itself. With the
 default installation, the examples directory from the package is where
-URLs will be mapped to. Going to `http://your.address.com/gw` will
+URLs will be mapped to. Going to `http://your.address.com/gw/` will
 open a page with links.
 
 

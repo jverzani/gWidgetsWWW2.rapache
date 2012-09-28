@@ -212,12 +212,12 @@ var manipulate = function(form_id, graph_id, inputs,  expression) {
 API to program interactive web pages with pure <code>R</code> code.</p>
 
 <p>The <code>gWidgets</code> API is a simple-to-learn set of constructors and<br/>
-methods that make specifying the widgets for a GUI, their layout and<br/>
-their interactions. The API is implemented to some degree for use with<br/>
-the <code>RGtk2</code>, <code>tcltk</code> and <code>qtbase</code> packages for desktop GUIs. This<br/>
-package provides the ability to serve such GUIs through the <code>apache</code><br/>
-server through Jeffrey Horner&#39;s <code>rapache</code> module linking <code>R</code> with<br/>
-apache.</p>
+methods that make easy the specifying of widgets for a GUI, their<br/>
+layout and their interactions. The API is implemented, to varying<br/>
+degrees, for use with the <code>RGtk2</code>, <code>tcltk</code> and <code>qtbase</code> packages to<br/>
+make desktop GUIs. This package provides the ability to serve such<br/>
+interfacess with the <code>apache</code> web server through Jeffrey Horner&#39;s <code>rapache</code><br/>
+module linking <code>R</code> with apache.</p>
 
 <p>Implementing the API for web programming took some iterations. The<br/>
 <code>gWidgetsWWW</code> package (documented in the JSS article<br/>
@@ -233,8 +233,8 @@ not play nicely with <code>rapache</code> to serve pages remotely. (One could us
 plumbing to serve pages through apache and a streamlining of some of<br/>
 the functionality. The main technical issue involved having the<br/>
 callbacks in R share their environment amongst potentially many <code>R</code><br/>
-processes spawned by <code>apache</code>. The solution used was to work really<br/>
-hard to make these environments small enough that they can be<br/>
+processes spawned by <code>apache</code>. The solution used was to work to make<br/>
+these environments small enough that they can be<br/>
 serialized/unserialized to disk in a reasonable amount of time.</p>
 
 <script>$('#navbar-header').append("<li><a href='#nav2' target='_self'>Basic usage</a></li>");</script>
@@ -272,8 +272,12 @@ clicked. The callback above produces some JavaScript that causes a<br/>
 message to flash briefly on the screen.</p></li>
 </ul>
 
-<p>There are more examples in the <code>examples</code> directory of the package. A<br/>
-default installation has these accessible out of the box.</p>
+<p>If this script is saved as <code>test.R</code> in the proper directory, then the<br/>
+page will load through a url such as<br/>
+<a href="http://www.youraddress.com/gw/test.R">http://www.youraddress.com/gw/test.R</a> .</p>
+
+<p>There are more examples in the <code>examples</code> directory of the<br/>
+package. A default installation has these accessible out of the box.</p>
 
 <script>$('#navbar-header').append("<li><a href='#nav3' target='_self'>Components</a></li>");</script>
 
@@ -286,14 +290,15 @@ default installation has these accessible out of the box.</p>
 containers). Unlike some GUI toolkits, the layout of child components<br/>
 is integrated into the specification of the widget. The widget<br/>
 constructors have a <code>container</code> argument where the parent is<br/>
-specified. Layout arguments are given at the time of construction,<br/>
-such as <code>expand</code> or <code>fill</code>.</p>
+specified. (E.g., above we had <code>gvbox(cont=w)</code> to next the vertical<br/>
+box container inside the top-level window.) <code>Layout arguments are<br/>
+given at the time of construction, such as</code>expand<code>or</code>fill.</p>
 
 <p>The package implements most &ndash; but not all &ndash; of the containers in the<br/>
 <code>gWidgets</code> API:</p>
 
 <ul>
-<li><p>box containers which pack children in left to right (horizontal) or<br/>
+<li><p>box containers, which pack children in left to right (horizontal) or<br/>
 top to bottom (vertical): <code>ggroup</code>, <code>gvbox</code> (a vertical box),<br/>
 <code>gframe</code> (a decorated box) and <code>gexpandgroup</code> (a box with a<br/>
 disclosure icon to hide or show the contents).</p></li>
@@ -327,9 +332,9 @@ the user to interact with the GUI or the programmer to display<br/>
 information for the user. Most controls have some event that will<br/>
 trigger a callback, if specified. For most controls, this event is<br/>
 clear and is identified through the generic <code>addHandlerChanged</code>. As<br/>
-seen, for a button this is the clicking of the button. A few controls<br/>
-have more than one event they can respond. For these, there are other<br/>
-<code>addHandlerXXX</code> methods.</p>
+seen above, for a button this is the clicking of the button. A few<br/>
+controls have more than one event they can respond. For these, there<br/>
+are other <code>addHandlerXXX</code> methods.</p>
 
 <p>The basic controls are:</p>
 
@@ -372,23 +377,16 @@ method is use to show or hide rows of the displayed data.)</p></li>
 <p><span><div id="nav4"></div></span><br/>
 <span><div class='page-header'><h2>Handlers</h2></div></span></p>
 
-<p>The interactivity of the GUI is controlled by assigning callbacks (or<br/>
-handlers) to events. The methods <code>addHandlerXXX</code> are used for<br/>
-this. The generic call is <code>addHandlerChanged</code> which calls the callback<br/>
-after the &ldquo;typical&rdquo; event. Some widgets may have more than one event<br/>
-associated to it.</p>
-
-<p>All widgets with a state have a transport handler defined for it that<br/>
-copies changes in the GUI back to the R process.</p>
-
-<p>As such, these callbacks happen often. Each callback requires the<br/>
-handling R process to unserialize an environment containing the scope<br/>
-of the callback, call the handler, then serialize the environment so<br/>
-it can be shared with other processes. This should happen quickly. To<br/>
-make this the case, the environment must be kept small. (In<br/>
-<code>gWidgetsWWW2</code> it was seen that environments with reference classes do<br/>
-not serialize small and so this took far too long.) To ensure that a<br/>
-few compromises are needed:</p>
+<p>In addition to user-defined callbacks, all widgets with a state have a<br/>
+transport handler defined for it that copies changes in the GUI back<br/>
+to the <code>R</code> process. As such, these callbacks happen often. Each callback<br/>
+requires the handling <code>R</code> process to unserialize an environment<br/>
+containing the scope of the callback, call the handler, then serialize<br/>
+the environment so it can be shared with other processes. This should<br/>
+happen quickly. To make this the case, the environment must be kept<br/>
+small. (In <code>gWidgetsWWW2</code> it was seen that environments with reference<br/>
+classes do not serialize small and so this took far too long.) To<br/>
+ensure that a few compromises are needed:</p>
 
 <ul>
 <li><p>you should avoid reference classes</p></li>
@@ -417,11 +415,11 @@ process is complete to carry back the results to the browser.</p>
 has no better idiom within this framework. That example has several<br/>
 combo boxes. The value of a combobox is only available after the data<br/>
 is loaded. This is done asynchronously. As such, the initial graphic<br/>
-can not be made until the combo boxes are loaded. But there is no hook<br/>
-(in <code>gWidgetsWWW2.rapache</code>) to defer the graphic call to happen until<br/>
-after that event. Instead, we just use a one-shot timer with a<br/>
-heuristically chosen delay to pause before making the call to create<br/>
-the initial graphic.</p>
+can not be made until after some unknow period. Unfortunately, there<br/>
+is no hook (in <code>gWidgetsWWW2.rapache</code>) to defer the graphic call to<br/>
+happen until after that event. Instead, we just use a one-shot timer<br/>
+with a heuristically chosen delay to pause before making the call to<br/>
+create the initial graphic.</p>
 
 <script>$('#navbar-header').append("<li><a href='#nav5' target='_self'>Graphics</a></li>");</script>
 
@@ -441,7 +439,8 @@ with the <code>gsvg</code> widget</p></li>
 
 <p>The <code>gcanvas</code> solution is best for quickly refreshing a graph produced<br/>
 with R&#39;s base graphics. It does not work with lattice graphics or<br/>
-<code>ggplot2</code>. One can do low level commands on the JavaScript <code>canvas</code> object.</p>
+<code>ggplot2</code>. One can do low level commands on the JavaScript <code>canvas</code><br/>
+object.</p>
 
 <p>The <code>gsvg</code> solution is arguably the best looking, but flickers when<br/>
 the graphic is refreshed making it not such a great choice for<br/>
@@ -482,9 +481,9 @@ name).</p>
 made for evaluating any callbacks. As such, the data within a page is<br/>
 not persistent across page loads unless it is programmed to be so. One<br/>
 can write to the file system or data base to keep values across<br/>
-sessions. The package uses <code>RSQLite</code> for this purpose. (It also means,<br/>
-despite cleaning up when it can, that the temporary directory needs<br/>
-periodic flushing.)</p>
+sessions. (The package uses <code>RSQLite</code> for this purpose. This also<br/>
+means, despite cleaning up when it can, that the temporary directory<br/>
+needs periodic flushing.)</p>
 
 <script>$('#navbar-header').append("<li><a href='#nav8' target='_self'>Start up</a></li>");</script>
 
@@ -527,9 +526,9 @@ know and don&#39;t want to. </p>
 
 <p><code>JavaScript</code> is a language that can be used to manipulate a web page<br/>
 in numerous ways. The package makes no assumption that an R user knows<br/>
-<code>JavaScript</code>. The point is to make it easy for non-web programmers to<br/>
-create web pages. That being said, there are a few ways one with<br/>
-<code>JavaScript</code> knowledge can integrate that into the framework.</p>
+<code>JavaScript</code>. Rather, its novelty is to make it easy for non-web<br/>
+programmers to create web pages. That being said, there are a few ways<br/>
+one with <code>JavaScript</code> knowledge can integrate that into the framework.</p>
 
 <p>The <code>ExtJS</code> API is very rich and far more extensive than that provided<br/>
 by <code>gWidgets</code>. The function <code>call_ext</code> can be used to call a method on<br/>
@@ -563,7 +562,9 @@ once loaded.</p>
 <p>Web security is a big deal. There is the potential for malicious<br/>
 intent on the part of a user. This package provides no additional<br/>
 security features, but standard web safety guidelines should be<br/>
-followed. (E.g., don&#39;t eval code that a user can upload, &hellip;)</p>
+followed. (E.g., don&#39;t eval code that a user can upload, &hellip;) With<br/>
+the advent of cloud-based servers, you might want to deploy your<br/>
+server in a stand-alone manner.</p>
 
 <script>$('#navbar-header').append("<li><a href='#nav11' target='_self'>Debugging</a></li>");</script>
 
@@ -579,9 +580,9 @@ isn&#39;t helpful for windows users). Most &ndash; but not all &ndash; scripts c
 be tested locally with <code>gWidgetsWWW2</code> under <code>Rook</code>. There are a few<br/>
 differences in the API though, so this won&#39;t be fool proofed.</p></li>
 <li><p>Errors are logged in apache&#39;s log file</p></li>
-<li><p><code>print</code> statements do not appear in the log file, but those generated with <code>message</code><br/>
-appear in apache&#39;s log file. This can be useful to track down issues with<br/>
-the script.</p></li>
+<li><p><code>print</code> statements do not appear in the log file, but those<br/>
+generated with <code>message</code> appear in apache&#39;s log file. This can be<br/>
+useful to track down issues with the script.</p></li>
 <li><p>There may be errors in <code>gWidgetsWWW2.rapache</code> that are <code>JavaScript</code><br/>
 errors. Of course, the package author would love to hear about this,<br/>
 so they can be fixed. But how can the end user tell? Well, a<br/>
@@ -608,7 +609,8 @@ install_github(&quot;gWidgetsWWW2.rapache&quot;, &quot;jverzani&quot;)
 </code></pre>
 
 <ul>
-<li><p>rapache must be installed (follow the instructions here <a href="http://www.rapache.net">http://www.rapache.net</a>).</p></li>
+<li><p>rapache must be installed (follow the instructions here<br/>
+<a href="http://www.rapache.net">http://www.rapache.net</a>).</p></li>
 <li><p>rapache must be configured. There are 2-3 steps:</p></li>
 <li><p>The <code>mod_R.so</code> module must be loaded. Likely this is already done,<br/>
 but if not you must add this to your apache configuration:</p></li>
@@ -625,7 +627,7 @@ but if not you must add this to your apache configuration:</p></li>
 through the apache directive:</li>
 </ul>
 
-<pre><code>RSourceOnStartup(&#39;system.file(&quot;rapache&quot;, startup.R&quot;, package=&quot;gWidgetsWWW2.rapache&quot;)&#39;)
+<pre><code>RSourceOnStartup &#39;system.file(&quot;rapache&quot;, startup.R&quot;, package=&quot;gWidgetsWWW2.rapache&quot;)&#39;
 </code></pre>
 
 <p>Alternatively, one can copy that file to the file system and modify<br/>
@@ -644,7 +646,7 @@ important, as this specifies where to look for files.</p>
 &lt;/Location&gt;
 </code></pre>
 
-<p>The above uses the base url <code>http://your.address.com/gw</code> for accessing<br/>
+<p>The above uses the base url <code>http://your.address.com/gw/</code> for accessing<br/>
 scripts. (So the url <code>http://your.address.com/gw/ex.R</code> causes a search<br/>
 for the file <code>ex.R</code> in the directory (directories) specified through<br/>
 the option <code>gWidgetsWWW2.rapache::script_base</code>.</p>
@@ -661,7 +663,7 @@ access using one of apache&#39;s modules.</p>
 
 <p>That&#39;s it. Not much harder than installing <code>rapache</code> itself. With the<br/>
 default installation, the examples directory from the package is where<br/>
-URLs will be mapped to. Going to <code>http://your.address.com/gw</code> will<br/>
+URLs will be mapped to. Going to <code>http://your.address.com/gw/</code> will<br/>
 open a page with links.</p>
 
 <!--- Finish this off -->
