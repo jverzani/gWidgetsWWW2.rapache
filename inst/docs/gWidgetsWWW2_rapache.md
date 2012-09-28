@@ -147,7 +147,7 @@ package. A default installation has these accessible out of the box.
 <span><div id="nav3"></div></span>
 <span><div class='page-header'><h2>Components&nbsp;<small>containers and controls</small></h2></div></span>
 
-<h4>Containers</h4>
+<h3>Containers</h3>
 
 Containers are used to organize components (controls or other
 containers). Unlike some GUI toolkits, the layout of child components
@@ -189,7 +189,7 @@ Containers have just a few methods:
   restore.
 
 
-<h4>Controls</h4>
+<h3>Controls</h3>
 
 The `gWidgets` API has several controls specified. A control allows
 the user to interact with the GUI or the programmer to display
@@ -274,7 +274,7 @@ acceptable. We don't try to track keystrokes in `gedit` or all updates
 for the `gslider` widget, but otherwise, most things work with this
 response time.
 
-<h4>gtimer</h4>
+<h3>gtimer</h3>
 
 The `gtimer` constructor can be used to call a handler after some
 prescribed period of time. The call can be repeated (the default) or
