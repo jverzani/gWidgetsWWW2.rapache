@@ -1,7 +1,5 @@
 w <- gwindow("combobox exmaple")
-
-## TODO: icons, tooltips
-## check handlers, [<- method
+sb <- gstatusbar("Powered by gWidgetsWWW2.rapache and rapache", cont=w)
 
 g <- gvbox(cont=w)
 g1 <- gframe("different items", cont=g)
@@ -22,7 +20,9 @@ cb[[3]] <- gcombobox(items[,1:3], label="value, label, icon", cont=fl)
 cb[[4]] <- gcombobox(items, label="full monty", cont=fl)
 cb[[5]] <- gcombobox(items, label="custom", cont=fl, tpl="<b>{custom}</b>")
 
-b <- gbutton("click me", cont=g1, handler=function(h,...) {
+## add button to display values
+g2 <- gvbox(cont=g1)
+b <- gbutton("click me", cont=g2, handler=function(h,...) {
   w1 <- gwindow("values", parent=w)
   g <- gvbox(cont=w1)
   sapply(cb, function(i) glabel(svalue(i), cont=g))
