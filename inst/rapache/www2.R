@@ -11,6 +11,7 @@ sink(tempfile())
 
 params <- POST %||% GET %||% list()
 out <- NULL
+f <- NULL
 
 if(grepl("get_id", pi)) {
   ## get ID for the page
@@ -100,7 +101,9 @@ if(grepl("get_id", pi)) {
 sink()
 
 ## finish up.
-## We have out or f
+## We have out or f, but f may be an error
+if(inherits(f, "try-error"))
+  out <- f
 if(is.null(out)) {
   ## f is a file name
   setContentType(gWidgetsWWW2.rapache:::get_content_type(f))
