@@ -108,7 +108,7 @@ gcanvas <- function(f=NULL, width=480, height=400,
 
   ## js
   constructor <- "Ext.Panel"
-  args <- list(html=sprintf("<canvas width='%s' height='%s' id='ogWidget_%s_canvas' style='position:\"absolute\";'>xyz</canvas>", width, height, obj),
+  args <- list(html=sprintf("<canvas width='%s' height='%s' id='ogWidget_%s_canvas' style='position:absolute;'>xyz</canvas>", width, height, obj),
                border=TRUE,
                width=width,
                height=height,
