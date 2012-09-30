@@ -28,6 +28,39 @@ get_e <- function(ID) {
   e
 }
 
+## read and write to RDS file
+lockfile_name <- function(ID) sprintf("%s.lock", get_e_name(ID))
+
+set_lock <- function(ID) {
+  cat("locked", file=lockfile_name(ID))
+}
+
+remove_lock <- function(ID) {
+  unlink(lockfile_name(ID))
+}
+
+is_locked <- function(ID) {
+  file.exists(lockfile_name(ID))
+}
+
+readRDSfile <- function(ID, lock=TRUE) {
+  if(lock) {
+    ctr <- 1
+    while(is_locked(ID))  {
+      Sys.sleep(.05)
+      ctr <- ctr + 1
+      if(ctr >= 100) stop("Can't get lock on file")
+    }
+    set_lock(ID)
+  }
+  readRDS(get_e_name)
+}
+
+saveRDSfile <- function(e, ID) {
+  saveRDS(e, get_e_name(ID))
+  on.exit(remove_lock(ID))
+}
+
 ## globals
 ..e.. <- new.env()
 ..e..$..queue.. <- character()
@@ -67,13 +100,12 @@ create_ui <- function(ID, params) {
   dirs <- getOption('gWidgetsWWW2.rapache::script_base') %||%
                c(system.file('examples', package='gWidgetsWWW2.rapache'))
   
-  the_script <- find_script(params$the_script, dirs) # "/tmp/w.R"
+  the_script <- find_script(params$the_script, dirs) 
 
   if(is.null(the_script))
     return(sprintf("alert('could not find file %s')", params$the_script))
   
   con <- open_connection(ID)
-  on.exit()
   create_table(con)
 
   on.exit({
@@ -90,7 +122,8 @@ create_ui <- function(ID, params) {
   out <- sys.source(the_script, envir=e, keep.source=FALSE)
 
   e$..handlers.. <- ..e..$..handlers..          # store
-  saveRDS(e, file=sprintf("%s/%s.rds", tmp_dir, ID))
+##  saveRDS(e, file=sprintf("%s/%s.rds", tmp_dir, ID))
+  saveRDSfile(e, ID)
 
   
   return(paste(..e..$..queue.., collapse="\n"))
@@ -101,15 +134,17 @@ ajax_call <- function(ID, params) {
   init_globals()
   ..e..$..ID.. <- ID  
 
+  message("ajax call, open connectino")
   con <- open_connection(ID)
-  create_table(con)
+#  message("ajax call, create table")  
+#  create_table(con)
 
   on.exit({
     disconnect_connect(con)
     init_globals()
   })
 
-
+  message("ajax call, get e for ID=", ID)
   e <- get_e(ID)
   e$..con.. <- con
   ## add global handlers object, may be added in call
@@ -119,13 +154,18 @@ ajax_call <- function(ID, params) {
   signal <- params$signal
   params <- as.list(fromJSON(params$params %||% "{}"))
 
-  e$ID <- ID  
+  e$ID <- ID
+  message("ajax call, attach e")  
   attach(e); on.exit(detach(e))
+
+  message("ajax call, call handler")
   out <- call_handler(obj, signal, params)
 
   e$..handlers.. <- ..e..$..handlers..          # store
-  saveRDS(e, file=sprintf("%s/%s.rds", tmp_dir, ID))
+#  saveRDS(e, file=sprintf("%s/%s.rds", tmp_dir, ID))
+  saveRDSfile(e, ID)
 
+  message("ajax call, all done")  
   return(paste(..e..$..queue.., collapse="\n"))
 
 }
@@ -136,7 +176,7 @@ ajax_call <- function(ID, params) {
 proxy_call <- function(ID, params) {
   
   con <- open_connection(ID)
-  create_table(con)
+#  create_table(con)
 
   on.exit({
     disconnect_connect(con)
@@ -201,7 +241,7 @@ proxy_call <- function(ID, params) {
 temp_file <- function(ID, params) {
   ## items is a filename with the item
   con <- open_connection(ID)
-  create_table(con)
+#  create_table(con)
 
   on.exit({
     disconnect_connect(con)
@@ -254,7 +294,8 @@ process_file_upload <- function(ID, params) {
   out <- try(set_vals(params$obj, value=path, items=nm), silent=FALSE)
   detach(e)
   e$..con.. <- NULL
-  saveRDS(e, file=sprintf("%s/%s.rds", tmp_dir, ID))
+#  saveRDS(e, file=sprintf("%s/%s.rds", tmp_dir, ID))
+  saveRDSfile(e, ID)
   
   return(TRUE)
 }
