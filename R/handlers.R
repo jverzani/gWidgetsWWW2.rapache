@@ -158,7 +158,8 @@ addHandler <- function(obj, signal, handler, action=NULL, ..., fn_args=callback_
 addHandler.default <- function(obj, signal, handler, action=NULL,
                                ...,
                                fn_args=callback_args(signal),
-                               params=NULL ## "var params=...;"
+                               params=NULL, ## "var params=...;"
+                               buffer=100   # ms buffer for repeated calls
                                ) {
 
   n <- add_handler(obj, signal, handler, action) # stores handler
@@ -169,16 +170,16 @@ addHandler.default <- function(obj, signal, handler, action=NULL,
 
   ## put in buffer but don't know that it works
     tpl <- '
-ogWidget_{{obj}}.on("{{signal}}", function({{{fn_args}}}) {
+ {{oid}}.on("{{signal}}", function({{{fn_args}}}) {
   {{#params}}{{{params}}};{{/params}}
   Ext.Ajax.request({
     url:"{{{url}}}",
     params:{ID:ID,obj:"{{obj}}", signal:"{{signal}}" {{#params}},params:JSON.stringify(params){{/params}} },
     success:eval_response
   });
-});
+}, {{{oid}}}, {delay:5, buffer:{{buffer}} });
 '
-  ## , {buffer:50});
+  oid <- o_id(obj)
   push_queue(whisker.render(tpl))
 }
 
