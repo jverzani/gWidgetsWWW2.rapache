@@ -1,7 +1,7 @@
 ##' @include gcomponent.R
 NULL
 
-## TODO: icons, dates, visible!, transport, handler, paging, infinite scrolling, ...
+## TODO: dates,, infinite scrolling, ...
 
 ##' gtable
 ##' @param items data frame to view. Columns with class 'Icon' are rendered as icons.
@@ -20,7 +20,8 @@ gtable <- function(items, multiple=FALSE, chosencol = 1,
                    width=NULL, height=NULL, ext.args=list(), store.args=list(),
                    selection=if(multiple) "multiple" else "single",      # also "checkbox"
                    paging=NULL,         # a number (pageSize) or NULL
-                   col.widths=1         # flex value for columns, recycled
+                   col.widths=1,         # flex value for columns, recycled
+                   buffer=100            # buffer for select calls
                    ) {
 
   obj <- new_item()
@@ -85,7 +86,7 @@ gtable <- function(items, multiple=FALSE, chosencol = 1,
   
   args <- list(store=I(store_nm),
                selModel= if(selection == "checkbox") I(sel_model_nm) else NULL,
-               columns=make_columns(items, col.width=1),
+               columns=make_columns(items, col.widths=col.widths),
                multiSelect=multiple,
                frame=FALSE,
                stripeRows=TRUE,
@@ -110,7 +111,7 @@ gtable <- function(items, multiple=FALSE, chosencol = 1,
   add(container, obj, ...)
   
   ## need transport
-  addHandlerSelect(obj, function(...) {}) # transport
+  addHandlerSelect(obj, function(...) {}, buffer=buffer) # transport
   
   ## handlers
   if(!missing(handler)) {
@@ -285,7 +286,7 @@ set_value_js.GTable <- function(obj, value) {
     update_property(x, "visible", vis)
   }
   ## need to call load, update totalCount
-  load_store()
+  load_store(x)
 
   x
 }
@@ -354,18 +355,18 @@ addHandlerClicked.GTable <- function(obj, handler, action=NULL, ...) {
 }
 
 addHandlerDoubleclick.GTable <- function(obj, handler, action=NULL, ...) {
-  add_handler(obj, "celldblclick", ...,
+  add_handler(obj, "celldblclick", handler, action, ...,
               params="var params={row_index:rec.get('row_id'), column_index:cellIndex + 1}")
 }
 
 add_handler_column_clicked <- function(obj, ...) {
-  add_handler(obj, "headerclick", ...,
+  add_handler(obj, "headerclick", handler, action, ...,
               params="var params = {column_index:columnIndex + 1};"
               )
 }
 
 add_handler_column_double_click <- function(obj, ...) {
-  add_handler(obj, "headerdblclick", ...,
+  add_handler(obj, "headerdblclick", handler, action, ...,
               params="var params = {column_index:columnIndex + 1};"
               )
 } 
