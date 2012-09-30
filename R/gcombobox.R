@@ -128,7 +128,22 @@ set_value_js.GCombobox <- function(obj,  value) {
   }
 }
 
+## this needs twekaing
+"[<-.GCombobox" <- function(x, i,j,..., value) {
+  f <- get_vals(x, "items")
+  write.table(.normalize_combobox_items(value), file=f)
 
+  ## need to call load,
+  tpl <- "
+  {{{oid}}}_store.load();
+"
+  oid <- o_id(x)
+  push_queue(whisker.render(tpl))
+
+  x
+}
+
+#
 
 
 # handlers
