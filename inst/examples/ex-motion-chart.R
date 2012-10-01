@@ -128,7 +128,9 @@ draw_graphic <- function() {
                   ifelse(svalue(y_scale) == "log", "y", ""),
                   sep="")
   
-  plot(fm, data=cur_data, col=cols, pch=16, cex=cex, log=do_log)
+  plot(fm, data=cur_data, col=cols, pch=16, cex=cex, log=do_log,
+       xlim=range(dataset[[x_var]]), ylim=range(dataset[[y_var]])
+       )
 
   for(i in 1:nrow(cur_data)) {
     setSVGShapeToolTip(title=ids[i])
