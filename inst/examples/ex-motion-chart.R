@@ -129,7 +129,8 @@ draw_graphic <- function() {
                   sep="")
   
   plot(fm, data=cur_data, col=cols, pch=16, cex=cex, log=do_log,
-       xlim=range(dataset[[x_var]]), ylim=range(dataset[[y_var]])
+       xlim=range(dataset[[x_var]], na.rm=TRUE),
+       ylim=range(dataset[[y_var]], na.rm=TRUE)
        )
 
   for(i in 1:nrow(cur_data)) {
