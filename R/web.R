@@ -134,7 +134,7 @@ ajax_call <- function(ID, params) {
   init_globals()
   ..e..$..ID.. <- ID  
 
-  message("ajax call, open connectino")
+##  message("ajax call, open connectino")
   con <- open_connection(ID)
 #  message("ajax call, create table")  
 #  create_table(con)
@@ -144,7 +144,7 @@ ajax_call <- function(ID, params) {
     init_globals()
   })
 
-  message("ajax call, get e for ID=", ID)
+##  message("ajax call, get e for ID=", ID)
   e <- get_e(ID)
   e$..con.. <- con
   ## add global handlers object, may be added in call
@@ -155,17 +155,17 @@ ajax_call <- function(ID, params) {
   params <- as.list(fromJSON(params$params %||% "{}"))
 
   e$ID <- ID
-  message("ajax call, attach e")  
+##  message("ajax call, attach e")  
   attach(e); on.exit(detach(e))
 
-  message("ajax call, call handler")
+##  message("ajax call, call handler")
   out <- call_handler(obj, signal, params)
 
   e$..handlers.. <- ..e..$..handlers..          # store
 #  saveRDS(e, file=sprintf("%s/%s.rds", tmp_dir, ID))
   saveRDSfile(e, ID)
 
-  message("ajax call, all done")  
+##  message("ajax call, all done")  
   return(paste(..e..$..queue.., collapse="\n"))
 
 }
