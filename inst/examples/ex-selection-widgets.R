@@ -21,7 +21,8 @@ gbutton("svalue<-", cont=bg, handler=function(h, ...) {
 
 ## gradio
 fr <- gframe("gradio", cont=g, horizontal=FALSE)
-radio_widget <- gradio(state.name[1:3], selected=2, cont=fr)
+ig <- ggroup(cont=fr)                   # else expands in x
+radio_widget <- gradio(state.name[1:3], selected=2, cont=ig)
 bg <- ggroup(cont=fr)
 gbutton("svalue", cont=bg, handler=show_value, action=radio_widget)
 gbutton("svalue, index=TRUE", cont=bg, handler=function(...) {
@@ -40,8 +41,9 @@ gbutton("svalue<-, index=TRUE", cont=bg, handler=function(h, ...) {
 
 
 ## gcheckboxgroup
-fr <- gframe("gcheckboxbroup", cont=g, horizontal=FALSE)
-checkgroup_widget <- gcheckboxgroup(state.name[1:3], cont=fr)
+fr <- gframe("gcheckboxgroup", cont=g, horizontal=FALSE)
+ig <- ggroup(cont=fr)
+checkgroup_widget <- gcheckboxgroup(state.name[1:3], cont=ig)
 bg <- ggroup(cont=fr)
 gbutton("svalue", cont=bg, handler=show_value, action=checkgroup_widget)
 gbutton("svalue, index=TRUE", cont=bg, handler=function(...) {

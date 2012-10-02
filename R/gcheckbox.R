@@ -24,6 +24,7 @@ gcheckboxgroup = function (items, checked = FALSE, horizontal = TRUE,
   container = NULL, ...,
   width=NULL, height=NULL, ext.args=NULL,
   flex=1,
+  label.width=10 + 10 * max(nchar(items)),
   columns=ifelse(horizontal,length(items), 1)) {
 
 
@@ -35,7 +36,7 @@ gcheckboxgroup = function (items, checked = FALSE, horizontal = TRUE,
   
   ## js
   constructor <- "Ext.form.CheckboxGroup"
-  args <- list(items=I(.items_as_array(obj, items)),
+  args <- list(items=I(.items_as_array(obj, items, label.width)),
                width = width,
                height = height,
                vertical=!horizontal,

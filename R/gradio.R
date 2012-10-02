@@ -10,13 +10,16 @@ NA
 ##' @param columns Can be used to override horizontal TRUE or FALSE
 ##' @return a \code{GRadio} reference class object
 ##' @export
-##' @note the \code{[<-} method (to change the labels) is not implemented.
+##' @note the \code{[<-} method (to change the labels) is not
+##' implemented. The radio labels look better in horizontal box
+##' containers than vertical ones.
 gradio <- function(items,
                    selected = 1, horizontal=TRUE,
                    handler = NULL, action = NULL,
                    container = NULL, ...,
                    width=NULL, height=NULL, ext.args=NULL,
                    flex=1,              # NULL to turn off
+                   label.width=10 + 10 * max(nchar(items)),
                    columns=ifelse(horizontal,length(items), 1)) {
 
   obj <- new_item()
@@ -27,7 +30,7 @@ gradio <- function(items,
   
   ## js
   constructor <- "Ext.form.RadioGroup"
-  args <- list(items=I(.items_as_array(obj, items)),
+  args <- list(items=I(.items_as_array(obj, items, label.width)),
                width = width,
                height = height,
                vertical=!horizontal,
@@ -67,6 +70,8 @@ set_value_js.GRadio <- function(obj, value) {
 
 ## hacke figure this out.
 "names<-.GRadio" <- function(x, value) {
+  ## this.getForm().findField(<myFieldName>).labelEl.update("New label");
+  ##   http://docs.sencha.com/ext-js/4-1/#!/api/Ext.form.RadioGroup-property-labelEl
   tpl <- "{{{oid}}}.getComponent({{idx}}).boxLabelEl.setHTML({{{label}}});"
   oid <- o_id(x)
   mapply(function(idx, label, oid) push_queue(whisker.render(tpl)),
@@ -77,10 +82,15 @@ set_value_js.GRadio <- function(obj, value) {
 
 
 ## helper make array of item object
-.items_as_array <- function(obj, items) {
+.items_as_array <- function(obj, items, labelWidth=150) {
   "Return items as array"
-  
-  l <- mapply(function(label, value, nm) list_to_object(list(boxLabel=label, inputValue=value, name=nm)),
+  l <- mapply(function(label, value, nm) list_to_object(list(boxLabel=label,
+                                                             boxLabelAlign="after",
+                                                             flex=1,
+                                                             width=labelWidth,
+                                                             #labelAlign="left",
+                                                             inputValue=value,
+                                                             name=nm)),
               items, seq_along(items), sprintf("%s_radio", o_id(obj)),
               SIMPLIFY=FALSE)
 
