@@ -18,6 +18,10 @@ open_connection <- function(dbname=..ID..) {
   drv <- dbDriver("SQLite")
   ## how to check if okay
   f <- db_name(dbname)
+  if(is.na(f)) {
+    message("open connect, NA: ", ..ID..)
+    stop("Can't open ")
+  }
   db <- dbConnect(drv, dbname = f)
   db
 }
@@ -45,6 +49,7 @@ bulk_insert <- function(db, sql, data) {
 
 new_item <- function() {
   db <- ..con..
+  if(!is(db, "SQLiteConnection")) stop("..con.. is not correct")
   bind.data <- data.frame(
                           value="",
                           items="",
@@ -62,6 +67,8 @@ new_item <- function() {
 }
 
 set_vals <- function(id, value, items, properties, db=..con..) {
+  if(!is(db, "SQLiteConnection")) stop("..con.. is not correct")
+  
   l <- list()
   if(!missing(value))
     l$value <- value
@@ -70,36 +77,51 @@ set_vals <- function(id, value, items, properties, db=..con..) {
   if(!missing(properties))
     l$properties <- toJSON(properties) 
 
-  out <- try({
-    dbBeginTransaction(db)
-    tmp <- mapply(function(key, value,  id) {
-      sql <- whisker.render('update OR IGNORE widgets set {{key}} = :value where id=:id')
+  dbBeginTransaction(db)
+  tmp <- mapply(function(key, value,  id) {
+    sql <- whisker.render('update OR IGNORE widgets set {{key}} = :value where id=:id')
+    
+    res <- dbGetPreparedQuery(db, sql,
+                              bind.data=data.frame(id=id, value=value,
+                                stringsAsFactors=FALSE))
+  }, names(l), l, id=id)
+  
+  dbCommit(db)
+  
+  ## out <- try({
+  ##   dbBeginTransaction(db)
+  ##   tmp <- mapply(function(key, value,  id) {
+  ##     sql <- whisker.render('update OR IGNORE widgets set {{key}} = :value where id=:id')
       
-      res <- dbGetPreparedQuery(db, sql,
-                                bind.data=data.frame(id=id, value=value,
-                                  stringsAsFactors=FALSE))
-    }, names(l), l, id=id)
+  ##     res <- dbGetPreparedQuery(db, sql,
+  ##                               bind.data=data.frame(id=id, value=value,
+  ##                                 stringsAsFactors=FALSE))
+  ##   }, names(l), l, id=id)
 
-    dbCommit(db)
-  }, silent=TRUE)
+  ##   dbCommit(db)
+  ## }, silent=TRUE)
 
-  if(inherits(out, "try-error"))
-    message("Couldn't write to data base")
+  
+  ## if(inherits(out, "try-error"))
+  ##   message("Couldn't write to data base")
 }
 
 
 get_vals <- function(id, key=c("value", "items", "properties")) {
   db <- ..con..
+  if(!is(db, "SQLiteConnection")) stop("..con.. is not correct")
+  
   key <- match.arg(key)
 
   sql <- whisker.render('select {{key}} from widgets where id={{id}}')
 
-  ctr <- 1
-  out <- try(dbGetQuery(db, sql), silent=TRUE)
-  if(inherits(out, "try-error")) {
-    message("Couldn't get vals")
-    stop()
-  }
+  out <- dbGetQuery(db, sql)
+  ## out <- try(dbGetQuery(db, sql), silent=TRUE)
+  ## if(inherits(out, "try-error")) {
+  ##   message("Couldn't get vals")
+  ##   stop()
+  ## }
+  ## ctr <- 1
   ## while(inherits(out, "try-error")) {
   ##   Sys.sleep(.05)                      # 50ms
   ##   ctr <- ctr + 1
