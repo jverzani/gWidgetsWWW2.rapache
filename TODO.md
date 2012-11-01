@@ -1,3 +1,5 @@
+* gcheckbox and names -- should be logical
+
 DOCS
 -----
 * In roxygen comments link examples
