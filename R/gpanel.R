@@ -45,13 +45,13 @@ NULL
 ##'     .attr('x1', 25)
 ##'     .attr('x2', 200 - 25)
 ##'     .attr('y1', 100)
-##'     .attr('y2', 100)
+wi##'     .attr('y2', 100)
 ##'     .style('stroke', '#000');
 ##' }
 ##' "
 ##' 
 ##' cmd <- whisker.render(tpl2, list(div_id=pan$div_id()))
-##' pan$load_external(d3_url, cmd)
+##' gpanel_load_external(pan, d3_url, cmd)
 
 gpanel <- function(
                    container,

@@ -125,6 +125,7 @@ svalue.GCheckboxGroup <- function(obj, index=NULL, drop=NULL, ...) {
 
   set_value_js(obj, value)
 
+  obj
 }
 
 ## set, value are indices
