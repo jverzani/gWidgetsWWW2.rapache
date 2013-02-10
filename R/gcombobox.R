@@ -151,6 +151,13 @@ before_handler.GCombobox <- function(obj, signal, params, ...) {
   set_vals(obj, value=params$value)
 }
 
+##' comobox change value method
+##'
+##' @inheritParams addHandler
+##' @export
+##' @rdname gWidgets-handlers
+##' @method addHandlerChanged GCombobox
+##' @S3method addHandlerChanged GCombobox
 addHandlerChanged.GCombobox <- function(obj, handler, action=NULL, ...) {
   if(get_vals(obj, "properties")$editable) {
     addHandlerChange(obj, handler, action)
@@ -159,19 +166,38 @@ addHandlerChanged.GCombobox <- function(obj, handler, action=NULL, ...) {
   }
 }
               
-
+##' comobox blue event
+##'
+##' @inheritParams addHandler
+##' @export
+##' @rdname gWidgets-handlers
+##' @method addHandlerBlur GCombobox
+##' @S3method addHandlerBlur GCombobox
 addHandlerBlur.GCombobox <- function(obj, handler, action=NULL, ...) {
   addHandler(obj, "blur", handler, action, ...,
              params="var params = {value: this.getRawValue()};"
              )
 }
 
+##' comobox change event
+##'
+##' @inheritParams addHandler
+##' @export
+##' @rdname gWidgets-handlers
+##' @method addHandlerChange GCombobox
+##' @S3method addHandlerChange GCombobox
 addHandlerChange.GCombobox <- function(obj, handler, action=NULL, ...) {
   addHandler(obj, "change", handler, action, ...,
              params="var params = {value: this.getRawValue()};"
              )
 }
-
+##' comobox select event
+##'
+##' @inheritParams addHandler
+##' @export
+##' @rdname gWidgets-handlers
+##' @method addHandlerSelect GCombobox
+##' @S3method addHandlerSelect GCombobox
 addHandlerSelect.GCombobox <- function(obj, handler, action=NULL, ...) {
   addHandler(obj, "select", handler, action, ...,
              params="var params = {value: this.getRawValue()};"

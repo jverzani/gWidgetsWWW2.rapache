@@ -143,7 +143,13 @@ function(data, textStatus, jqXHR) {
    
 }
 
-
+##' gpanel onload event
+##'
+##' @inheritParams addHandler
+##' @export
+##' @rdname gWidgets-handlers
+##' @method addHandlerChanged GPanel
+##' @S3method addHandlerChanged GPanel
 addHandlerChanged.GPanel <- function(obj, handler, action=NULL, ...) {
   addHandler(obj, "onload", handler, action)
 }

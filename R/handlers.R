@@ -153,6 +153,17 @@ callback_args <- function(signal) {
          "")
 }     
 ## public interface
+
+##' bind a handler to an object for a given signal
+##'
+##' @param obj object that emits signal
+##' @param signal signal name
+##' @param handler handler. A function with first argument which receives a list.
+##' @param action object to pass to function call to parameterize it
+##' @param ... passed along
+##' @param fn_args argument of javascript function
+##' @param params Used internally
+##' @return a handler ID
 addHandler <- function(obj, signal, handler, action=NULL, ..., fn_args=callback_args(signal), params=NULL) UseMethod("addHandler")
 
 addHandler.default <- function(obj, signal, handler, action=NULL,
@@ -186,37 +197,95 @@ addHandler.default <- function(obj, signal, handler, action=NULL,
 ## our handler interface
 
 ## changed
+
+##' Name given to most common action (widget changed state, ...)
+##'
+##' @export
+##' @rdname gWidgetsWWW2-handlers
 addHandlerChanged <- function(obj, handler, action=NULL, ...) UseMethod("addHandlerChanged")
+
+##' Default S3 method
+##'
+##' @inheritParams addHandler
+##' @export
+##' @rdname gWidgets-handlers
+##' @method addHandlerChanged default
+##' @S3method addHandlerChanged default
 addHandlerChanged.default <- function(obj, handler, action=NULL, ...) {
   addHandlerClicked(obj, handler, action, ...)
 }
 
 ## click handler
+##' Handler for a click event
+##'
+##' @export
+##' @rdname gWidgetsWWW2-handlers
 addHandlerClicked <- function(obj, handler, action=NULL, ...) UseMethod("addHandlerClicked")
 
+##' Default S3 method
+##'
+##' @inheritParams addHandler
+##' @export
+##' @rdname gWidgets-handlers
+##' @method addHandlerClicked default
+##' @S3method addHandlerClicked default
 addHandlerClicked.default <- function(obj, handler, action=NULL, ...) {
   addHandler(obj, "click", handler, action, ...)
 }
 
 
 ## click handler
+##' Handler for a double click event
+##'
+##' @export
+##' @rdname gWidgetsWWW2-handlers
 addHandlerDoubleclick <- function(obj, handler, action=NULL, ...) UseMethod("addHandlerDoubleclick")
 
+
+##' Default S3 method
+##'
+##' @inheritParams addHandler
+##' @export
+##' @rdname gWidgets-handlers
+##' @method addHandlerDoubleclick default
+##' @S3method addHandlerDoubleclick default
 addHandlerDoubleclick.default <- function(obj, handler, action=NULL, ...) {
   addHandler(obj, "dblclick", handler, action, ...)
 }
 
 ## enter
+##' Handler for the enter key event?
+##'
+##' @export
+##' @rdname gWidgetsWWW2-handlers
 addHandlerEnter <- function(obj, handler, action=NULL, ...) UseMethod("addHandlerEnter")
 
+##' Default S3 method
+##'
+##' @inheritParams addHandler
+##' @export
+##' @rdname gWidgets-handlers
+##' @method addHandlerEnter default
+##' @S3method addHandlerEnter default
 addHandlerEnter.default <- function(obj, handler, action=NULL, ...) {
   addHandler(obj, "enter", handler, action, ...)
 }
 
 
 ## blur handler
+##' handler for loss of keyboard focus event
+##'
+##' @export
+##' @rdname gWidgetsWWW2-handlers
 addHandlerBlur <- function(obj, handler, action=NULL, ...) UseMethod("addHandlerBlur")
 
+##' Default S3 method
+##'
+##' @inheritParams addHandler
+##' @export
+##' @rdname gWidgets-handlers
+##' @method addHandlerBlur default
+##' @S3method addHandlerBlur default
 addHandlerBlur.default <- function(obj, handler, action=NULL, ...) {
   addHandler(obj, "blur", handler, action, ...)
 }
@@ -224,8 +293,19 @@ addHandlerBlur.default <- function(obj, handler, action=NULL, ...) {
 
 
 ## select handler
+##' handler for select event
+##'
+##' @export
+##' @rdname gWidgetsWWW2-handlers
 addHandlerSelect <- function(obj, handler, action=NULL, ...) UseMethod("addHandlerSelect")
 
+##' Default S3 method
+##'
+##' @inheritParams addHandler
+##' @export
+##' @rdname gWidgets-handlers
+##' @method addHandlerSelect default
+##' @S3method addHandlerSelect default
 addHandlerSelect.default <- function(obj, handler, action=NULL, ...) {
   addHandler(obj, "select", handler, action, ...)
 }
@@ -233,8 +313,55 @@ addHandlerSelect.default <- function(obj, handler, action=NULL, ...) {
 
 
 ## Change handler
+##' handler for change of state event
+##'
+##' @export
+##' @rdname gWidgetsWWW2-handlers
 addHandlerChange <- function(obj, handler, action=NULL, ...) UseMethod("addHandlerChange")
 
+##' Default S3 method
+##'
+##' @inheritParams addHandler
+##' @export
+##' @rdname gWidgets-handlers
+##' @method addHandlerChange default
+##' @S3method addHandlerChange default
 addHandlerChange.default <- function(obj, handler, action=NULL, ...) {
   addHandler(obj, "Change", handler, action, ...)
+}
+
+
+
+##' handler for mouse down event
+##'
+##' @export
+##' @rdname gWidgetsWWW2-handlers
+addHandlerMouseDown <- function(obj, handler, action=NULL, ...) UseMethod("addHandlerMouseDown")
+
+##' Default S3 method
+##'
+##' @inheritParams addHandler
+##' @export
+##' @rdname gWidgets-handlers
+##' @method addHandlerMouseDown default
+##' @S3method addHandlerMouseDown default
+addHandlerMouseDown.default <- function(obj, handler, action=NULL, ...) {
+  addHandler(obj, "mousedown", handler, action, ...)
+}
+
+##' handler for mouse up event
+##'
+##' @export
+##' @rdname gWidgetsWWW2-handlers
+addHandlerMouseUp <- function(obj, handler, action=NULL, ...) UseMethod("addHandlerMouseUp")
+
+##' Default S3 method
+##'
+##' @inheritParams addHandler
+##' @export
+##' @rdname gWidgets-handlers
+##' @method addHandlerMouseUp default
+##' @S3method addHandlerMouseUp default
+addHandlerMouseUp.default <- function(obj, handler, action=NULL, ...) {
+  addHandler(obj, "mouseup", handler, action, ...)
 }

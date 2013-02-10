@@ -98,11 +98,25 @@ before_handler.GText <- function(obj, signal, params, ...) {
     set_value(obj, as.character(params$value))
 }
 
-
+##'  blur event
+##'
+##' @inheritParams addHandler
+##' @export
+##' @rdname gWidgets-handlers
+##' @method addHandlerBlur GText
+##' @S3method addHandlerBlur GText
 addHandlerBlur.GText <- function(obj, handler, action=NULL, ...) {
   addHandler(obj, "blur", handler, action, ...,
 
              params = "var params={value:this.getValue()}"
              )
 }
+
+##'  changed event
+##'
+##' @inheritParams addHandler
+##' @export
+##' @rdname gWidgets-handlers
+##' @method addHandlerChanged GTable
+##' @S3method addHandlerChanged GTable
 addHandlerChanged.GText <- addHandlerBlur.GText

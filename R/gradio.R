@@ -106,11 +106,25 @@ before_handler.GRadio <- function(obj, signal, params, ...) {
   set_value(obj, items[idx])
 }
 
+##' gradio changed event
+##'
+##' @inheritParams addHandler
+##' @export
+##' @rdname gWidgets-handlers
+##' @method addHandlerChanged GRadio
+##' @S3method addHandlerChanged GRadio
 addHandlerChanged.GRadio <- function(obj, handler, action=NULL, ...) {
   addHandlerChange(obj, handler, action, ...)
 }
 
 
+##' gradio changed event
+##'
+##' @inheritParams addHandler
+##' @export
+##' @rdname gWidgets-handlers
+##' @method addHandlerChange GRadio
+##' @S3method addHandlerChange GRadio
 addHandlerChange.GRadio <- function(obj, handler, action=NULL, ...) {
   addHandler(obj, "change", handler, action, ...,
              params=sprintf("var params={value:newValue.valueOf().%s_radio};", o_id(obj)) ## pass back index in value
@@ -118,4 +132,11 @@ addHandlerChange.GRadio <- function(obj, handler, action=NULL, ...) {
 }
 
 ## alias
+##' gradio changed event
+##'
+##' @inheritParams addHandler
+##' @export
+##' @rdname gWidgets-handlers
+##' @method addHandlerClicked GRadio
+##' @S3method addHandlerClicked GRadio
 addHandlerClicked.GRadio <- addHandlerChanged.GRadio

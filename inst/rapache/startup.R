@@ -21,3 +21,6 @@ options('gWidgetsWWW2.rapache::tmp_dir'="/tmp")
 ## Load this last, so options can take effect
 require(gWidgetsWWW2.rapache)
 
+## We need to connect redis to the underlying R session. This means redis should be started and listening on this port:
+
+redisConnect(timeout=21474836L)

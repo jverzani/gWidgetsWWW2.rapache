@@ -76,6 +76,11 @@ gaction <- function(label, tooltip=NULL, icon=NULL, key.accel=NULL,
 }
 
 ##' use action as signal
+##' 
+##' @export
+##' @rdname gWidgets-handlers
+##' @method addHandlerChanged GAction
+##' @S3method addHandlerChanged GAction
 addHandlerChanged.GAction <- function(obj, handler, action=NULL, ...) {
   ## don't use addHandler, but add_handler. We write handler code above in constructor
   add_handler(obj, "action", handler, action, ...)

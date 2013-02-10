@@ -1,6 +1,6 @@
 ## anything here?
 .onLoad <- function(libname, pkgname) {
-
+  return()
   packageStartupMessage(sprintf("
 gWidgetsWWW2.rapache. This package is usually started only by `rapache`.
 To read details of the package, issue this command:

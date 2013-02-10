@@ -337,27 +337,56 @@ before_handler.GTable <- function(obj, signal, params) {
 
 }
 
+##'  changed event
+##'
+##' @inheritParams addHandler
+##' @export
+##' @rdname gWidgets-handlers
+##' @method addHandlerChanged GTable
+##' @S3method addHandlerChanged GTable
 addHandlerChanged.GTable <- function(obj, handler, action=NULL, ...) {
   addHandlerDoubleclick(obj, handler, action, ...) 
 }
 
 #$(ogWidget_4.getSelectionModel().getSelection()).each(function() {console.log(this.get("row_id"))})
+##'  changed event
+##'
+##' @inheritParams addHandler
+##' @export
+##' @rdname gWidgets-handlers
+##' @method addHandlerSelect GTable
+##' @S3method addHandlerSelect GTable
 addHandlerSelect.GTable <- function(obj, handler, action=NULL, ...) {
   addHandler(obj, "selectionchange", handler, action, ...,
              params="var params={value:selected.map(function(rec) {return(rec.get('row_id'))})}"
              )
 }
 
+##'  changed event
+##'
+##' @inheritParams addHandler
+##' @export
+##' @rdname gWidgets-handlers
+##' @method addHandlerClicked GTable
+##' @S3method addHandlerClicked GTable
 addHandlerClicked.GTable <- function(obj, handler, action=NULL, ...) {
   addHandler(obj, "cellclick", handler, action, ...,
              params="var params={row_index:rec.get('row_id'), column_index:cellIndex + 1}"
              )
 }
 
+##'  changed event
+##'
+##' @inheritParams addHandler
+##' @export
+##' @rdname gWidgets-handlers
+##' @method addHandlerDoubleclick GTable
+##' @S3method addHandlerDoubleclick GTable
 addHandlerDoubleclick.GTable <- function(obj, handler, action=NULL, ...) {
   add_handler(obj, "celldblclick", handler, action, ...,
               params="var params={row_index:rec.get('row_id'), column_index:cellIndex + 1}")
 }
+
 
 add_handler_column_clicked <- function(obj, ...) {
   add_handler(obj, "headerclick", handler, action, ...,

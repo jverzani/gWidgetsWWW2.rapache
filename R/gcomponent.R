@@ -1,6 +1,23 @@
 ##' @include utils.R
 NULL
 
+## for documentation only
+##' widget template
+##'
+##' Document standard arguments for a widget
+##' @param handler optional handler bound via \code{addHandlerChanged}
+##' @param action optional value to paramaterize handler
+##' @param container parent container
+##' @param ... passed along to \code{add} call of the container. Can be used to adjust layout parameters. May also have other uses.
+##' @param ext.args A list of extra arguments to pass to the ExtJS constructor
+##' @param width a pre-specified width (in pixels) for the widget
+##' @param height a pre-specified height (in pixels) for the widget
+##' @return returns an object with various methods defined
+gwidget <- function( handler=NULL, action=NULL,  container,
+                    ..., ext.args=list(), width, height) {}
+                    
+
+
 
 ## methods
 

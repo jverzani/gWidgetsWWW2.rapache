@@ -1,8 +1,26 @@
 rapache configuration
 =====================
 
-We need to install `gWidgetsWWW2.rapache` so that the apache process
-has access and then configure `rapache` along the lines of:
+Installing redis
+-----------------
+
+This package requires the redis in-memory database to be
+installed. See http://redis.io for details on that. It should be
+listening on the standard port, 6379. 
+
+
+Installing rapache
+------------------
+
+See the rapache website for details there
+
+
+Configuring rapache
+------------------
+
+We need to install `gWidgetsWWW2.rapache` first. 
+
+Then configure `rapache` along the lines of:
 
 ```
 ## only if not already configured for rapache

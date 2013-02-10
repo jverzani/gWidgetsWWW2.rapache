@@ -7,7 +7,7 @@
     width = NULL, height = NULL, ext.args = list(),
     store.args = list(),
     selection = if (multiple) "multiple" else "single",
-    paging = NULL, col.widths = 1)
+    paging = NULL, col.widths = 1, buffer = 100)
 }
 \arguments{
   \item{items}{data frame to view. Columns with class

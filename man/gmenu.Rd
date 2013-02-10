@@ -10,6 +10,17 @@
   specified}
 
   \item{popup}{Logical. ignored for now}
+
+  \item{action}{optional value to paramaterize handler}
+
+  \item{container}{parent container}
+
+  \item{...}{passed along to \code{add} call of the
+  container. Can be used to adjust layout parameters. May
+  also have other uses.}
+
+  \item{ext.args}{A list of extra arguments to pass to the
+  ExtJS constructor}
 }
 \value{
   an ExtWidget object

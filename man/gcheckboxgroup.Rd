@@ -6,6 +6,7 @@
     use.table = FALSE, handler = NULL, action = NULL,
     container = NULL, ..., width = NULL, height = NULL,
     ext.args = NULL, flex = 1,
+    label.width = 10 + 10 * max(nchar(items)),
     columns = ifelse(horizontal, length(items), 1))
 }
 \arguments{
@@ -18,6 +19,26 @@
   \item{use.table}{Needs implementing. If TRUE, uses a grid
   widget with checkboxes to display. If TRUE, horizontal is
   ignored, and items may be a data frame.}
+
+  \item{handler}{optional handler bound via
+  \code{addHandlerChanged}}
+
+  \item{action}{optional value to paramaterize handler}
+
+  \item{container}{parent container}
+
+  \item{...}{passed along to \code{add} call of the
+  container. Can be used to adjust layout parameters. May
+  also have other uses.}
+
+  \item{width}{a pre-specified width (in pixels) for the
+  widget}
+
+  \item{height}{a pre-specified height (in pixels) for the
+  widget}
+
+  \item{ext.args}{A list of extra arguments to pass to the
+  ExtJS constructor}
 }
 \value{
   A \code{GCheckboxGroup} reference class instance

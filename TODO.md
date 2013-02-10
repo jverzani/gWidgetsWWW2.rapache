@@ -1,3 +1,4 @@
+DONE * export addHandlerChanged, ..
 * gcheckbox and names -- should be logical
 
 DOCS

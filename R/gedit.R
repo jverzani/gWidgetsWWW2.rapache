@@ -53,17 +53,37 @@ before_handler.GEdit <- function(obj, signal, params, ...) {
    set_vals(obj, value=params$value)
 }
 
+##' gedit changed event
+##'
+##' @inheritParams addHandler
+##' @export
+##' @rdname gWidgets-handlers
+##' @method addHandlerChanged GEdit
+##' @S3method addHandlerChanged GEdit
 addHandlerChanged.GEdit <- function(obj, handler, action=NULL, ...) {
   addHandlerBlur(obj, handler, action, ...)
 }
               
-
+##' gedit blur event
+##'
+##' @inheritParams addHandler
+##' @export
+##' @rdname gWidgets-handlers
+##' @method addHandlerBlur GEdit
+##' @S3method addHandlerBlur GEdit
 addHandlerBlur.GEdit <- function(obj, handler, action=NULL, ...) {
   addHandler(obj, "blur", handler, action, ...,
              params="var params = {value: w.getValue()};"
              )
 }
 
+##' gedit changed event
+##'
+##' @inheritParams addHandler
+##' @export
+##' @rdname gWidgets-handlers
+##' @method addHandlerEnter GEdit
+##' @S3method addHandlerEnter GEdit
 addHandlerEnter.GEdit <- function(obj, handler, action=NULL, ...) {
   addHandler(obj, "enter", handler, action, ...,
              params="var params = {value: w.getValue()};"

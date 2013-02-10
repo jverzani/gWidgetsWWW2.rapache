@@ -195,7 +195,13 @@ visible.GExpandGroup <- function(obj) {
   obj
 }
 
-
+##' expand or collapse handler
+##'
+##' @inheritParams addHandler
+##' @export
+##' @rdname gWidgets-handlers
+##' @method addHandlerChanged GExpandGroup
+##' @S3method addHandlerChanged GExpandGroup
 addHandlerChanged.GExpandGroup <- function(obj, handler, action, ...) {
   lapply(c("expand", "collapse"), addHandler, obj=obj, handler=handler, action=action)
 }

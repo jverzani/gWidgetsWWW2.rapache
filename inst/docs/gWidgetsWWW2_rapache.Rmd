@@ -280,9 +280,7 @@ Each time a page is loaded (even when refreshed) a new environment is
 made for evaluating any callbacks. As such, the data within a page is
 not persistent across page loads unless it is programmed to be so. One
 can write to the file system or data base to keep values across
-sessions. (The package uses `RSQLite` for this purpose. This also
-means, despite cleaning up when it can, that the temporary directory
-needs periodic flushing.)
+sessions. (The package uses a `redis` server for this purpose.)
 
 `r I(nav$add("Start up"))`
 
@@ -419,6 +417,8 @@ LoadModule R_module /usr/libexec/apache2/mod_R.so
 ```
 RSourceOnStartup 'system.file("rapache", startup.R", package="gWidgetsWWW2.rapache")'
 ```
+
+
 
 Alternatively, one can copy that file to the file system and modify
 it. The option `gWidgetsWWW2.rapache::script_base` is the most

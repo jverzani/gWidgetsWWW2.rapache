@@ -15,6 +15,26 @@
   \item{type}{only "open" implemented}
 
   \item{filter}{ignored}
+
+  \item{handler}{optional handler bound via
+  \code{addHandlerChanged}}
+
+  \item{action}{optional value to paramaterize handler}
+
+  \item{container}{parent container}
+
+  \item{...}{passed along to \code{add} call of the
+  container. Can be used to adjust layout parameters. May
+  also have other uses.}
+
+  \item{width}{a pre-specified width (in pixels) for the
+  widget}
+
+  \item{height}{a pre-specified height (in pixels) for the
+  widget}
+
+  \item{ext.args}{A list of extra arguments to pass to the
+  ExtJS constructor}
 }
 \value{
   a \code{GFile} instance

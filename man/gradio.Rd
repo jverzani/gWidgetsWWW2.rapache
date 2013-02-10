@@ -5,6 +5,7 @@
   gradio(items, selected = 1, horizontal = TRUE,
     handler = NULL, action = NULL, container = NULL, ...,
     width = NULL, height = NULL, ext.args = NULL, flex = 1,
+    label.width = 10 + 10 * max(nchar(items)),
     columns = ifelse(horizontal, length(items), 1))
 }
 \arguments{
@@ -27,6 +28,7 @@
 }
 \note{
   the \code{[<-} method (to change the labels) is not
-  implemented.
+  implemented. The radio labels look better in horizontal
+  box containers than vertical ones.
 }
 

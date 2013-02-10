@@ -147,6 +147,13 @@ set_value_js.GCanvas <- function(obj, value) {
 
 
 ## handlers
+##' Click handler for canvas widget
+##'
+##' @inheritParams addHandler
+##' @export
+##' @rdname gWidgets-handlers
+##' @method addHandlerClicked GCanvas
+##' @S3method addHandlerClicked GCanvas
 addHandlerClicked.GCanvas <- function(obj, handler, action=NULL, ...)
   cnv_add_handler(obj, "click", handler, action, ...)
 
@@ -158,9 +165,23 @@ addHandlerClicked.GCanvas <- function(obj, handler, action=NULL, ...)
 ## addHandlerMouseMove.GCanvas <- function(obj, handler, action=NULL, ...)
 ##   cnv_add_handler(obj, "mousemove", handler, action, ...)
 
+##' Default S3 method
+##'
+##' @inheritParams addHandler
+##' @export
+##' @rdname gWidgets-handlers
+##' @method addHandlerMouseDown GCanvas
+##' @S3method addHandlerMouseDown GCanvas
 addHandlerMouseDown.GCanvas <- function(obj, handler, action=NULL, ...)
   cnv_add_handler(obj, "mousedown", handler, action, ...)
 
+##' Default S3 method
+##'
+##' @inheritParams addHandler
+##' @export
+##' @rdname gWidgets-handlers
+##' @method addHandlerMouseUp GCanvas
+##' @S3method addHandlerMouseUp GCanvas
 addHandlerMouseUp.GCanvas <- function(obj, handler, action=NULL, ...)
   cnv_add_handler(obj, "mouseup", handler, action, ...)
 

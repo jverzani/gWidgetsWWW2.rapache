@@ -6,6 +6,27 @@
     width = NULL, height = NULL, ext.args = NULL,
     div_id = NULL)
 }
+\arguments{
+  \item{container}{parent container}
+
+  \item{handler}{optional handler bound via
+  \code{addHandlerChanged}}
+
+  \item{action}{optional value to paramaterize handler}
+
+  \item{...}{passed along to \code{add} call of the
+  container. Can be used to adjust layout parameters. May
+  also have other uses.}
+
+  \item{width}{a pre-specified width (in pixels) for the
+  widget}
+
+  \item{height}{a pre-specified height (in pixels) for the
+  widget}
+
+  \item{ext.args}{A list of extra arguments to pass to the
+  ExtJS constructor}
+}
 \value{
   a \code{GPanel} reference class object
 }
@@ -57,6 +78,6 @@ chart.append('line')
 "
 
 cmd <- whisker.render(tpl2, list(div_id=pan$div_id()))
-pan$load_external(d3_url, cmd)
+gpanel_load_external(pan, d3_url, cmd)
 }
 

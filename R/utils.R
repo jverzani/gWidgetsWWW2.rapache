@@ -1,9 +1,10 @@
 
 ## utils
 
-##' || with NULL
+##' or with NULL
 ##'
 ##' @export
+##' @rdname ouror
 "%||%" <- function(a, b) if(missing(a) || is.null(a) || (is.character(a) && nchar(a) == 0) || (length(a) == 1 && is.na(a[1]))) b else a
 
 ## merge multiple lists

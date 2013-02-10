@@ -72,7 +72,13 @@ gslider <- function(from = 0, to = 100, by = 1, value = from,
   obj
 }
 
-
+##' gradio changed event
+##'
+##' @inheritParams addHandler
+##' @export
+##' @rdname gWidgets-handlers
+##' @method addHandlerChange GSlider
+##' @S3method addHandlerChange GSlider
 addHandlerChange.GSlider <- function(obj, handler, action=NULL, ...) {
   addHandler(obj, "changecomplete", handler, action, ...,
              params="var params = {value: newValue}")

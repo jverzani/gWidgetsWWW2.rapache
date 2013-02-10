@@ -107,7 +107,13 @@ set_value_js.GNotebook <- function(obj, value) {
   call_ext(obj, "setActiveTab", as.integer(value) - 1)
 }
 
-## chagne is tabchange
+##' chagne is tabchange
+##'
+##' @inheritParams addHandler
+##' @export
+##' @rdname gWidgets-handlers
+##' @method addHandlerChanged GNotebook
+##' @S3method addHandlerChanged GNotebook
 addHandlerChanged.GNotebook <- function(obj, handler, action=NULL, ...) {
   addHandler(obj, "tabchange", handler, action, ...,
              params="var params = {value: this.items.indexOf(tab) + 1}"

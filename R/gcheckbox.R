@@ -76,6 +76,13 @@ before_handler.GCheckboxGroup <- function(obj, signal, params,...) {
   set_value(obj, .to_string(items[idx]))
 }
 
+##' Change event for checkbox group
+##' 
+##' @inheritParams addHandler
+##' @export
+##' @rdname gWidgets-handlers
+##' @method addHandlerChange GCheckboxGroup
+##' @S3method addHandlerChange GCheckboxGroup
 addHandlerChange.GCheckboxGroup <- function(obj, handler, action=NULL, ...) {
 
   oid <- o_id(obj)

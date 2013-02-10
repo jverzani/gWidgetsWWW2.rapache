@@ -93,6 +93,13 @@ set_value_js.GCalendar <- function(obj, value) {
   call_ext(obj, "setValue", value)
 }
 
+##' Default S3 method
+##'
+##' @inheritParams addHandler
+##' @export
+##' @rdname gWidgets-handlers
+##' @method addHandlerChanged GCalendar
+##' @S3method addHandlerChanged GCalendar
 addHandlerChanged.GCalendar <- function(obj, handler, action=NULL, ...) {
   addHandler(obj, "change", handler, action, ...,
              params="var params = {value: newValue}")

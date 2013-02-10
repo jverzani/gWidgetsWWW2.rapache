@@ -59,10 +59,24 @@ before_handler.GSequenceSelect <- function(obj, signal, params) {
   set_value(obj, as.numeric(params$value))
 }
 
+##'  changed event
+##'
+##' @inheritParams addHandler
+##' @export
+##' @rdname gWidgets-handlers
+##' @method addHandlerChanged GSequenceSelect
+##' @S3method addHandlerChanged GSequenceSelect
 addHandlerChanged.GSequenceSelect <- function(obj, handler, action=NULL, ...) {
   addHandlerChange(obj, handler, action, ...)
 }
 
+##'  changed event
+##'
+##' @inheritParams addHandler
+##' @export
+##' @rdname gWidgets-handlers
+##' @method addHandlerChange GSequenceSelect
+##' @S3method addHandlerChange GSequenceSelect
 addHandlerChange.GSequenceSelect <- function(obj, handler, action=NULL, ...) {
 addHandler(obj, "change", handler, action, ...,
            params="var params = {value: newValue}")

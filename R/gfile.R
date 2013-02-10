@@ -104,7 +104,14 @@ var ogWidget_{{{obj}}} = Ext.create('Ext.form.Panel', {
 
   obj
 }
-  
+
+##' gedit changed event
+##'
+##' @inheritParams addHandler
+##' @export
+##' @rdname gWidgets-handlers
+##' @method addHandlerChanged GFile
+##' @S3method addHandlerChanged GFile
 addHandlerChanged.GFile <- function(obj, handler, action=NULL, ...) {
   addHandler(obj, "upload", handler, action, ...)
 }
