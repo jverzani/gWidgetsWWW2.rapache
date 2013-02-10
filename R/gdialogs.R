@@ -202,9 +202,16 @@ Ext.create('widget.uxNotification', {
 }).show();
 "
 
+tpl <- "
+$.jGrowl('{{#title}}<strong>{{title}}</strong> {{/title}}{{msg}}', {life:{{delay}} });
+"
+
+  
   msg <- escape_slashn(msg)
   if(!is.null(title))
     title <- escape_slashn(title)
+  else
+    title <- ""
   ##closable <- ifelse(is.null(title), "false", "true"); ## sometimes hangs
   closable <- "true"
 
