@@ -170,6 +170,8 @@ create_ui <- function(ID, params) {
 
 
   e$..handlers.. <- ..e..$..handlers..          # store
+
+  message("Redis set. ID=", ID, "e=", class(e))
   redisSet(ID, e)
 
   return(paste(..e..$..queue.., collapse="\n"))
