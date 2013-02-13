@@ -280,10 +280,17 @@ proxy_call_text <- function(ID, params) {
 
 ## return the filename
 static_file <- function(x) {
+  message("Calling static file with: ", x)
   ##
   x <- gsub("static_file/", "", x)
   dirs <- system.file("extra", package="gWidgetsWWW2.rapache")
   f <- find_script(x, dirs)
+
+  if(is.null(f))
+    message("static file: did not find script in ", dirs)
+  else
+    message("static file, we found ", f)
+  
   if(is.null(f))
     stop(sprintf("Can't find file %s", x))
   f
