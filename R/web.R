@@ -154,9 +154,11 @@ create_ui <- function(ID, params) {
     
   dirs <- getOption('gWidgetsWWW2.rapache::script_base') %||%
                c(system.file('examples', package='gWidgetsWWW2.rapache'))
-  
-  the_script <- find_script(params$the_script, dirs) 
 
+  message("create_ui looking for", params$the_script)
+  the_script <- find_script(params$the_script, dirs) 
+  message("create_ui, found this: ", the_script)
+  
   if(is.null(the_script))
     return(sprintf("alert('could not find file %s')", params$the_script))
 
