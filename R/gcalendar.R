@@ -41,16 +41,17 @@ gcalendar <- function(text = "", format = NULL,
                format=gsub("%", "", date_format)
                )
                
+  args <- merge_list(args, ext.args, add_dots(obj, ...))
+  push_queue(write_ext_constructor(obj, constructor, args))
+
   if(nchar(text))
     svalue(obj) <- text
   
-  args <- merge_list(args, ext.args, add_dots(obj, ...))
-  push_queue(write_ext_constructor(obj, constructor, args))
 
   ## handlers
   addHandlerChanged(obj, function(h,...) {})
   if(!is.null(handler))
-    addHandlerChanged(obj, hander, action, ...)
+    addHandlerChanged(obj, handler, action, ...)
 
   
   ## add
@@ -90,7 +91,7 @@ svalue.GCalendar <- function(obj, ...) {
 }
 
 set_value_js.GCalendar <- function(obj, value) {
-  call_ext(obj, "setValue", value)
+  call_ext(obj, "setValue", shQuote(value))
 }
 
 ##' Default S3 method
