@@ -19,7 +19,6 @@ Depends:
     rredis,
     RJSONIO,
     whisker,
-    canvas,
     markdown,
     digest
 LazyLoad: yes
@@ -52,7 +51,6 @@ Collate:
     'gmenu.R'
     'gtext.R'
     'gseparator.R'
-    'gcanvas.R'
     'gimage.R'
     'gtempfile.R'
     'gsvg.R'
