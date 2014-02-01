@@ -155,9 +155,9 @@ create_ui <- function(ID, params) {
   dirs <- getOption('gWidgetsWWW2.rapache::script_base') %||%
                c(system.file('examples', package='gWidgetsWWW2.rapache'))
 
-  message("create_ui looking for", params$the_script)
+#  message("create_ui looking for", params$the_script)
   the_script <- find_script(params$the_script, dirs) 
-  message("create_ui, found this: ", the_script)
+#  message("create_ui, found this: ", the_script)
   
   if(is.null(the_script))
     return(sprintf("alert('could not find file %s')", params$the_script))
@@ -171,7 +171,7 @@ create_ui <- function(ID, params) {
 
   e$..handlers.. <- ..e..$..handlers..          # store
 
-  message("Redis set. ID=", ID, "e=", class(e))
+#  message("Redis set. ID=", ID, "e=", class(e))
   redisSet(ID, e)
 
   return(paste(..e..$..queue.., collapse="\n"))
@@ -284,16 +284,16 @@ proxy_call_text <- function(ID, params) {
 
 ## return the filename
 static_file <- function(x) {
-  message("Calling static file with: ", x)
+#  message("Calling static file with: ", x)
   ##
   x <- gsub("static_file/", "", x)
   dirs <- system.file("extra", package="gWidgetsWWW2.rapache")
   f <- find_script(x, dirs)
 
-  if(is.null(f))
-    message("static file: did not find script in ", dirs)
-  else
-    message("static file, we found ", f)
+#  if(is.null(f))
+#    message("static file: did not find script in ", dirs)
+#  else
+#   message("static file, we found ", f)
   
   if(is.null(f))
     stop(sprintf("Can't find file %s", x))
