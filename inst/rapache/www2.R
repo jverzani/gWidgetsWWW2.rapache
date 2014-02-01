@@ -121,5 +121,5 @@ if(is.null(out)) {
   } else {
     cat(out)
   }
-  DONE
+  OK
 }
